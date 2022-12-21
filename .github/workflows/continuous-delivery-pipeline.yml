@@ -1,0 +1,287 @@
+name: Continuous Delivery Pipeline
+
+on:
+  push:
+    branches:
+      - main
+      - development
+  pull_request:
+    types: [opened, synchronize, reopened, edited]
+
+jobs:
+  spotless:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up JDK 11
+        uses: actions/setup-java@v1
+        with:
+          java-version: 11
+
+      - name: Make gradlew executable
+        run: chmod +x ./gradlew
+
+      - name: Cache between builds
+        uses: actions/cache@v2
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+
+      - name: Run spotless
+        run: |
+          ./gradlew --console=plain spotlessCheck
+
+  detekt:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up JDK 11
+        uses: actions/setup-java@v1
+        with:
+          java-version: 11
+
+      - name: Make gradlew executable
+        run: chmod +x ./gradlew
+
+      - name: Cache between builds
+        uses: actions/cache@v2
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+
+      - name: Run detekt
+        run: |
+          ./gradlew --console=plain detekt
+
+      - name: Upload detekt reports
+        uses: actions/upload-artifact@v2
+        with:
+          name: detekt
+          path: app/build/reports/detekt/
+
+  lint:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up JDK 11
+        uses: actions/setup-java@v1
+        with:
+          java-version: 11
+
+      - name: Cache between builds
+        uses: actions/cache@v2
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+
+      - name: Run lint
+        run: |
+          ./gradlew --console=plain lint
+
+      - name: Upload lint reports
+        uses: actions/upload-artifact@v2
+        with:
+          name: lint
+          path: |
+            app/build/reports/lint*
+            domain/build/reports/lint*
+            data/build/reports/lint*
+
+  unit_tests:
+    needs: [ detekt, lint ]
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up JDK 11
+        uses: actions/setup-java@v1
+        with:
+          java-version: 11
+
+      - name: Cache between builds
+        uses: actions/cache@v2
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+
+      - name: Run debug unit tests
+        run: |
+          ./gradlew --console=plain testDebugUnitTest --stacktrace
+
+      - name: Upload test reports
+        if: always()
+        uses: actions/upload-artifact@v2
+        with:
+          name: tests
+          path: app/build/reports/tests
+
+  android_tests:
+    name: Tests on Android (API level ${{ matrix.api-level }})
+    needs: [ detekt, lint ]
+    runs-on: macos-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        api-level: [ 26, 29 ]
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Set up JDK 11
+        uses: actions/setup-java@v1
+        with:
+          java-version: 11
+
+      - name: Cache between builds
+        uses: actions/cache@v2
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+
+      - name: AVD cache
+        uses: actions/cache@v2
+        id: avd-cache
+        with:
+          path: |
+            ~/.android/avd/*
+            ~/.android/adb*
+          key: avd-${{ matrix.api-level }}
+
+      - name: create AVD and generate snapshot for caching
+        if: steps.avd-cache.outputs.cache-hit != 'true'
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: ${{ matrix.api-level }}
+          arch: x86_64
+          target: ${{ matrix.api-level >= 30 && 'google_apis' || 'default' }}
+          force-avd-creation: false
+          emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
+          disable-animations: false
+          script: echo "Generated AVD snapshot for caching."
+
+      - name: run tests
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: ${{ matrix.api-level }}
+          arch: x86_64
+          target: ${{ matrix.api-level >= 30 && 'google_apis' || 'default' }}
+          force-avd-creation: false
+          emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
+          disable-animations: true
+          script: ./gradlew --console=plain connectedAndroidTest --stacktrace
+
+      - name: Upload artifact
+        if: always()
+        uses: actions/upload-artifact@v1
+        with:
+          name: androidTests
+          path: app/build/reports/androidTests
+
+      - name: Run testCoverage
+        run: ./gradlew --console=plain testCoverage --stacktrace
+
+      - name: Jacoco Report to PR
+        if: matrix.api-level == 29
+        id: jacoco
+        uses: madrapps/jacoco-report@v1.2
+        with:
+          paths: |
+            ${{ github.workspace }}/app/build/reports/jacoco/testCoverage/testCoverage.xml,
+            ${{ github.workspace }}/domain/build/reports/jacoco/testCoverage/testCoverage.xml,
+            ${{ github.workspace }}/data/build/reports/jacoco/testCoverage/testCoverage.xml
+          token: ${{ secrets.GITHUB_TOKEN }}
+          min-coverage-overall: 1
+          min-coverage-changed-files: 10
+          title: Code Coverage
+          debug-mode: false
+
+      - name: Get the Coverage info
+        run: |
+          echo "Total coverage ${{ steps.jacoco.outputs.coverage-overall }}"
+          echo "Changed Files coverage ${{ steps.jacoco.outputs.coverage-changed-files }}"
+
+  # upload an android bundle to google play store into the internal test track
+  deployment:
+    needs: [ unit_tests, android_tests ]
+    if: github.ref == 'refs/heads/development'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up JDK 11
+        uses: actions/setup-java@v1
+        with:
+          java-version: 11
+
+      - name: Cache between builds
+        uses: actions/cache@v2
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+
+      - name: Decode Android Keystore
+        id: decode_keystore
+        uses: timheuer/base64-to-file@v1.1
+        with:
+          fileName: 'android_release.keystore'
+          encodedString: ${{ secrets.ANDROID_KEYSTORE }}
+
+      - name: Decode Gradle Play Publisher Credentials
+        id: decode_play_store_credentials
+        uses: timheuer/base64-to-file@v1.1
+        with:
+          fileName: 'gradle_playstore_publisher_credentials.json'
+          fileDir: './'
+          encodedString: ${{ secrets.PLAYSTORE_CREDENTIALS }}
+
+      - name: Build release bundle
+        run: |
+          ./gradlew --console=plain -PreleaseKeystore=${{ steps.decode_keystore.outputs.filePath }} -PreleaseStorePassword=${{ secrets.ANDROID_KEYSTORE_PASSWORD }} -PreleaseKeyAlias=${{ secrets.ANDROID_KEYSTORE_KEY_ALIAS }} -PreleaseKeyPassword=${{ secrets.ANDROID_KEYSTORE_KEY_PASSWORD }} app:bundle
+
+      - name: Publish release bundle
+        run: |
+          ./gradlew --console=plain app:publishBundle --artifact-dir app/build/outputs/bundle/release/app-release.aab
