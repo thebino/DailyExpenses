@@ -48,7 +48,7 @@ data class Expense(
     }
 
     fun toNetworkExpense(): NetworkExpense = NetworkExpense(
-        id = identifier!!,
+        id = identifier,
         category = category,
         expenseDate = expenseDate,
         creationDate = creationDate,

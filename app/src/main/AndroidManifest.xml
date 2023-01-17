@@ -23,6 +23,21 @@
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
+            <!--  Add support for App-actions  -->
+            <meta-data
+                android:name="android.app.shortcuts"
+                android:resource="@xml/shortcuts" />
+
+            <!--  Deep-link to add expense dialog  -->
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <!-- Accepts URIs that begin with "dailyexpenses://add” -->
+                <data android:scheme="dailyexpenses"
+                    android:host="add" />
+            </intent-filter>
+
         </activity>
 
         <!--  Prevent Android from initializing the default WorkManagerFactory  -->

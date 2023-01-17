@@ -1,5 +1,3 @@
-@file:OptIn(ExperimentalMaterial3Api::class)
-
 package pro.stuermer.dailyexpenses.ui.home
 
 import androidx.compose.animation.AnimatedVisibility
@@ -59,12 +57,17 @@ import pro.stuermer.dailyexpenses.ui.composables.Graph
 import pro.stuermer.dailyexpenses.ui.composables.MonthPicker
 import pro.stuermer.dailyexpenses.ui.composables.ReferenceDevices
 import pro.stuermer.dailyexpenses.ui.theme.DailyExpensesTheme
+import timber.log.Timber
 
 @Composable
 fun HomeScreen(
     onNavigateToSettings: () -> Unit = {},
+    description: String? = null
 ) {
     val viewModel: HomeViewModel = getViewModel()
+    if (description != null) {
+        viewModel.handleEvent(HomeScreenEvent.NewItemEvent)
+    }
 
     HomeContent(
         state = viewModel.uiState.collectAsState().value,

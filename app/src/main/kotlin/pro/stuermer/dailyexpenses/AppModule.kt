@@ -216,10 +216,16 @@ private fun provideHttpClient(application: Application): HttpClient {
             headers {
                 val context = application.applicationContext
 
-                @Suppress("DEPRECATION") val packageInfo: PackageInfo =
-                    context.packageManager.getPackageInfo(context.packageName, 0)
+                @Suppress("DEPRECATION")
+                val packageInfo: PackageInfo = context.packageManager.getPackageInfo(context.packageName, 0)
                 val version: String = packageInfo.versionName
-                val versionCode = packageInfo.longVersionCode
+
+                @Suppress("DEPRECATION")
+                val versionCode = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                    packageInfo.longVersionCode
+                } else {
+                    packageInfo.versionCode
+                }
 
                 append(
                     "User-Agent",

@@ -1,6 +1,5 @@
 package pro.stuermer.dailyexpenses.data.repository
 
-import io.ktor.utils.io.printStack
 import java.time.LocalDate
 import java.util.UUID
 import kotlinx.coroutines.flow.Flow
@@ -9,6 +8,7 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onStart
+import pro.stuermer.dailyexpenses.data.model.SyncStatus
 import pro.stuermer.dailyexpenses.data.network.ExpensesApi
 import pro.stuermer.dailyexpenses.data.network.Resource
 import pro.stuermer.dailyexpenses.data.persistence.ExpensesDao
@@ -70,35 +70,34 @@ class ExpensesRepositoryImpl(
     /**
      * Synchronize with a remote source
      */
-    override suspend fun sync(): Boolean {
+    override suspend fun sync(): SyncStatus {
         Timber.i("+++ sync +++")
-        var result: Boolean = true
         val sharing = sharingDao.getSharings().firstOrNull()
 
         if (sharing.isNullOrEmpty()) {
             Timber.e("No sharing group found! Skip sync")
-            return false
+            return SyncStatus.SyncSkipped
         }
 
         val sharingGroup = sharing[0].code
 
         // upload local expenses to remote datasource
         if (!uploadLocalExpenses(sharingGroup = sharingGroup)) {
-            result = false
+            return SyncStatus.SyncFailed(message = "upload local expenses failed!")
         }
 
         // delete local expenses in remote datasource
         if (!deleteLocalExpenses(sharingGroup = sharingGroup)) {
-            result = false
+            return SyncStatus.SyncFailed(message = "delete local expenses failed!")
         }
 
 
         // download expenses from remote datasource
         if (!downloadRemoteExpenses(sharingGroup = sharingGroup)) {
-            result = false
+            return SyncStatus.SyncFailed(message = "download remote expenses failed")
         }
 
-        return result
+        return SyncStatus.SyncSucceeded
     }
 
     private suspend fun uploadLocalExpenses(sharingGroup: String): Boolean {

@@ -11,6 +11,8 @@ import io.ktor.http.HttpStatusCode
 import io.ktor.http.headersOf
 import io.ktor.serialization.kotlinx.json.json
 import io.ktor.utils.io.ByteReadChannel
+import kotlin.test.assertEquals
+import kotlin.test.assertTrue
 import kotlinx.coroutines.test.runTest
 import kotlinx.serialization.json.Json
 import org.junit.Assert
@@ -20,10 +22,14 @@ class ExpensesApiTests {
     @Test
     fun `successful sharing group creation should return sharing code as location header`() = runTest {
         // given
+
         val api = ExpensesApi.Default(
             httpClient = createMockClient(
                 statusCode = HttpStatusCode.Created,
-                headers = headersOf(HttpHeaders.ContentType, listOf("application/json")),
+                headers = headersOf(
+                    HttpHeaders.ContentType to listOf("application/json"),
+                    HttpHeaders.Location to listOf("/api/expense/sharing?code=ABC123")
+                ),
                 content = ByteReadChannel(
                     """{}""".trimIndent()
                 )
@@ -34,7 +40,8 @@ class ExpensesApiTests {
         val result = api.createSharing()
 
         // then
-        Assert.assertTrue(result.isSuccess)
+        assertTrue(actual = result.isSuccess)
+        assertEquals(expected = "ABC123", actual = result.getOrNull())
     }
 
     private fun createMockClient(

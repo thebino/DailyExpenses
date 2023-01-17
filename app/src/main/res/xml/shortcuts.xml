@@ -1,0 +1,16 @@
+<shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
+    <capability android:name="actions.intent.CREATE_THING">
+        <intent>
+            <url-template android:value="dailyexpenses://add{?description}" />
+
+            <!-- Eg. name = "Groceries" -->
+            <parameter
+                android:name="thing.name"
+                android:key="Expense"/>
+            <!-- Eg. description = "Example Destination" -->
+            <parameter
+                android:name="thing.description"
+                android:key="description"/>
+        </intent>
+    </capability>
+</shortcuts>

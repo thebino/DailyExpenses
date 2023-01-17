@@ -7,8 +7,8 @@ import androidx.work.WorkManager
 import androidx.work.WorkerParameters
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
+import pro.stuermer.dailyexpenses.data.model.SyncStatus
 import pro.stuermer.dailyexpenses.data.repository.ExpensesRepository
-import timber.log.Timber
 
 class SyncWorker(
     appContext: Context,
@@ -16,14 +16,15 @@ class SyncWorker(
 ) : CoroutineWorker(appContext, params), KoinComponent {
     private val repository: ExpensesRepository by inject()
 
+    /**
+     * Start doing the heavy work.
+     */
     override suspend fun doWork(): Result {
-        Timber.i("+++ do work +++")
-        val result = repository.sync()
-
-        return if (result) {
-            Result.success()
-        } else {
-            Result.failure()
+        // Start sync inside the repository
+        return when (repository.sync()) {
+            is SyncStatus.SyncFailed -> Result.failure()
+            SyncStatus.SyncSkipped -> Result.success()
+            SyncStatus.SyncSucceeded -> Result.success()
         }
     }
 
