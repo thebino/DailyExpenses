@@ -129,7 +129,7 @@ dependencies {
     // ktor
     implementation("io.ktor:ktor-client-core:2.2.1")
     implementation("io.ktor:ktor-client-android:2.2.1")
-    implementation("io.ktor:ktor-client-auth:2.2.1")
+    implementation("io.ktor:ktor-client-auth:2.2.2")
     implementation("io.ktor:ktor-client-logging:2.2.1")
     implementation("io.ktor:ktor-client-serialization:2.2.1")
     implementation("io.ktor:ktor-serialization-kotlinx-json:2.2.1")
