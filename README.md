@@ -11,6 +11,9 @@ _Optionally shared in a group with others via a Propritary backend (Balloon >= 1
 <img src="/docs/preview.png" />
 </p>
 
+## App Actions
+> Hey Google, add Groceries to DailyExpenses.
+
 ## Sharing
 
 Share expenses with friends and family via the Balloon backend

@@ -8,6 +8,7 @@ import android.view.WindowManager
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.WindowCompat
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -16,6 +17,7 @@ import androidx.navigation.navDeepLink
 import pro.stuermer.dailyexpenses.ui.home.HomeScreen
 import pro.stuermer.dailyexpenses.ui.settings.SettingsScreen
 import pro.stuermer.dailyexpenses.ui.theme.DailyExpensesTheme
+import timber.log.Timber
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -23,33 +25,53 @@ class MainActivity : AppCompatActivity() {
 
         WindowCompat.setDecorFitsSystemWindows(window, false)
 
+        Timber.i("intent.action = ${intent.action}")
+        Timber.i("intent.data   = ${intent.data}")
+
         setContent {
             val navController = rememberNavController()
 
             DailyExpensesTheme {
                 NavHost(
                     navController = navController,
-                    startDestination = "expenses"
+                    startDestination = "home"
                 ) {
-                    composable(
-                        route = "expenses",
+                    composable("home") {
+                        HomeScreen(
+                            onNavigateToSettings = {
+                                navController.navigate(AppRouting.settings)
+                            }
+                        )
+                    }
+                    composable("expenses?description={description}&amount={amount}",
                         arguments = listOf(
                             navArgument("description") {
+                                type = NavType.StringType
                                 nullable = true
                                 defaultValue = null
+                            },
+                            navArgument("amount") {
+                                type = NavType.FloatType
+                                nullable = false
+                                defaultValue = 0.0f
                             }
                         ),
                         deepLinks = listOf(
                             navDeepLink {
-                                uriPattern = "dailyexpenses://add/{description}"
+                                uriPattern = "expenses://add/?description={description}&amount={amount}"
                             }
                         )
                     ) { backStackEntry ->
-                    HomeScreen(
+                        val description = backStackEntry.arguments?.getString("description")
+                        Timber.i("description=$description")
+                        val amount = backStackEntry.arguments?.getFloat("amount")
+                        Timber.i("amount=$amount")
+                        HomeScreen(
                             onNavigateToSettings = {
                                 navController.navigate(AppRouting.settings)
                             },
-                            description = backStackEntry.arguments?.getString("description")
+                            description = description,
+                            amount = amount
                         )
                     }
                     composable(route = AppRouting.settings) {

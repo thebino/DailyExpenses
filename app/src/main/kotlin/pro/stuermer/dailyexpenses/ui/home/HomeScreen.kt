@@ -62,9 +62,12 @@ import timber.log.Timber
 @Composable
 fun HomeScreen(
     onNavigateToSettings: () -> Unit = {},
-    description: String? = null
+    description: String? = null,
+    amount: Float? = 0.0f,
 ) {
     val viewModel: HomeViewModel = getViewModel()
+    Timber.e("description=$description")
+    Timber.e("amount=$amount")
     if (description != null) {
         viewModel.handleEvent(HomeScreenEvent.NewItemEvent)
     }

@@ -71,11 +71,11 @@ class ExpensesRepositoryImpl(
      * Synchronize with a remote source
      */
     override suspend fun sync(): SyncStatus {
-        Timber.i("+++ sync +++")
+        Timber.v("+++ sync +++")
         val sharing = sharingDao.getSharings().firstOrNull()
 
         if (sharing.isNullOrEmpty()) {
-            Timber.e("No sharing group found! Skip sync")
+            Timber.i("No sharing group found! Skip sync")
             return SyncStatus.SyncSkipped
         }
 

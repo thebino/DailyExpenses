@@ -33,8 +33,10 @@
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
-                <!-- Accepts URIs that begin with "dailyexpenses://add” -->
-                <data android:scheme="dailyexpenses"
+                <category android:name="android.intent.category.BROWSABLE" />
+                <!-- Accepts URIs that begin with "expenses://add/?description=Groceries&amount=12.92" -->
+                <data
+                    android:scheme="expenses"
                     android:host="add" />
             </intent-filter>
 

@@ -1,16 +1,27 @@
+<!--  https://developer.android.com/guide/app-actions/legacy/migration-guide?hl=en  -->
 <shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
+    <!--  https://developer.android.com/reference/app-actions/built-in-intents/common/create-thing  -->
     <capability android:name="actions.intent.CREATE_THING">
-        <intent>
-            <url-template android:value="dailyexpenses://add{?description}" />
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetPackage="pro.stuermer.dailyexpenses"
+            android:targetClass="pro.stuermer.dailyexpenses.MainActivity">
 
-            <!-- Eg. name = "Groceries" -->
-            <parameter
-                android:name="thing.name"
-                android:key="Expense"/>
-            <!-- Eg. description = "Example Destination" -->
+            <!--  https://developer.android.com/guide/app-actions/action-schema#deep-link-fulfillment  -->
+            <url-template android:value="expenses://add/?description={expenseDescription}&amp;amount={expenseAmount}" />
+
+            <!--  expense description  -->
             <parameter
                 android:name="thing.description"
-                android:key="description"/>
+                android:key="expenseDescription"
+                android:required="true" />
+
+            <!--  expense amount  -->
+            <parameter
+                android:name="thing.name"
+                android:key="expenseAmount"
+                android:required="true" />
+
         </intent>
     </capability>
 </shortcuts>
