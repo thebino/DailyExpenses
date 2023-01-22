@@ -1,7 +1,7 @@
 package pro.stuermer.dailyexpenses.data.repository
 
-import io.ktor.utils.io.printStack
 import java.time.LocalDate
+import java.time.LocalDateTime
 import java.util.UUID
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
@@ -9,15 +9,16 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onStart
+import pro.stuermer.dailyexpenses.data.model.SyncStatus
 import pro.stuermer.dailyexpenses.data.network.ExpensesApi
 import pro.stuermer.dailyexpenses.data.network.Resource
 import pro.stuermer.dailyexpenses.data.persistence.ExpensesDao
 import pro.stuermer.dailyexpenses.data.persistence.SharingDao
 import pro.stuermer.dailyexpenses.domain.model.Expense
 import timber.log.Timber
+import pro.stuermer.dailyexpenses.data.model.Expense as NetworkExpense
 import pro.stuermer.dailyexpenses.data.persistence.model.Expense as PersistedExpense
 import pro.stuermer.dailyexpenses.domain.model.Expense as DomainExpense
-import pro.stuermer.dailyexpenses.data.model.Expense as NetworkExpense
 
 class ExpensesRepositoryImpl(
     private val api: ExpensesApi,
@@ -29,11 +30,11 @@ class ExpensesRepositoryImpl(
     }
 
     override suspend fun updateExpense(expense: Expense) {
-        dao.update(expense.toPersistenceModel())
+        dao.update(expense.copy(updatedDate = LocalDateTime.now()).toPersistenceModel())
     }
 
     override suspend fun deleteExpense(expense: Expense) {
-        val tmpExpense = expense.copy(deletedDate = LocalDate.now())
+        val tmpExpense = expense.copy(deletedDate = LocalDateTime.now())
         val persistedExpense = tmpExpense.toPersistenceModel()
         dao.update(persistedExpense)
     }
@@ -41,11 +42,17 @@ class ExpensesRepositoryImpl(
     /**
      * Returns all expenses even deleted ones.
      */
-    override suspend fun getExpenses(): Flow<List<DomainExpense>> = dao.getAllExpenses().map {
-        it.map { expense ->
-            expense.toDomainModel()
-        }.reversed()
-    }
+    override suspend fun getExpenses(): Flow<List<DomainExpense>> = dao.getAllExpenses()
+        .map { expenses: List<PersistedExpense> ->
+            expenses
+                .filter { expense ->
+                    expense.deletedDate == null
+                }
+                .map { expense ->
+                    expense.toDomainModel()
+                }
+                .reversed()
+        }
 
     /**
      * Returns all available expenses for a given month, but deleted ones.
@@ -55,8 +62,8 @@ class ExpensesRepositoryImpl(
             fromDate = LocalDate.of(date.year, date.month, 1),
             toDate = LocalDate.of(date.year, date.month, 1)
                 .plusDays(LocalDate.of(date.year, date.month, 1).lengthOfMonth() - 1L)
-        ).map {
-            Resource.Success(it.filter { expense ->
+        ).map { expenses: List<PersistedExpense> ->
+            Resource.Success(expenses.filter { expense ->
                 expense.deletedDate == null
             }.map { expense ->
                 expense.toDomainModel()
@@ -70,52 +77,44 @@ class ExpensesRepositoryImpl(
     /**
      * Synchronize with a remote source
      */
-    override suspend fun sync(): Boolean {
+    override suspend fun sync(): SyncStatus {
         Timber.i("+++ sync +++")
-        var result: Boolean = true
         val sharing = sharingDao.getSharings().firstOrNull()
 
         if (sharing.isNullOrEmpty()) {
-            Timber.e("No sharing group found! Skip sync")
-            return false
+            Timber.i("No sharing group found! Skip sync")
+            return SyncStatus.SyncSkipped
         }
 
         val sharingGroup = sharing[0].code
 
-        // upload local expenses to remote datasource
+        // upload ALL local expenses to remote datasource
         if (!uploadLocalExpenses(sharingGroup = sharingGroup)) {
-            result = false
+            return SyncStatus.SyncFailed(message = "upload local expenses failed!")
         }
 
-        // delete local expenses in remote datasource
-        if (!deleteLocalExpenses(sharingGroup = sharingGroup)) {
-            result = false
-        }
-
-
-        // download expenses from remote datasource
+        // download expenses from remote datasource (excl. deleted)
         if (!downloadRemoteExpenses(sharingGroup = sharingGroup)) {
-            result = false
+            return SyncStatus.SyncFailed(message = "download remote expenses failed")
         }
 
-        return result
+        return SyncStatus.SyncSucceeded
     }
 
     private suspend fun uploadLocalExpenses(sharingGroup: String): Boolean {
         val persistedExpenses: List<PersistedExpense> = dao.getAllExpenses().first()
-        val localExpenses: List<NetworkExpense> =
-            persistedExpenses.filter { it.deletedDate == null }.map { it.toNetworkExpense() }
+        val localExpenses: List<NetworkExpense> = persistedExpenses.map { it.toNetworkExpense() }
         val uploadResponse = api.addExpenses(
             code = sharingGroup,
             expenses = localExpenses
         )
 
         uploadResponse.onSuccess {
-            Timber.i("+ uploaded ${localExpenses.size} expenses to remote datasource")
+            Timber.i("+ uploaded   ${localExpenses.size} expenses to remote.")
         }
 
         uploadResponse.onFailure {
-            Timber.w( it, "! could not upload expenses to remote datasource.")
+            Timber.w(it, "! could not upload expenses to remote datasource.")
             return false
         }
         return true
@@ -136,7 +135,7 @@ class ExpensesRepositoryImpl(
             localDeletedIds = localDeletedIds
         )
         deletedResponse.onSuccess {
-            Timber.i("+ deleted ${localDeletedIds.size} expenses in remote datasource")
+            Timber.i("+ deleted    ${localDeletedIds.size} expenses in remote.")
             dao.delete(localDeletedIds)
         }
         deletedResponse.onFailure {
@@ -150,25 +149,44 @@ class ExpensesRepositoryImpl(
         val persistedExpenses: List<PersistedExpense> = dao.getAllExpenses().first()
         val onlineExpenses = api.getExpenses(sharingGroup)
         onlineExpenses.onSuccess { expenses ->
-            Timber.i("+ onlineExpenses=${expenses.size}")
+            Timber.i("+ downloaded ${expenses.size} expenses from remote.")
             for (remoteExpense in expenses) {
+                val localExpense =
+                    persistedExpenses.firstOrNull { it.identifier == remoteExpense.id }
+
                 // delete local if it was deleted remote
                 if (remoteExpense.deletedDate != null) {
                     dao.delete(listOf(remoteExpense.id))
                 }
 
-                val localExpense = persistedExpenses.first { it.identifier == remoteExpense.id }
-                if (localExpense.updatedDate != null && localExpense.updatedDate < remoteExpense.updatedDate) {
-                    // update local
-                    dao.insert(remoteExpense.toPersistenceExpense())
-                } else if (localExpense.updatedDate != null && localExpense.updatedDate > remoteExpense.updatedDate) {
-                    // update remote
-                    api.addExpenses(
-                        code = sharingGroup,
-                        expenses = listOf(localExpense.toNetworkExpense())
-                    )
-                } else {
-                    // already up-to-date
+                // create/update local or remote
+                when {
+                    localExpense == null -> {
+                        // create local if it doesn't exist
+                        dao.insert(remoteExpense.toPersistenceExpense())
+                    }
+
+                    localExpense.updatedDate == null && remoteExpense.updatedDate != null -> {
+                        // local has never been updated before, but remote has
+                        dao.insert(remoteExpense.toPersistenceExpense())
+                    }
+
+                    localExpense.updatedDate != null && remoteExpense.updatedDate != null && localExpense.updatedDate < remoteExpense.updatedDate -> {
+                        // local has been updated before, but remote is newer
+                        dao.insert(remoteExpense.toPersistenceExpense())
+                    }
+
+                    localExpense.updatedDate != null && remoteExpense.updatedDate != null && localExpense.updatedDate > remoteExpense.updatedDate -> {
+                        // local update is newer, update remote
+                        api.addExpenses(
+                            code = sharingGroup,
+                            expenses = listOf(localExpense.toNetworkExpense())
+                        )
+                    }
+
+                    else -> {
+                        // already up-to-date
+                    }
                 }
             }
 

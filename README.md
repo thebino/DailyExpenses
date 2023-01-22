@@ -1,15 +1,18 @@
 # Daily Expenses
 
 [![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
-[![API](https://img.shields.io/badge/API-21%2B-brightgreen.svg?style=flat)](https://android-arsenal.com/api?level=21)
+[![API](https://img.shields.io/badge/API-26%2B-brightgreen.svg?style=flat)](https://android-arsenal.com/api?level=26)
 [![Continuous Delivery Pipeline](https://github.com/thebino/DailyExpenses/actions/workflows/continuous-delivery-pipeline.yml/badge.svg)](https://github.com/thebino/DailyExpenses/actions/workflows/continuous-delivery-pipeline.yml)
 
 This is an android application to keep track of daily espenses. 
-Optionally shared in a group with others via Balloon backend > 1.3.0
+_Optionally shared in a group with others via a Propritary backend (Balloon >= 1.3.0)
 
 <p align="center">
 <img src="/docs/preview.png" />
 </p>
+
+## App Actions
+> Hey Google, add Groceries to DailyExpenses.
 
 ## Sharing
 
@@ -22,14 +25,10 @@ Share expenses with friends and family via the Balloon backend
 
 ## TODO:
 
- * Create new sharing
-   * requesst feedback
- * Join sharing
- * Synchronize with backend
-   * work manager
- * Delete sharing
+ * pull-2-refresh
+ * delete dialog
+ * recurring sync work manager
  * Synchronize delete state
-   * createdAt, deletedAt
  * Fastlane setup
    * Google Play
    * F-Droid

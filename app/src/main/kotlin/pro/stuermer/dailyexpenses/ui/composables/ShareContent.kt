@@ -6,7 +6,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
@@ -21,7 +20,6 @@ import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Surface
@@ -34,7 +32,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
@@ -52,7 +49,6 @@ import androidx.lifecycle.Lifecycle
 import java.lang.IndexOutOfBoundsException
 import pro.stuermer.dailyexpenses.R
 
-@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun ShareContent(
     modifier: Modifier = Modifier,
@@ -141,7 +137,6 @@ fun ShareContent(
     }
 }
 
-@OptIn(ExperimentalComposeUiApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun PinInput(
     modifier: Modifier = Modifier,
@@ -222,7 +217,6 @@ enum class Keyboard {
     Opened, Closed
 }
 
-@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun keyboardAsState(): State<Keyboard> {
     val lifecycle = LocalLifecycleOwner.current.lifecycle

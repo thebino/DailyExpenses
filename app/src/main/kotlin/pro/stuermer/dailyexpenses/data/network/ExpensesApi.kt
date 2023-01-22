@@ -1,5 +1,6 @@
 package pro.stuermer.dailyexpenses.data.network
 
+import android.accounts.NetworkErrorException
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.delete
@@ -17,7 +18,6 @@ interface ExpensesApi {
 
     suspend fun createSharing(): Result<String>
     suspend fun joinSharing(code: String): Result<Boolean>
-
     suspend fun getExpenses(code: String): Result<List<Expense>>
     suspend fun getExpensesForDate(code: String, year: Int, month: Int): Result<List<Expense>>
     suspend fun addExpenses(code: String, expenses: List<Expense>): Result<Boolean>
@@ -84,7 +84,11 @@ interface ExpensesApi {
                     contentType(ContentType.Application.Json)
                     setBody(expenses)
                 }
-                Result.success(response.status == HttpStatusCode.Created)
+                if (response.status == HttpStatusCode.Accepted) {
+                    Result.success(true)
+                } else {
+                    Result.failure(NetworkErrorException("Response status was ${response.status}"))
+                }
             } catch (exception: Exception) {
                 Result.failure(exception)
             }
@@ -97,9 +101,7 @@ interface ExpensesApi {
                     headers[HttpHeaders.Authorization] = "Basic $credentials"
                     setBody(localDeletedIds)
                 }
-                println(response)
-                // TODO: check response
-                Result.success("")
+                Result.success((response.status == HttpStatusCode.OK).toString())
             } catch (exception: Exception) {
                 Result.failure(exception)
             }

@@ -1,6 +1,7 @@
 package pro.stuermer.dailyexpenses.domain.model
 
 import java.time.LocalDate
+import java.time.LocalDateTime
 import java.util.UUID
 import pro.stuermer.dailyexpenses.data.persistence.model.Expense as PersistenceExpense
 
@@ -10,9 +11,9 @@ data class Expense(
     val description: String,
     val category: Category = Category.Grocery,
     val expenseDate: LocalDate = LocalDate.now(),
-    val creationDate: LocalDate = LocalDate.now(),
-    val updatedDate: LocalDate? = null,
-    val deletedDate: LocalDate? = null,
+    val creationDate: LocalDateTime = LocalDateTime.now(),
+    val updatedDate: LocalDateTime? = null,
+    val deletedDate: LocalDateTime? = null,
 ) {
     fun toPersistenceModel(): PersistenceExpense = PersistenceExpense(
         identifier = identifier,

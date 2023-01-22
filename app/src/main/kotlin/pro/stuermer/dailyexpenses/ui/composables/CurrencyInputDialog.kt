@@ -48,7 +48,6 @@ import pro.stuermer.dailyexpenses.domain.model.Category
 import pro.stuermer.dailyexpenses.domain.model.icon
 import pro.stuermer.dailyexpenses.ui.theme.DailyExpensesTheme
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CurrencyInputDialog(
     modifier: Modifier = Modifier,
