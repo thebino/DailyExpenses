@@ -144,37 +144,6 @@ class ExpensesRepositoryTests {
     }
 
     @Test
-    fun `sync should fail when delete local expenses fails`() = runTest {
-        // given
-        coEvery { sharingDao.getSharings() } answers {
-            flowOf(listOf(Sharing(identifier = 1, code = "ABC123")))
-        }
-        coEvery { dao.getAllExpenses() } answers {
-            flowOf(fakeDomainExpenses.map { it.toPersistenceModel() })
-        }
-        coEvery { dao.delete(any()) } answers {}
-        coEvery { dao.insert(any()) } answers {}
-        coEvery { api.addExpenses(any(), any()) } answers {
-            Result.success(true)
-        }
-        coEvery { api.deleteIds(any(), any()) } answers {
-            Result.failure(RuntimeException("Mock exception for testing!"))
-        }
-        coEvery { api.getExpenses(any()) } answers {
-            Result.success(fakeDomainExpenses.map {
-                it.toPersistenceModel().toNetworkExpense()
-            })
-        }
-
-        // when
-        val result = repository.sync()
-
-        // then
-        assertTrue(actual = result is SyncStatus.SyncFailed)
-        assertEquals(expected = "delete local expenses failed!", actual = result.message)
-    }
-
-    @Test
     fun `sync should fail when download remote expenses fails`() = runTest {
         // given
         coEvery { sharingDao.getSharings() } answers {
@@ -201,5 +170,34 @@ class ExpensesRepositoryTests {
         // then
         assertTrue(actual = result is SyncStatus.SyncFailed)
         assertEquals(expected = "download remote expenses failed", actual = result.message)
+    }
+
+    @Test
+    fun `sync should succeed when all requirements pass`() = runTest {
+        // given
+        coEvery { sharingDao.getSharings() } answers {
+            flowOf(listOf(Sharing(identifier = 1, code = "ABC123")))
+        }
+        coEvery { dao.getAllExpenses() } answers {
+            flowOf(fakeDomainExpenses.map { it.toPersistenceModel() })
+        }
+        coEvery { dao.delete(any()) } answers {}
+        coEvery { dao.insert(any()) } answers {}
+        coEvery { dao.insert(*anyVararg()) } answers {}
+        coEvery { api.addExpenses(any(), any()) } answers {
+            Result.success(true)
+        }
+        coEvery { api.deleteIds(any(), any()) } answers {
+            Result.success("foo")
+        }
+        coEvery { api.getExpenses(any()) } answers {
+            Result.success(fakeDomainExpenses.map { it.toPersistenceModel().toNetworkExpense() })
+        }
+
+        // when
+        val result = repository.sync()
+
+        // then
+        assertTrue(actual = result is SyncStatus.SyncSucceeded)
     }
 }

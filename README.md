@@ -25,11 +25,10 @@ Share expenses with friends and family via the Balloon backend
 
 ## TODO:
 
- * Synchronize with backend
-   * work manager
- * Delete sharing
+ * pull-2-refresh
+ * delete dialog
+ * recurring sync work manager
  * Synchronize delete state
-   * createdAt, deletedAt
  * Fastlane setup
    * Google Play
    * F-Droid

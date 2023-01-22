@@ -31,9 +31,7 @@ class SyncWorker(
     companion object {
         fun startUpSyncWork(applicationContext: Context) {
             WorkManager.getInstance(applicationContext).apply {
-                enqueue(
-                    OneTimeWorkRequest.from(SyncWorker::class.java)
-                )
+                enqueue(OneTimeWorkRequest.from(SyncWorker::class.java))
             }
         }
     }
