@@ -90,7 +90,7 @@ dependencies {
     implementation("io.insert-koin:koin-androidx-compose:3.4.1")
     implementation("io.insert-koin:koin-androidx-workmanager:3.3.2")
     testImplementation("io.insert-koin:koin-test:3.2.2")
-    testImplementation("io.insert-koin:koin-test-junit4:3.2.2")
+    testImplementation("io.insert-koin:koin-test-junit4:3.3.2")
 
 
     // Work
