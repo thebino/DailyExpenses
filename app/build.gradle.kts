@@ -3,6 +3,9 @@ plugins {
     kotlin("android")
     kotlin("kapt")
     kotlin("plugin.serialization")
+    id("io.gitlab.arturbosch.detekt") version "1.22.0"
+    id("org.jetbrains.kotlinx.kover") version "0.6.1"
+    id("com.diffplug.spotless") version "6.13.0"
 }
 
 android {
@@ -74,6 +77,21 @@ android {
 
     buildFeatures {
         compose = true
+    }
+}
+
+detekt {
+    config = files("../detekt.yml")
+}
+
+kover {
+    htmlReport {
+        // run koverHtmlReport task `check`
+        onCheck.set(true)
+    }
+    xmlReport {
+        // run koverMergedXmlReport task `check`
+        onCheck.set(true)
     }
 }
 

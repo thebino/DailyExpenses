@@ -234,6 +234,7 @@ private fun provideHttpClient(application: Application): HttpClient {
             }
         }
 
+        @Suppress("MagicNumber")
         engine {
             threadsCount = 1_000
             sslManager = { httpsURLConnection ->

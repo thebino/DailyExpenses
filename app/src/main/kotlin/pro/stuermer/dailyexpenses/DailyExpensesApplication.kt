@@ -7,9 +7,8 @@ import org.koin.androidx.workmanager.koin.workManagerFactory
 import org.koin.core.context.startKoin
 import org.koin.core.logger.Level
 import pro.stuermer.dailyexpenses.data.sync.SyncWorker
-import timber.log.Timber.*
+import timber.log.Timber
 import timber.log.Timber.Forest.plant
-
 
 class DailyExpensesApplication : Application() {
 
@@ -17,7 +16,7 @@ class DailyExpensesApplication : Application() {
         super.onCreate()
 
         if (BuildConfig.DEBUG) {
-            plant(DebugTree())
+            plant(Timber.DebugTree())
         }
 
         // Dependency injection

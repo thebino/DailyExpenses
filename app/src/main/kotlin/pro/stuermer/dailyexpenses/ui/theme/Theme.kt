@@ -77,6 +77,7 @@ private val DarkColors = darkColorScheme(
     scrim = md_theme_dark_scrim,
 )
 
+@Suppress("JoinDeclarationAndAssignment")
 @Composable
 fun DailyExpensesTheme(
     useDarkTheme: Boolean = isSystemInDarkTheme(),
@@ -84,7 +85,7 @@ fun DailyExpensesTheme(
 ) {
     val lightColors: ColorScheme
     val darkColors: ColorScheme
-    val context = LocalContext.current
+//    val context = LocalContext.current
 //    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
 //        lightColors = dynamicLightColorScheme(context)
 //        darkColors = dynamicDarkColorScheme(context)
