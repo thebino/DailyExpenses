@@ -144,7 +144,7 @@ dependencies {
     implementation("io.ktor:ktor-client-logging:2.2.1")
     implementation("io.ktor:ktor-client-serialization:2.2.1")
     implementation("io.ktor:ktor-serialization-kotlinx-json:2.2.1")
-    implementation("io.ktor:ktor-client-content-negotiation:2.2.1")
+    implementation("io.ktor:ktor-client-content-negotiation:2.2.2")
     testImplementation("io.ktor:ktor-client-mock-jvm:2.2.1")
 
 
