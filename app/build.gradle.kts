@@ -72,6 +72,7 @@ android {
         freeCompilerArgs = freeCompilerArgs + "-opt-in=androidx.compose.foundation.ExperimentalFoundationApi"
         freeCompilerArgs = freeCompilerArgs + "-opt-in=androidx.compose.foundation.layout.ExperimentalLayoutApi"
         freeCompilerArgs = freeCompilerArgs + "-opt-in=androidx.compose.material3.ExperimentalMaterial3Api"
+        freeCompilerArgs = freeCompilerArgs + "-opt-in=androidx.compose.material.ExperimentalMaterialApi"
         freeCompilerArgs = freeCompilerArgs + "-opt-in=kotlinx.serialization.ExperimentalSerializationApi"
     }
 
@@ -129,6 +130,7 @@ dependencies {
     implementation(platform("androidx.compose:compose-bom:2022.11.00"))
     // Material Design 3
     implementation("androidx.compose.material3:material3")
+    implementation("androidx.compose.material:material:1.3.1")
     // Android Studio Preview support
     implementation("androidx.compose.ui:ui-tooling-preview")
     debugImplementation("androidx.compose.ui:ui-tooling")

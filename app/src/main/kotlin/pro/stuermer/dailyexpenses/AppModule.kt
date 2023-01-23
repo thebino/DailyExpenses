@@ -61,6 +61,7 @@ val appModule = module {
             addExpenseUseCase = get(),
             updateExpenseUseCase = get(),
             deleteExpenseUseCase = get(),
+            startSyncUseCase = get()
         )
     }
     viewModel {
