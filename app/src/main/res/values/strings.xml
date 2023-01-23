@@ -35,5 +35,7 @@
     <string name="settings_app_version_label">App Version</string>
     <string name="settings_app_version_content_accessibility">The current app version is <xliff:g id="version" example="1.0.0">%1$s</xliff:g></string>
     <string name="item_click_action_label_edit">Edit expense</string>
+
     <string name="item_click_action_label_delete">Delete expense</string>
+    <string name="item_click_action_description_delete">Are you sure you wanna delete this expense?</string>
 </resources>

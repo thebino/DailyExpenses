@@ -61,6 +61,7 @@ val appModule = module {
             addExpenseUseCase = get(),
             updateExpenseUseCase = get(),
             deleteExpenseUseCase = get(),
+            startSyncUseCase = get()
         )
     }
     viewModel {
@@ -234,6 +235,7 @@ private fun provideHttpClient(application: Application): HttpClient {
             }
         }
 
+        @Suppress("MagicNumber")
         engine {
             threadsCount = 1_000
             sslManager = { httpsURLConnection ->

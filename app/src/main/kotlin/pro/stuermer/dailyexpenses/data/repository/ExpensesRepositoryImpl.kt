@@ -120,31 +120,6 @@ class ExpensesRepositoryImpl(
         return true
     }
 
-    /**
-     * delete local expenses in remote datasource
-     */
-    private suspend fun deleteLocalExpenses(sharingGroup: String): Boolean {
-        val persistedExpenses: List<PersistedExpense> = dao.getAllExpenses().first()
-        val localDeletedIds: List<String> =
-            persistedExpenses.filter { it.deletedDate != null }.map { it.identifier }
-
-        Timber.i("+ localDeletedIds=$localDeletedIds")
-
-        val deletedResponse = api.deleteIds(
-            code = sharingGroup,
-            localDeletedIds = localDeletedIds
-        )
-        deletedResponse.onSuccess {
-            Timber.i("+ deleted    ${localDeletedIds.size} expenses in remote.")
-            dao.delete(localDeletedIds)
-        }
-        deletedResponse.onFailure {
-            Timber.w(it, "! could not delete local expenses in remote datasource.")
-            return false
-        }
-        return true
-    }
-
     private suspend fun downloadRemoteExpenses(sharingGroup: String): Boolean {
         val persistedExpenses: List<PersistedExpense> = dao.getAllExpenses().first()
         val onlineExpenses = api.getExpenses(sharingGroup)

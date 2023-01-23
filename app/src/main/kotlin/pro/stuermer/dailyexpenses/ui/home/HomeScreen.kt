@@ -18,8 +18,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.sharp.Refresh
 import androidx.compose.material.icons.sharp.Settings
-import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material.pullrefresh.PullRefreshIndicator
+import androidx.compose.material.pullrefresh.pullRefresh
+import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.material3.FabPosition
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
@@ -109,6 +112,13 @@ fun HomeContent(
                     style = MaterialTheme.typography.titleLarge
                 )
             }, actions = {
+                IconButton(onClick = { handleEvent(HomeScreenEvent.RefreshEvent) }) {
+                    Icon(
+                        imageVector = Icons.Sharp.Refresh,
+                        tint = MaterialTheme.colorScheme.onSurface,
+                        contentDescription = null,
+                    )
+                }
                 IconButton(onClick = onNavigateToSettings) {
                     Icon(
                         imageVector = Icons.Sharp.Settings,
@@ -136,8 +146,12 @@ fun HomeContent(
         snackbarHost = { SnackbarHost(snackbarHostState) },
     ) { contentPadding ->
         val listState = rememberLazyListState()
+        val pullRefreshState = rememberPullRefreshState(
+            refreshing = state.isLoading,
+            onRefresh = { handleEvent(HomeScreenEvent.RefreshEvent) }
+        )
 
-        Box {
+        Box(Modifier.pullRefresh(pullRefreshState)) {
             Column(
                 modifier = Modifier
                     .fillMaxSize()
@@ -202,32 +216,40 @@ fun HomeContent(
                 AnimatedVisibility(
                     visible = state.showInputDialog,
                     enter = slideIn(
-                        initialOffset = { IntOffset(0, it.height) }, animationSpec = spring(
+                        initialOffset = { IntOffset(0, it.height) },
+                        animationSpec = spring(
                             dampingRatio = Spring.DampingRatioMediumBouncy,
                             stiffness = Spring.StiffnessLow
                         )
                     ),
                     exit = slideOut(
                         targetOffset = { IntOffset(0, it.height) },
-                        animationSpec = tween(durationMillis = 300, easing = FastOutSlowInEasing)
+                        animationSpec = tween(
+                            durationMillis = 300,
+                            easing = FastOutSlowInEasing
+                        )
                     ),
                 ) {
                     CurrencyInputDialog(
                         category = activeExpense.value.category,
                         onCategoryChanged = { category: Category ->
-                            activeExpense.value = activeExpense.value.copy(category = category)
+                            activeExpense.value =
+                                activeExpense.value.copy(category = category)
                         },
                         description = activeExpense.value.description,
                         onDescriptionChanged = { description: String ->
-                            activeExpense.value = activeExpense.value.copy(description = description)
+                            activeExpense.value =
+                                activeExpense.value.copy(description = description)
                         },
                         amount = activeExpense.value.amount,
                         onAmountChanged = { amount: Float ->
-                            activeExpense.value = activeExpense.value.copy(amount = amount)
+                            activeExpense.value =
+                                activeExpense.value.copy(amount = amount)
                         },
                         date = activeExpense.value.expenseDate,
                         onDateChanged = { expenseDate: LocalDate ->
-                            activeExpense.value = activeExpense.value.copy(expenseDate = expenseDate)
+                            activeExpense.value =
+                                activeExpense.value.copy(expenseDate = expenseDate)
                         },
                         onCancelClicked = { handleEvent(HomeScreenEvent.HideInput) },
                         onSaveClicked = {
@@ -241,6 +263,12 @@ fun HomeContent(
                     )
                 }
             }
+
+            PullRefreshIndicator(
+                refreshing = state.isLoading,
+                state = pullRefreshState,
+                modifier = Modifier.align(Alignment.TopCenter)
+            )
         }
     }
 }

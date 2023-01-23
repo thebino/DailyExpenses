@@ -1,3 +1,4 @@
+@file:Suppress("MagicNumber")
 package pro.stuermer.dailyexpenses.ui.composables
 
 import androidx.compose.foundation.background

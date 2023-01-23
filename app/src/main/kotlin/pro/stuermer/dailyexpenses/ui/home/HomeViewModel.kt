@@ -4,14 +4,17 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import java.time.LocalDate
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import pro.stuermer.dailyexpenses.data.network.Resource
 import pro.stuermer.dailyexpenses.domain.model.Expense
 import pro.stuermer.dailyexpenses.domain.usecase.AddExpenseUseCase
 import pro.stuermer.dailyexpenses.domain.usecase.DeleteExpenseUseCase
 import pro.stuermer.dailyexpenses.domain.usecase.GetExpensesForDateUseCase
+import pro.stuermer.dailyexpenses.domain.usecase.StartSyncUseCase
 import pro.stuermer.dailyexpenses.domain.usecase.UpdateExpenseUseCase
 
 class HomeViewModel(
@@ -19,6 +22,7 @@ class HomeViewModel(
     private val addExpenseUseCase: AddExpenseUseCase,
     private val updateExpenseUseCase: UpdateExpenseUseCase,
     private val deleteExpenseUseCase: DeleteExpenseUseCase,
+    private val startSyncUseCase: StartSyncUseCase
 ) : ViewModel() {
     val uiState = MutableStateFlow(HomeScreenState())
 
@@ -30,6 +34,14 @@ class HomeViewModel(
 
     fun handleEvent(homeScreenEvent: HomeScreenEvent) {
         when (homeScreenEvent) {
+            HomeScreenEvent.RefreshEvent -> {
+                uiState.update { it.copy(isLoading = true) }
+                viewModelScope.launch(Dispatchers.IO) {
+                    startSyncUseCase()
+                    delay(500)
+                    uiState.update { it.copy(isLoading = false) }
+                }
+            }
             HomeScreenEvent.SelectPreviousMonth -> {
                 uiState.update { it.copy(selectedDate = it.selectedDate.minusMonths(1)) }
                 viewModelScope.launch(Dispatchers.IO) {

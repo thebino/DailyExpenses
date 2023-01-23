@@ -79,6 +79,7 @@ fun MonthPicker(
     }
 }
 
+@Suppress("MagicNumber")
 @Preview("DatePicker")
 @Composable
 private fun DatePickerPreview() {
@@ -92,6 +93,7 @@ private fun DatePickerPreview() {
     }
 }
 
+@Suppress("MagicNumber")
 @Preview("DatePicker")
 @Composable
 private fun DatePickerPreview2() {

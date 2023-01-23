@@ -30,6 +30,7 @@ enum class Category {
     Other,
 }
 
+@Suppress("MagicNumber")
 val Category.color: Color
     get() = when (this) {
         Category.Clothing -> Color(0x579C27B0)

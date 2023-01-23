@@ -59,7 +59,7 @@ class ExpensesRepositoryTests {
     }
 
     @Test
-    fun `get all expenses should not request data from backend`() = runTest {
+    fun `get all expenses without instance should not request data from backend`() = runTest {
         // given
         coEvery { dao.getAllExpenses() } answers { flowOf(listOf()) }
         coEvery { sharingDao.getSharings() } answers { flowOf(listOf()) }
@@ -68,7 +68,6 @@ class ExpensesRepositoryTests {
         repository.getExpenses().last()
 
         // then
-        // TODO: get sharing code
         coVerify(exactly = 0) { api.getExpenses("AABBCC") }
     }
 

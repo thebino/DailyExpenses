@@ -10,5 +10,7 @@ import pro.stuermer.dailyexpenses.domain.model.Expense
 class GetExpensesForDateUseCase(
     private val repository: ExpensesRepository
 ) {
-    suspend operator fun invoke(date: LocalDate): Flow<Resource<List<Expense>>> = repository.getExpensesForDate(date).distinctUntilChanged()
+    suspend operator fun invoke(date: LocalDate): Flow<Resource<List<Expense>>> {
+        return repository.getExpensesForDate(date).distinctUntilChanged()
+    }
 }

@@ -3,6 +3,10 @@ plugins {
     kotlin("android")
     kotlin("kapt")
     kotlin("plugin.serialization")
+    id("io.gitlab.arturbosch.detekt") version "1.22.0"
+    id("org.jetbrains.kotlinx.kover") version "0.6.1"
+    id("com.diffplug.spotless") version "6.13.0"
+    id("org.ajoberstar.grgit") version "5.0.0"
 }
 
 android {
@@ -13,8 +17,8 @@ android {
         // API 26 | 8.0 java 8 time api
         minSdk = 26
         targetSdk = 33
-        versionCode = 3
-        versionName = "1.1.0"
+        versionCode = grgit.log().size
+        versionName = "1.1.1"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
@@ -44,6 +48,7 @@ android {
 
     buildTypes {
         debug {
+            versionNameSuffix = "-(${grgit.head().abbreviatedId})"
             buildConfigField("String", "API_URL", "\"http://172.22.11.226:8080\"")
         }
         release {
@@ -69,11 +74,27 @@ android {
         freeCompilerArgs = freeCompilerArgs + "-opt-in=androidx.compose.foundation.ExperimentalFoundationApi"
         freeCompilerArgs = freeCompilerArgs + "-opt-in=androidx.compose.foundation.layout.ExperimentalLayoutApi"
         freeCompilerArgs = freeCompilerArgs + "-opt-in=androidx.compose.material3.ExperimentalMaterial3Api"
+        freeCompilerArgs = freeCompilerArgs + "-opt-in=androidx.compose.material.ExperimentalMaterialApi"
         freeCompilerArgs = freeCompilerArgs + "-opt-in=kotlinx.serialization.ExperimentalSerializationApi"
     }
 
     buildFeatures {
         compose = true
+    }
+}
+
+detekt {
+    config = files("../detekt.yml")
+}
+
+kover {
+    htmlReport {
+        // run koverHtmlReport task `check`
+        onCheck.set(true)
+    }
+    xmlReport {
+        // run koverMergedXmlReport task `check`
+        onCheck.set(true)
     }
 }
 
@@ -111,6 +132,7 @@ dependencies {
     implementation(platform("androidx.compose:compose-bom:2022.11.00"))
     // Material Design 3
     implementation("androidx.compose.material3:material3")
+    implementation("androidx.compose.material:material:1.3.1")
     // Android Studio Preview support
     implementation("androidx.compose.ui:ui-tooling-preview")
     debugImplementation("androidx.compose.ui:ui-tooling")
