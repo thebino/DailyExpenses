@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <string name="app_name">Expenses</string>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="action_add_expense">Ausgabe hinzufügen</string>
     <string name="expenses_empty_title">Keine Ausgaben</string>
     <string name="expenses_empty_message">Füge eine neue Ausgabe mit dem Knopf unten hinzu</string>

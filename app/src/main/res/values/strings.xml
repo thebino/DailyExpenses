@@ -37,5 +37,5 @@
     <string name="item_click_action_label_edit">Edit expense</string>
 
     <string name="item_click_action_label_delete">Delete expense</string>
-    <string name="item_click_action_description_delete">Are you sure you wanna delete this expense?</string>
+    <string name="item_click_action_description_delete">Are you sure you want delete this expense?</string>
 </resources>
