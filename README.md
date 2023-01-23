@@ -25,7 +25,6 @@ Share expenses with friends and family via the Balloon backend
 
 ## TODO:
 
- * delete dialog
  * Fastlane setup
    * Google Play
    * F-Droid
