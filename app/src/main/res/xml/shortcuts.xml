@@ -14,13 +14,13 @@
             <parameter
                 android:name="thing.description"
                 android:key="expenseDescription"
-                android:required="true" />
+                android:required="false" />
 
             <!--  expense amount  -->
             <parameter
                 android:name="thing.name"
                 android:key="expenseAmount"
-                android:required="true" />
+                android:required="false" />
 
         </intent>
     </capability>
