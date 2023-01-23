@@ -129,7 +129,7 @@ dependencies {
     // Compose
     implementation("androidx.activity:activity-compose:1.6.1")
     // https://developer.android.com/jetpack/androidx/releases/compose#2022.11.00
-    implementation(platform("androidx.compose:compose-bom:2022.11.00"))
+    implementation(platform("androidx.compose:compose-bom:2023.01.00"))
     // Material Design 3
     implementation("androidx.compose.material3:material3")
     implementation("androidx.compose.material:material:1.3.1")
