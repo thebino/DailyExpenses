@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Expenses</string>
+    <string name="action_add_expense">Ausgabe hinzufügen</string>
+    <string name="expenses_empty_title">Keine Ausgaben</string>
+    <string name="expenses_empty_message">Füge eine neue Ausgabe mit dem Knopf unten hinzu</string>
+    <string name="category_clothing">Klamotten</string>
+    <string name="category_grocery">Lebensmittel</string>
+    <string name="category_restaurant">Restaurant</string>
+    <string name="category_hobby">Hobby</string>
+    <string name="category_living">Leben</string>
+    <string name="category_commute">Pendelstrecke</string>
+    <string name="category_other">Andere</string>
+    <string name="currency_input_description_label">Beschreibung eingeben</string>
+    <string name="share_dialog_description">Ausgaben mit Freunden und Familie teilen.</string>
+    <string name="share_dialog_explanation">Neuen Code zum Teilen erzeugen oder eingeben</string>
+    <string name="share_dialog_button_generate">Gruppe generieren</string>
+    <string name="share_dialog_button_join">Gruppe hinzufügen</string>
+    <string name="share_dialog_button_stop">Teilen stoppen</string>
+    <string name="action_settings">Einstellungen</string>
+    <string name="title_settings">Einstellungen</string>
+    <string name="settings_material_label">Hintergrundfarben benutzen</string>
+    <string name="settings_material_enabled_accessibility">Hintergrundfarben sind aktiv</string>
+    <string name="settings_material_disabled_accessibility">Hintergrundfarben sind inaktiv</string>
+    <string name="settings_share_label">Ausgaben teilen</string>
+    <string name="settings_share_label_accessibility">Öffnet Dialog zum teilen</string>
+    <string name="settings_app_version_label">App Version</string>
+    <string name="settings_app_version_content_accessibility">Die aktuelle version ist <xliff:g id="version" example="1.0.0">%1$s</xliff:g></string>
+    <string name="item_click_action_label_edit">Ausgabe bearbeiten</string>
+    <string name="item_click_action_label_delete">Ausgabe löschen</string>
+    <string name="item_click_action_description_delete">Sind Sie sicher, diese Ausgabe löschen zu wollen?</string>
+</resources>
