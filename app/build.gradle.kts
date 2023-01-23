@@ -6,6 +6,7 @@ plugins {
     id("io.gitlab.arturbosch.detekt") version "1.22.0"
     id("org.jetbrains.kotlinx.kover") version "0.6.1"
     id("com.diffplug.spotless") version "6.13.0"
+    id("org.ajoberstar.grgit") version "5.0.0"
 }
 
 android {
@@ -16,8 +17,8 @@ android {
         // API 26 | 8.0 java 8 time api
         minSdk = 26
         targetSdk = 33
-        versionCode = 3
-        versionName = "1.1.0"
+        versionCode = grgit.log().size
+        versionName = "1.1.1"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
@@ -47,6 +48,7 @@ android {
 
     buildTypes {
         debug {
+            versionNameSuffix = "-(${grgit.head().abbreviatedId})"
             buildConfigField("String", "API_URL", "\"http://172.22.11.226:8080\"")
         }
         release {
