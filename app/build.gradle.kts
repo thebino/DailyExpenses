@@ -1,12 +1,12 @@
 plugins {
-    id("com.android.application")
-    kotlin("android")
-    kotlin("kapt")
-    kotlin("plugin.serialization")
-    id("io.gitlab.arturbosch.detekt") version "1.22.0"
-    id("org.jetbrains.kotlinx.kover") version "0.6.1"
-    id("com.diffplug.spotless") version "6.13.0"
-    id("org.ajoberstar.grgit") version "5.0.0"
+    alias(libs.plugins.android.application)
+    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.kotlin.kapt)
+    alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.detekt)
+    alias(libs.plugins.kover)
+    alias(libs.plugins.spotless)
+    alias(libs.plugins.grgit)
 }
 
 android {
@@ -99,94 +99,83 @@ kover {
 }
 
 dependencies {
-    implementation("androidx.core:core-ktx:1.9.0")
+    implementation(libs.androidx.core.ktx)
 
     // Coroutines
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4")
+    implementation(libs.jetbrains.kotlinx.coroutines.core)
+    implementation(libs.jetbrains.kotlinx.coroutines.android)
 
 
     // dependency injection
-    implementation("io.insert-koin:koin-android:3.3.2")
-    implementation("io.insert-koin:koin-androidx-compose:3.4.1")
-    implementation("io.insert-koin:koin-androidx-workmanager:3.3.2")
-    testImplementation("io.insert-koin:koin-test:3.2.2")
-    testImplementation("io.insert-koin:koin-test-junit4:3.2.2")
+    implementation(libs.bundles.koin)
 
 
     // Work
-    implementation("androidx.work:work-runtime-ktx:2.7.1")
+    implementation(libs.androidx.work.runtime.ktx)
 
 
     // Serialization
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.4.1")
+    implementation(libs.jetbrains.kotlinx.serialization.json)
 
 
     // Logging
-    implementation("com.jakewharton.timber:timber:5.0.1")
+    implementation(libs.com.jakewharton.timber)
 
 
     // Compose
-    implementation("androidx.activity:activity-compose:1.6.1")
+    implementation(libs.androidx.activity.compose)
     // https://developer.android.com/jetpack/androidx/releases/compose#2022.11.00
-    implementation(platform("androidx.compose:compose-bom:2022.11.00"))
-    // Material Design 3
-    implementation("androidx.compose.material3:material3")
-    implementation("androidx.compose.material:material:1.3.1")
+    implementation(platform(libs.compose.bom))
+    androidTestImplementation(platform(libs.compose.bom))
+    // Material Design
+    implementation(libs.compose.material)
+    implementation(libs.compose.material3)
     // Android Studio Preview support
-    implementation("androidx.compose.ui:ui-tooling-preview")
-    debugImplementation("androidx.compose.ui:ui-tooling")
+    implementation(libs.compose.tooling.preview)
+    debugImplementation(libs.compose.tooling)
     // UI Tests
-    androidTestImplementation("androidx.compose.ui:ui-test-junit4")
-    debugImplementation("androidx.compose.ui:ui-test-manifest")
+    androidTestImplementation(libs.compose.ui.test.junit4)
+    debugImplementation(libs.compose.ui.test.manifest)
 
-    implementation("androidx.compose.material:material-icons-core")
-    implementation("androidx.compose.material:material-icons-extended")
+    implementation(libs.compose.material.icons.core)
+    implementation(libs.compose.material.icons.extended)
 
 
     // Constraint Layout
-    implementation("androidx.constraintlayout:constraintlayout-compose:1.0.1")
+    implementation(libs.androidx.constraintlayout.compose)
+    implementation(libs.androidx.lifecycle.viewmodel.compose)
 
-    implementation("androidx.activity:activity-compose:1.6.1")
-    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.5.1")
 
 
     // Persistence
-    implementation("androidx.datastore:datastore-preferences:1.0.0")
-    implementation("androidx.room:room-runtime:2.5.0")
-    implementation("androidx.room:room-ktx:2.5.0")
-    kapt("androidx.room:room-compiler:2.5.0")
-    androidTestImplementation("androidx.room:room-testing:2.5.0")
+    implementation(libs.androidx.datastore.preferences)
+    implementation(libs.androidx.room.runtime)
+    implementation(libs.androidx.room.ktx)
+    kapt(libs.androidx.room.compiler)
+    testImplementation(libs.androidx.room.testing)
 
 
     // ktor
-    implementation("io.ktor:ktor-client-core:2.2.1")
-    implementation("io.ktor:ktor-client-android:2.2.1")
-    implementation("io.ktor:ktor-client-auth:2.2.1")
-    implementation("io.ktor:ktor-client-logging:2.2.1")
-    implementation("io.ktor:ktor-client-serialization:2.2.1")
-    implementation("io.ktor:ktor-serialization-kotlinx-json:2.2.1")
-    implementation("io.ktor:ktor-client-content-negotiation:2.2.1")
-    testImplementation("io.ktor:ktor-client-mock-jvm:2.2.1")
+    implementation(libs.bundles.ktor)
+    testImplementation(libs.ktor.mock.jvm)
 
 
     // Accompanist
-    implementation("com.google.accompanist:accompanist-flowlayout:0.27.1")
+    implementation(libs.bundles.accompanist)
 
 
     // Testing
-    testImplementation(kotlin("test"))
-    testImplementation("junit:junit:4.13.2")
-    testImplementation("androidx.test.ext:junit-ktx:1.1.5")
-    testImplementation("io.mockk:mockk:1.13.2")
-    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.4")
+    testImplementation(libs.kotlin.test)
+    testImplementation(libs.junit)
+    testImplementation(libs.androidx.test.ext.junit.ktx)
+    testImplementation(libs.mockk)
+    testImplementation(libs.jetbrains.kotlinx.coroutines.test)
 
 
     // Instrumented testing
-    androidTestImplementation(kotlin("test"))
-    androidTestImplementation("androidx.test.ext:junit:1.1.5")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
-    androidTestImplementation("androidx.compose.ui:ui-test-junit4:1.3.3")
+    androidTestImplementation(libs.kotlin.test)
+    androidTestImplementation(libs.androidx.test.ext.junit)
+    androidTestImplementation(libs.androidx.test.espresso.core)
 }
 
 kapt {
