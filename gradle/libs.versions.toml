@@ -21,7 +21,7 @@ androidxLifecycle = "2.5.1"
 androidxDatastore = "1.0.0"
 androidxRoom = "2.5.0"
 ktor = "2.2.4"
-accompanist = "0.30.0"
+accompanist = "0.27.1"
 junit = "4.13.2"
 androidxTestExt = "1.1.5"
 mockk = "1.13.4"
@@ -67,6 +67,8 @@ koin-test = { module = "io.insert-koin:koin-test", version.ref = "koin" }
 koin-test-junit4 = { module = "io.insert-koin:koin-test-junit4", version.ref = "koin" }
 koin-androidx-compose = { module = "io.insert-koin:koin-androidx-compose", version.ref = "koinCompose" }
 
+mockk = { module = "io.mockk:mockk-android", version.ref = "mockk" }
+
 com-jakewharton-timber = { module = "com.jakewharton.timber:timber", version.ref = "comJakewhartonTimber" }
 
 ktor-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor" }
@@ -81,7 +83,6 @@ ktor-mock-jvm = { module = "io.ktor:ktor-client-mock-jvm", version.ref = "ktor" 
 accompanist-flowlayout = { module = "com.google.accompanist:accompanist-flowlayout", version.ref = "accompanist" }
 
 junit = { module = "junit:junit", version.ref = "junit" }
-mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
 
 
 [bundles]

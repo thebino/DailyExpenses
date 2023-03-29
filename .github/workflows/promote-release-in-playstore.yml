@@ -27,7 +27,7 @@ on:
         description: 'percentage of users who will receive a staged release'
         required: false
         default: '0.25'
-        type: environment
+        type: string
 
 jobs:
   promote:

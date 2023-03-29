@@ -28,7 +28,7 @@ android {
         minSdk = 26
         targetSdk = 33
         versionCode = grgit.log().size
-        versionName = "1.1.1"
+        versionName = "1.2.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
@@ -118,6 +118,29 @@ detekt {
 }
 
 kover {
+    instrumentation {
+        excludeTasks.add("testReleaseUnitTest")
+    }
+
+    filters {
+        annotations {
+            // ignore Composables & Previews
+            excludes += listOf(
+                "androidx.compose.runtime.Composable",
+                "androidx.compose.ui.tooling.preview.Preview"
+            )
+        }
+        classes {
+            excludes += "pro.stuermer.dailyexpenses.AppModule*"
+            excludes += "pro.stuermer.dailyexpenses.AppRouting*"
+            excludes += "pro.stuermer.dailyexpenses.BuildConfig"
+            excludes += "pro.stuermer.dailyexpenses.ComposableSingletons*"
+            excludes += "pro.stuermer.dailyexpenses.DailyExpensesApplication*"
+            excludes += "pro.stuermer.dailyexpenses.MainActivity"
+            excludes += "pro.stuermer.dailyexpenses.ui.theme.*"
+        }
+    }
+
     htmlReport {
         // run koverHtmlReport task `check`
         onCheck.set(true)
