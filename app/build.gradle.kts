@@ -1,3 +1,6 @@
+import com.github.triplet.gradle.androidpublisher.ReleaseStatus
+import com.github.triplet.gradle.androidpublisher.ResolutionStrategy
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
@@ -7,7 +10,14 @@ plugins {
     alias(libs.plugins.kover)
     alias(libs.plugins.spotless)
     alias(libs.plugins.grgit)
+    alias(libs.plugins.triplet)
 }
+
+// gradle.properties
+val releaseKeystore: String by project
+val releaseStorePassword: String by project
+val releaseKeyAlias: String by project
+val releaseKeyPassword: String by project
 
 android {
     namespace = "pro.stuermer.dailyexpenses"
@@ -41,8 +51,17 @@ android {
     }
 
     signingConfigs {
+        named("debug") {
+            storeFile = file("../android_debug.keystore")
+            storePassword = "android"
+            keyAlias = "android"
+            keyPassword = "android"
+        }
         create("release") {
-            // Play App Signing is used
+            storeFile = file(path = releaseKeystore)
+            storePassword = releaseStorePassword
+            keyAlias = releaseKeyAlias
+            keyPassword = releaseKeyPassword
         }
     }
 
@@ -82,6 +101,16 @@ android {
     buildFeatures {
         compose = true
     }
+}
+
+play {
+    serviceAccountCredentials.set(file("$rootDir/gradle_playstore_publisher_credentials.json"))
+    defaultToAppBundles.set(true)
+
+    releaseStatus.set(ReleaseStatus.COMPLETED)
+
+    promoteTrack.set("alpha")
+    resolutionStrategy.set(ResolutionStrategy.AUTO)
 }
 
 detekt {
