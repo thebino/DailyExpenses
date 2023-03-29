@@ -129,8 +129,8 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           title: App Coverage
           update-comment: true
-          min-coverage-overall: 10
-          min-coverage-changed-files: 10
+          min-coverage-overall: 20
+          min-coverage-changed-files: 50
 
   # upload an android bundle to google play store into the internal test track
   deployment:
