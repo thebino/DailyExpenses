@@ -119,7 +119,7 @@ class SettingsViewModel(
         }
     }
 
-    private suspend fun loadSharing() {
+    internal suspend fun loadSharing() {
         getSharingUseCase().asResource().collect { result ->
             when (result) {
                 is Resource.Error -> {

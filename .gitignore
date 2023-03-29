@@ -38,3 +38,7 @@ proguard-project.txt
 
 ## Do not ignore project code style settings
 !.idea/codeStyles/
+
+## skip release credentials
+android_release.keystore
+gradle_playstore_publisher_credentials.json
