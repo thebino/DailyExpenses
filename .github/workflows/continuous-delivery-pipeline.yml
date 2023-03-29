@@ -24,6 +24,14 @@ jobs:
           java-version: 11
           cache: 'gradle'
 
+      - name: Decode Gradle Play Publisher Credentials
+        id: decode_play_store_credentials
+        uses: timheuer/base64-to-file@v1.1
+        with:
+          fileName: 'gradle_playstore_publisher_credentials.json'
+          fileDir: './'
+          encodedString: ${{ secrets.PLAYSTORE_CREDENTIALS }}
+
       - name: Make gradlew executable
         run: chmod +x ./gradlew
 
