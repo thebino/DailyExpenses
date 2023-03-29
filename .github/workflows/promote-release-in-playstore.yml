@@ -23,6 +23,16 @@ on:
           - alpha
           - beta
           - production
+      status:
+        description: 'The status of the release'
+        required: true
+        default: 'completed'
+        type: choice
+        options:
+          - draft
+          - inProgress
+          - halted
+          - completed
       userFraction:
         description: 'percentage of users who will receive a staged release'
         required: false
@@ -52,4 +62,4 @@ jobs:
 
       - name: Promote release artifact
         run: |
-          ./gradlew --console=plain app:promoteArtifact --from-track ${{ github.event.inputs.fromTrack }} --promote-track ${{ github.event.inputs.promoteTrack }} --user-fraction ${{ github.event.inputs.userFraction }}
+          ./gradlew --console=plain app:promoteArtifact --from-track ${{ github.event.inputs.fromTrack }} --promote-track ${{ github.event.inputs.promoteTrack }} --release-status ${{ github.event.inputs.status }} --user-fraction ${{ github.event.inputs.userFraction }}
