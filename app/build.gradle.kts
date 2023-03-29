@@ -49,6 +49,7 @@ android {
     buildTypes {
         debug {
             versionNameSuffix = "-(${grgit.head().abbreviatedId})"
+            applicationIdSuffix = ".debug"
             buildConfigField("String", "API_URL", "\"http://172.22.11.226:8080\"")
         }
         release {

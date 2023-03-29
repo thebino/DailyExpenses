@@ -23,6 +23,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        // enable edge-to-edge
         WindowCompat.setDecorFitsSystemWindows(window, false)
 
         Timber.i("intent.action = ${intent.action}")

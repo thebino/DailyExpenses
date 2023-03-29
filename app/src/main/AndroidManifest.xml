@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:name=".DailyExpensesApplication"
@@ -31,6 +31,7 @@
             <!--  Deep-link to add expense dialog  -->
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
                 <!-- Accepts URIs that begin with "expenses://add/?description=Groceries&amount=12.92" -->
@@ -39,14 +40,26 @@
                     android:host="add" />
             </intent-filter>
 
+            <!--  App-link to handle invites  -->
+            <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <!-- Accepts Web URIs "https://app.stuermer.pro/expenses" -->
+                <data android:scheme="https" />
+                <data android:host="app.stuermer.pro" />
+                <data android:pathPattern="/expense/invite" />
+            </intent-filter>
+
         </activity>
 
         <!--  Prevent Android from initializing the default WorkManagerFactory  -->
         <provider
             android:name="androidx.startup.InitializationProvider"
             android:authorities="${applicationId}.androidx-startup"
-            tools:node="remove">
-        </provider>
+            tools:node="remove" />
 
     </application>
 
