@@ -1,5 +1,7 @@
 package pro.stuermer.dailyexpenses.ui.settings
 
+import android.content.pm.PackageManager
+import android.os.Build
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.Spring
@@ -107,7 +109,14 @@ fun SettingsList(
                 )
 
                 val context = LocalContext.current
-                val packageInfo = context.packageManager.getPackageInfo(context.packageName, 0)
+                val packageInfo = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                    context.packageManager.getPackageInfo(
+                        context.packageName,
+                        PackageManager.PackageInfoFlags.of(0L)
+                    )
+                } else {
+                    context.packageManager.getPackageInfo(context.packageName, 0)
+                }
                 val version: String = packageInfo.versionName
 
                 AppVersionItem(appVersion = version)

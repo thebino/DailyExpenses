@@ -32,13 +32,11 @@ class SettingsViewModel(
     fun handleEvent(event: SettingsEvent) {
         when (event) {
             SettingsEvent.EnableMaterialYou -> {
-                // TODO: enable material you colors in theme
-                // uiState.update { it.copy(isMaterialYouEnabled = true) }
+                 uiState.update { it.copy(isMaterialYouEnabled = true) }
             }
 
             SettingsEvent.DisableMaterialYou -> {
-                // TODO: disable material you colors in theme
-                //uiState.update { it.copy(isMaterialYouEnabled = false) }
+                uiState.update { it.copy(isMaterialYouEnabled = false) }
             }
 
             SettingsEvent.ShowShareDialog -> {
