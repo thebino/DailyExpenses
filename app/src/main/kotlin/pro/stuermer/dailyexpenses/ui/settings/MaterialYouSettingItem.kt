@@ -3,6 +3,8 @@ package pro.stuermer.dailyexpenses.ui.settings
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.selection.toggleable
+import androidx.compose.foundation.text.selection.DisableSelection
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -22,6 +24,7 @@ fun MaterialYouSettingItem(
     modifier: Modifier = Modifier,
     title: String,
     checked: Boolean,
+    enabled: Boolean = false,
     onCheckedChanged: (checked: Boolean) -> Unit
 ) {
     SettingItem {
@@ -33,11 +36,11 @@ fun MaterialYouSettingItem(
         SettingItem(modifier = modifier) {
             Row(
                 modifier = Modifier
-                    .toggleable(
-                        value = checked,
-                        onValueChange = onCheckedChanged,
-                        role = Role.Switch
-                    )
+//                    .toggleable(
+//                        value = checked,
+//                        onValueChange = onCheckedChanged,
+//                        role = Role.Switch
+//                    )
                     .semantics {
                         stateDescription = materialYouEnabledState
                     }
@@ -46,9 +49,14 @@ fun MaterialYouSettingItem(
             ) {
                 Text(
                     modifier = Modifier.weight(1f),
+                    color = MaterialTheme.colorScheme.onSecondaryContainer.copy(alpha = 0.35f),
                     text = title
                 )
-                Switch(checked = checked, onCheckedChange = null)
+                Switch(
+                    enabled = enabled,
+                    checked = checked,
+                    onCheckedChange = null
+                )
             }
         }
     }

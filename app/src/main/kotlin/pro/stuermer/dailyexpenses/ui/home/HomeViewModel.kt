@@ -106,7 +106,7 @@ class HomeViewModel(
         updateExpenseUseCase(expense)
     }
 
-    private suspend fun loadExpenses(date: LocalDate) {
+    internal suspend fun loadExpenses(date: LocalDate) {
         getExpensesForDateUseCase(date).collect { result ->
             when (result) {
                 is Resource.Error -> {

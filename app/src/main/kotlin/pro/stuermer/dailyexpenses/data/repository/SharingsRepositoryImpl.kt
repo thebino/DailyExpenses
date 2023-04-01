@@ -33,6 +33,10 @@ class SharingsRepositoryImpl(
             dao.insert(Sharing(code = it))
         }
 
+        result.onFailure {
+            // could not create new sharing
+        }
+
         return result
     }
 

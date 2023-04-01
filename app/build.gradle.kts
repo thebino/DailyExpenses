@@ -69,17 +69,19 @@ android {
         debug {
             versionNameSuffix = "-(${grgit.head().abbreviatedId})"
             applicationIdSuffix = ".debug"
+            isMinifyEnabled = true
+            proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
             buildConfigField("String", "API_URL", "\"http://172.22.11.226:8080\"")
         }
         release {
-            isMinifyEnabled = false
-            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+            isMinifyEnabled = true
+            proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
             signingConfig = signingConfigs.getByName("release")
         }
     }
 
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.3.2"
+        kotlinCompilerExtensionVersion = libs.versions.composeCompiler.get()
     }
 
     compileOptions {
@@ -127,17 +129,27 @@ kover {
             // ignore Composables & Previews
             excludes += listOf(
                 "androidx.compose.runtime.Composable",
-                "androidx.compose.ui.tooling.preview.Preview"
+                "androidx.compose.ui.tooling.preview.Preview",
             )
         }
         classes {
             excludes += "pro.stuermer.dailyexpenses.AppModule*"
             excludes += "pro.stuermer.dailyexpenses.AppRouting*"
             excludes += "pro.stuermer.dailyexpenses.BuildConfig"
-            excludes += "pro.stuermer.dailyexpenses.ComposableSingletons*"
             excludes += "pro.stuermer.dailyexpenses.DailyExpensesApplication*"
             excludes += "pro.stuermer.dailyexpenses.MainActivity"
+
+            /**
+             * This is a workaround since @Composable annotation is ignored by kover.
+             *
+             * @link https://github.com/Kotlin/kotlinx-kover/issues/270
+             */
+            excludes += "pro.stuermer.dailyexpenses.ComposableSingletons*"
             excludes += "pro.stuermer.dailyexpenses.ui.theme.*"
+            excludes += "pro.stuermer.dailyexpenses.ui.settings.*Kt*"
+            excludes += "pro.stuermer.dailyexpenses.ui.composables.*Kt*"
+            excludes += "pro.stuermer.dailyexpenses.ui.home.*Kt*"
+            excludes += "pro.stuermer.dailyexpenses.ui.settings.ComposableSingletons"
         }
     }
 
