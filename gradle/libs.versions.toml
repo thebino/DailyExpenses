@@ -4,7 +4,7 @@ androidGradlePlugin = "7.4.0"
 detekt = "1.22.0"
 kover = "0.6.1"
 spotless = "6.17.0"
-grgit = "5.0.0"
+grgit = "5.2.0"
 tripletPlugin = "3.8.1"
 
 androidxCore = "1.9.0"
