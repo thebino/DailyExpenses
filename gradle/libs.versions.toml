@@ -8,7 +8,7 @@ grgit = "5.0.0"
 tripletPlugin = "3.8.1"
 
 androidxCore = "1.9.0"
-jetbrainsKotlinx = "1.6.4"
+jetbrainsKotlinx = "1.7.0"
 jetbrainsKotlinxSerialization = "1.5.0"
 koin = "3.3.2"
 koinCompose = "3.4.1"
