@@ -5,7 +5,7 @@ detekt = "1.22.0"
 kover = "0.6.1"
 spotless = "6.17.0"
 grgit = "5.0.0"
-tripletPlugin = "3.8.1"
+tripletPlugin = "3.8.3"
 
 androidxCore = "1.9.0"
 jetbrainsKotlinx = "1.6.4"
