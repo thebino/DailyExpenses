@@ -25,13 +25,16 @@ Share expenses with friends and family via the Balloon backend
 
 ## TODO:
 
- * Fastlane setup
-   * Google Play
-   * F-Droid
- * Add navigation rail
-   * Practical Jetpack compose (Home)
- * Make the app resizable
-   * https://developer.android.com/jetpack/compose/layouts/adaptive
+ * [ ] Test coverage
+ * [ ] Paparazzi
+   * [ ] Raise versions
+ * [ ] Fastlane setup
+   * [ ] Google Play
+   * [ ] F-Droid
+ * [ ] Add navigation rail
+   * [ ] Practical Jetpack compose (Home)
+ * [ ] Make the app resizable
+   * [ ] https://developer.android.com/jetpack/compose/layouts/adaptive
 
 ## Notes
  * Design idea
