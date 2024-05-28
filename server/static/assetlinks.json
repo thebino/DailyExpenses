@@ -1,0 +1,20 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "pro.stuermer.dailyexpenses.debug",
+      "sha256_cert_fingerprints":
+      ["65:5B:F0:DB:48:72:74:0E:EE:C1:0D:11:DB:2E:EB:46:A0:14:4C:E9:A4:E0:6B:95:9A:4A:DA:BC:7C:3E:63:D5"]
+    }
+  },
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "pro.stuermer.dailyexpenses",
+      "sha256_cert_fingerprints":
+      ["00:B6:8F:2A:E7:CA:F4:FF:4B:82:90:FE:67:CC:1F:EB:BE:42:E3:94:02:B8:F9:71:72:15:B3:D7:C0:3D:3E:9C"]
+    }
+  }
+]
