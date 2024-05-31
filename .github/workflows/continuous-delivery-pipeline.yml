@@ -37,7 +37,7 @@ jobs:
 
       - name: Run Check
         run: |
-          ./gradlew --console=plain :composeApp:check
+          ./gradlew --console=plain check
 
   detekt:
     runs-on: ubuntu-latest
@@ -120,12 +120,12 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: tests
-          path: composeApp/build/reports/tests
+          path: composeApp/build/reports
 
       - name: Add coverage report to PR
         uses: mi-kas/kover-report@v1
         with:
-          path: ${{ github.workspace }}/composeApp/build/reports/kover/report.xml
+          path: composeApp/build/reports/kover/report.xml
           token: ${{ secrets.GITHUB_TOKEN }}
           title: App Coverage
           update-comment: true
