@@ -28,7 +28,7 @@ import pro.stuermer.dailyexpenses.domain.model.Category
 import pro.stuermer.dailyexpenses.domain.model.GraphData
 import pro.stuermer.dailyexpenses.domain.model.nameResource
 import pro.stuermer.dailyexpenses.ui.theme.neuropoliticalFamily
-import java.lang.Integer.min
+import kotlin.math.min
 
 @Composable
 fun Legend(
@@ -83,7 +83,7 @@ fun LegendItem(
     }
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 fun LegendPreview() {
     MaterialTheme {
