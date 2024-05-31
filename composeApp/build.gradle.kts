@@ -171,8 +171,8 @@ android {
         applicationId = "pro.stuermer.dailyexpenses"
         minSdk = libs.versions.android.minSdk.get().toInt()
         targetSdk = libs.versions.android.targetSdk.get().toInt()
-        versionCode = 1
-        versionName = "1.2.0"
+        versionCode = 15
+        versionName = "1.1.1"
     }
     packaging {
         resources {
