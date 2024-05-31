@@ -1,4 +1,4 @@
-package pro.stuermer.balloon.dailyexpenses.data.repository
+package pro.stuermer.dailyexpenses.data.repository
 
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -13,7 +13,7 @@ import org.jetbrains.exposed.sql.select
 import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.jetbrains.exposed.sql.update
-import pro.stuermer.balloon.dailyexpenses.data.persistence.model.ExpensesTable
+import pro.stuermer.dailyexpenses.data.persistence.model.ExpensesTable
 import pro.stuermer.balloon.dailyexpenses.data.persistence.model.Instance
 import pro.stuermer.balloon.dailyexpenses.data.persistence.model.Instances
 import pro.stuermer.dailyexpenses.Expense as NetworkExpense

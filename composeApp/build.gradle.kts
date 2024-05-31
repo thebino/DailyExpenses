@@ -1,17 +1,17 @@
-import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
+import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
-    alias(libs.plugins.kotlinMultiplatform)
-    alias(libs.plugins.androidApplication)
-    alias(libs.plugins.jetbrainsCompose)
+    alias(libs.plugins.kotlin.multiplatform)
+    alias(libs.plugins.android.application)
+    alias(libs.plugins.jetbrains.compose)
     alias(libs.plugins.compose.compiler)
     alias(libs.plugins.ksp)
     alias(libs.plugins.room)
     alias(libs.plugins.detekt)
     alias(libs.plugins.kover)
-    alias(libs.plugins.spotless)
+//    alias(libs.plugins.screenshot)
 }
 
 kotlin {
@@ -21,6 +21,8 @@ kotlin {
             jvmTarget.set(JvmTarget.JVM_11)
         }
     }
+
+    jvm("desktop")
     
     listOf(
         iosX64(),
@@ -34,6 +36,26 @@ kotlin {
     }
     
     sourceSets {
+        commonMain.dependencies {
+            implementation(compose.runtime)
+            implementation(compose.foundation)
+            implementation(compose.material)
+            implementation(compose.ui)
+            implementation(compose.components.resources)
+            implementation(compose.components.uiToolingPreview)
+            implementation(projects.shared)
+
+            implementation(libs.androidx.room.runtime)
+        }
+        commonTest.dependencies {
+
+        }
+
+        val desktopMain by getting
+        desktopMain.dependencies {
+            implementation(compose.desktop.currentOs)
+        }
+
         androidMain.dependencies {
             implementation(compose.preview)
             implementation(libs.androidx.activity.compose)
@@ -63,15 +85,15 @@ kotlin {
 
             // Compose
             implementation(libs.androidx.activity.compose)
-            // https://developer.android.com/jetpack/androidx/releases/compose#2022.11.00
-//            implementation(platform(libs.compose.bom))
-//            androidTestImplementation(platform(libs.compose.bom))
+
             // Material Design
             implementation(libs.compose.material)
             implementation(libs.compose.material3)
+
             // Android Studio Preview support
             implementation(libs.compose.tooling.preview)
 //             debugImplementation(libs.compose.tooling)
+
             // UI Tests
 //            androidTestImplementation(libs.compose.ui.test.junit4)
 //            debugImplementation(libs.compose.ui.test.manifest)
@@ -97,7 +119,7 @@ kotlin {
 
             // ktor
             implementation(libs.bundles.ktor)
-//            testImplementation(libs.ktor.mock.jvm)
+
 
 
             // Accompanist
@@ -105,11 +127,6 @@ kotlin {
 
 
             // Testing
-//            testImplementation(libs.kotlin.test)
-//            testImplementation(libs.junit)
-//            testImplementation(libs.androidx.test.ext.junit.ktx)
-//            testImplementation(libs.mockk)
-//            testImplementation(libs.jetbrains.kotlinx.coroutines.test)
 
 
             // Instrumented testing
@@ -117,16 +134,27 @@ kotlin {
 //            androidTestImplementation(libs.androidx.test.ext.junit)
 //            androidTestImplementation(libs.androidx.test.espresso.core)
         }
-        commonMain.dependencies {
-            implementation(compose.runtime)
-            implementation(compose.foundation)
-            implementation(compose.material)
-            implementation(compose.ui)
-            implementation(compose.components.resources)
-            implementation(compose.components.uiToolingPreview)
-            implementation(projects.shared)
+        // androidUnitTest.dependencies doesn't exist
+        val androidUnitTest by getting {
+            dependencies {
+                implementation(libs.kotlin.test)
+                implementation(libs.junit)
+                implementation(libs.androidx.test.ext.junit.ktx)
+                implementation(libs.mockk)
+                implementation(libs.jetbrains.kotlinx.coroutines.test)
 
-            implementation(libs.androidx.room.runtime)
+                // ktor
+                implementation(libs.ktor.mock.jvm)
+            }
+        }
+
+        val androidInstrumentedTest by getting {
+            dependencies {
+                @OptIn(org.jetbrains.compose.ExperimentalComposeLibrary::class)
+                implementation(compose.uiTest)
+//                implementation(libs.compose.ui.test.junit4)
+//                implementation(libs.compose.ui.test.manifest)
+            }
         }
     }
 }
@@ -164,18 +192,33 @@ android {
         compose = true
         buildConfig = true
     }
+    @Suppress("UnstableApiUsage")
+    experimentalProperties["android.experimental.enableScreenshotTest"] = true
     dependencies {
         debugImplementation(compose.uiTooling)
     }
 }
 
-dependencies {
-    add("kspAndroid", libs.androidx.room.compiler)
+compose.desktop {
+    application {
+        mainClass = "MainKt"
+
+        nativeDistributions {
+            targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
+            packageName = "pro.stuermer.splitkeyboard"
+            packageVersion = "1.0.0"
+        }
+    }
+}
+
+//dependencies {
+//    add("kspAndroid", libs.androidx.room.compiler)
 //    add("kspIosSimulatorArm64", libs.androidx.room.compiler)
 //    add("kspIosX64", libs.androidx.room.compiler)
 //    add("kspIosArm64", libs.androidx.room.compiler)
-}
+//}
 
 room {
+    // composeApp/schemas
     schemaDirectory("$projectDir/schemas")
 }

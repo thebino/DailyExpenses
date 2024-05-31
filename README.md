@@ -1,27 +1,52 @@
 # Daily Expenses
 
-[![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
-[![API](https://img.shields.io/badge/API-26%2B-brightgreen.svg?style=flat)](https://android-arsenal.com/api?level=26)
-[![Continuous Delivery Pipeline](https://github.com/thebino/DailyExpenses/actions/workflows/continuous-delivery-pipeline.yml/badge.svg)](https://github.com/thebino/DailyExpenses/actions/workflows/continuous-delivery-pipeline.yml)
+[![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg?style=for-the-badge)](https://opensource.org/licenses/Apache-2.0)
+[![Continuous Delivery Pipeline](https://img.shields.io/github/actions/workflow/status/thebino/DailyExpenses/continuous-delivery-pipeline.yml?style=for-the-badge)](https://github.com/thebino/DailyExpenses/actions/workflows/continuous-delivery-pipeline.yml)
+[![Ktor](https://img.shields.io/badge/ktor-2.3.11-blue.svg?color=087CFA&logo=ktor&style=for-the-badge)](https://https://ktor.io)
+![AGP](https://img.shields.io/badge/agp-8.2.0-blue?color=34A853&logo=android&style=for-the-badge)
+![kotlin-version](https://img.shields.io/badge/kotlin-2.0.0-blue?color=7F52FF&logo=kotlin&style=for-the-badge)
+![Compos Multiplatform](https://img.shields.io/badge/compose-1.6.10-blue?color=4285F4&logo=jetpackcompose&style=for-the-badge)
 
-This is an android application to keep track of daily espenses. 
-_Optionally shared in a group with others via a Propritary backend (Balloon >= 1.3.0)
+This is an Android Application to keep track of daily espenses.
+_Optionally shared in a group with others via a Propritary backend
 
 <p align="center">
 <img src="/docs/preview.png" />
 </p>
+
+## Tech
+ - Written with [Compose Multiplatform](https://www.jetbrains.com/lp/compose-multiplatform/)
+ - Based on [Kotlin Multiplatform](https://www.jetbrains.com/kotlin-multiplatform/)
+ - Persistence is using [Room Multiplatform](https://developer.android.com/kotlin/multiplatform/room)
+ - Dependency Injection with [Koin](https://insert-koin.io/docs/quickstart/kmp/)
+
 
 ## App Actions
 > Hey Google, add Groceries to DailyExpenses.
 
 ## Sharing
 
-Share expenses with friends and family via the Balloon backend
+Share expenses with friends and family via a self-hosted [backend](./server)
 
 1. create / enter credentials
 2. enter expenses 
 3. synchronize expenses with backend
 4. see expenses from others 
+
+## Server
+Run the server by calling the following command:
+```shell
+./gradlew :server:run
+```
+it will spin up the server on http://127.0.0.1:8080
+
+
+## Android
+Build and deploy an debug version of the application to a connected device or emulator by running:
+```shell
+./gradlew :composeApp:installDebug
+```
+
 
 ## TODO:
 

@@ -1,4 +1,4 @@
-package pro.stuermer.balloon.dailyexpenses.routing
+package pro.stuermer.dailyexpenses.routing.categories
 
 import guru.zoroark.tegral.openapi.ktor.describe
 import io.ktor.http.HttpStatusCode
@@ -6,7 +6,7 @@ import io.ktor.server.application.call
 import io.ktor.server.response.respond
 import io.ktor.server.routing.Route
 import io.ktor.server.routing.get
-import pro.stuermer.balloon.dailyexpenses.data.repository.DailyExpensesRepository
+import pro.stuermer.dailyexpenses.data.repository.DailyExpensesRepository
 
 fun Route.getCategoriesRouting(repository: DailyExpensesRepository) {
     // get most used category for description text
@@ -19,5 +19,6 @@ fun Route.getCategoriesRouting(repository: DailyExpensesRepository) {
     } describe {
         tags += "dailyexpense"
         summary = "get most used category for description text."
+        security("expenses-basic")
     }
 }

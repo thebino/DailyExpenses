@@ -1,4 +1,4 @@
-package pro.stuermer.balloon.dailyexpenses.data.repository
+package pro.stuermer.dailyexpenses.data.repository
 
 import pro.stuermer.balloon.dailyexpenses.data.persistence.model.Instance
 import pro.stuermer.dailyexpenses.Expense
