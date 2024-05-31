@@ -30,9 +30,9 @@ import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.junit.Assert
 import org.junit.Test
-import pro.stuermer.balloon.dailyexpenses.data.persistence.model.Expense as DatabaseExpense
+import pro.stuermer.dailyexpenses.data.persistence.model.Expense as DatabaseExpense
 import pro.stuermer.dailyexpenses.Expense as NetworkExpense
-import pro.stuermer.balloon.dailyexpenses.data.persistence.model.ExpensesTable
+import pro.stuermer.dailyexpenses.data.persistence.model.ExpensesTable
 import pro.stuermer.balloon.dailyexpenses.data.persistence.model.Instances
 
 class DailyExpensesTests {

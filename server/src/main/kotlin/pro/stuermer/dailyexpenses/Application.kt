@@ -1,5 +1,8 @@
 package pro.stuermer.dailyexpenses
 
+import guru.zoroark.tegral.openapi.dsl.apiKeyType
+import guru.zoroark.tegral.openapi.dsl.httpType
+import guru.zoroark.tegral.openapi.dsl.inHeader
 import io.ktor.server.routing.*
 import guru.zoroark.tegral.openapi.dsl.schema
 import guru.zoroark.tegral.openapi.ktor.TegralOpenApiKtor
@@ -33,21 +36,22 @@ import io.ktor.server.plugins.ratelimit.RateLimitName
 import io.ktor.server.response.respond
 import io.ktor.server.routing.get
 import io.ktor.server.routing.routing
+import io.swagger.v3.oas.models.security.SecurityScheme
 import java.io.File
 import kotlin.reflect.typeOf
 import kotlin.time.Duration.Companion.seconds
 import pro.stuermer.balloon.dailyexpenses.data.persistence.model.Instance
-import pro.stuermer.balloon.dailyexpenses.data.repository.DailyExpensesRepository
-import pro.stuermer.balloon.dailyexpenses.data.repository.DailyExpensesRepositoryImpl
-import pro.stuermer.balloon.dailyexpenses.routing.deleteIndexRouting
-import pro.stuermer.balloon.dailyexpenses.routing.frontend.getExpenses
-import pro.stuermer.balloon.dailyexpenses.routing.frontend.getInvite
-import pro.stuermer.balloon.dailyexpenses.routing.getCategoriesRouting
-import pro.stuermer.balloon.dailyexpenses.routing.getIndexRouting
-import pro.stuermer.balloon.dailyexpenses.routing.getSharingRouting
-import pro.stuermer.balloon.dailyexpenses.routing.postIndexRouting
-import pro.stuermer.balloon.dailyexpenses.routing.postSharingRouting
-import pro.stuermer.balloon.dailyexpenses.routing.putIndexRouting
+import pro.stuermer.dailyexpenses.data.repository.DailyExpensesRepository
+import pro.stuermer.dailyexpenses.data.repository.DailyExpensesRepositoryImpl
+import pro.stuermer.dailyexpenses.routing.expenses.deleteIndexRouting
+import pro.stuermer.dailyexpenses.routing.frontend.getExpenses
+import pro.stuermer.dailyexpenses.routing.frontend.getInvite
+import pro.stuermer.dailyexpenses.routing.categories.getCategoriesRouting
+import pro.stuermer.dailyexpenses.routing.expenses.getIndexRouting
+import pro.stuermer.dailyexpenses.routing.sharings.getSharingRouting
+import pro.stuermer.dailyexpenses.routing.expenses.postIndexRouting
+import pro.stuermer.dailyexpenses.routing.sharings.postSharingRouting
+import pro.stuermer.dailyexpenses.routing.expenses.putIndexRouting
 
 fun main(args: Array<String>): Unit = io.ktor.server.jetty.EngineMain.main(args)
 
@@ -57,10 +61,10 @@ fun Application.mainModule() {
 
     // automatic openapi and swagger documentation
     install(TegralOpenApiKtor) {
-        title = "Balloon"
+        title = "DailyExpenses"
         version = "1.4.0"
         description = """
-                This server provides endpoints for the [Daily Expenses](https://github.com/thebino/dailyexpenses) mobile application.
+                This server provides endpoints for sharing expenses with the [Daily Expenses](https://github.com/thebino/dailyexpenses) mobile application.
             """.trimIndent()
         summary = "Summary"
         licenseName = "Apache 2.0"
@@ -68,10 +72,17 @@ fun Application.mainModule() {
         licenseIdentifier = "Apache 2.0"
         "http://127.0.0.1:8080" server {}
         "dailyexpense" tag {
-            description = "Everything for the daily expenses application"
+            description = "Endpoints for sharing expenses with the Daily Expenses mobile application."
             externalDocsDescription = "Daily expenses"
             externalDocsUrl = "https://github.com/thebino/dailyexpenses"
         }
+        "expenses-basic" securityScheme {
+            apiKeyType
+            inHeader
+            name = "Authorization"
+            description = "This is the description of my security scheme"
+        }
+
     }
     install(TegralSwaggerUiKtor)
 
@@ -97,6 +108,7 @@ fun Application.mainModule() {
     install(CORS) {
         anyHost()
         allowHeader(HttpHeaders.ContentType)
+        allowHeader(HttpHeaders.AccessControlAllowOrigin)
     }
 
     // add a rate limit to reduce attacks
@@ -141,14 +153,14 @@ fun Application.mainModule() {
         get("/") {
             call.respond(VersionInfo("1.4.0"))
         } describe {
-            tags += "general"
-            summary = "Returns the application version."
+            tags += "dailyexpense"
+            summary = "Returns the current version."
             description =
-                "Default endpoint to check if the application is up and running also getting the running version number."
+                "Default endpoint to check if the server is up and running by returning the current version number."
             200 response {
-                description = "The operation was successful"
+                description = "The operation was successful."
                 json {
-                    schema(typeOf<VersionInfo>(), VersionInfo("1.4.0"))
+                    schema(typeOf<VersionInfo>(), VersionInfo("1.2.3"))
                 }
             }
         }
@@ -178,6 +190,7 @@ fun Application.expensesModule(
             basic("expenses-basic") {
                 realm = "Access to daily expenses"
                 validate { credentials ->
+                    println("credentials: ${credentials.name}")
                     val instance: Instance? = repository.getInstances(credentials.name)
 
                     if (instance != null) {
@@ -191,40 +204,28 @@ fun Application.expensesModule(
     }
 
     routing {
-        // frontend for DailyExpense
-        route("/expense") {
-            getInvite(repository)
-            authenticate("expenses-basic") {
-                getExpenses(repository)
-            }
-        }
-
-        // all requests below /api are restricted to ssl certificate authentication by a reverse proxy (nginx)
         route("/api") {
-            // daily expense api
-            route("/expense") {
-                // POST /sharing
-                postSharingRouting(repository)
+            // POST /sharing
+            postSharingRouting(repository)
 
-                // GET /sharing
-                getSharingRouting(repository)
+            // GET /sharing
+            getSharingRouting(repository)
 
-                authenticate("expenses-basic") {
-                    // GET /
-                    getIndexRouting(repository)
+            authenticate("expenses-basic") {
+                // GET /
+                getIndexRouting(repository)
 
-                    // POST /
-                    postIndexRouting(repository)
+                // POST /
+                postIndexRouting(repository)
 
-                    // PUT /
-                    putIndexRouting(repository)
+                // PUT /
+                putIndexRouting(repository)
 
-                    // DELETE /
-                    deleteIndexRouting(repository)
+                // DELETE /
+                deleteIndexRouting(repository)
 
-                    // GET /categories
-                    getCategoriesRouting(repository)
-                }
+                // GET /categories
+                getCategoriesRouting(repository)
             }
         }
     }

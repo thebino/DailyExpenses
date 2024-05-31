@@ -1,4 +1,4 @@
-package pro.stuermer.balloon.dailyexpenses.routing
+package pro.stuermer.dailyexpenses.routing.expenses
 
 import guru.zoroark.tegral.openapi.dsl.schema
 import guru.zoroark.tegral.openapi.ktor.describe
@@ -11,7 +11,7 @@ import io.ktor.server.response.respond
 import io.ktor.server.routing.Route
 import io.ktor.server.routing.delete
 import kotlin.reflect.typeOf
-import pro.stuermer.balloon.dailyexpenses.data.repository.DailyExpensesRepository
+import pro.stuermer.dailyexpenses.data.repository.DailyExpensesRepository
 
 fun Route.deleteIndexRouting(repository: DailyExpensesRepository) {
     // delete expenses
@@ -46,5 +46,6 @@ fun Route.deleteIndexRouting(repository: DailyExpensesRepository) {
                 )
             }
         }
+        security("expenses-basic")
     }
 }

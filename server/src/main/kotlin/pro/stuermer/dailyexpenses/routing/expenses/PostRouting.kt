@@ -1,4 +1,4 @@
-package pro.stuermer.balloon.dailyexpenses.routing
+package pro.stuermer.dailyexpenses.routing.expenses
 
 import guru.zoroark.tegral.openapi.dsl.schema
 import guru.zoroark.tegral.openapi.ktor.describe
@@ -12,7 +12,7 @@ import io.ktor.server.routing.Route
 import io.ktor.server.routing.post
 import kotlin.reflect.typeOf
 import pro.stuermer.dailyexpenses.Expense
-import pro.stuermer.balloon.dailyexpenses.data.repository.DailyExpensesRepository
+import pro.stuermer.dailyexpenses.data.repository.DailyExpensesRepository
 
 fun Route.postIndexRouting(repository: DailyExpensesRepository) {
     // post expenses
@@ -60,5 +60,6 @@ fun Route.postIndexRouting(repository: DailyExpensesRepository) {
         401 response {
             description = "Not authorized!"
         }
+        security("expenses-basic")
     }
 }

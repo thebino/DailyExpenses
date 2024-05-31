@@ -1,4 +1,4 @@
-package pro.stuermer.balloon.dailyexpenses.routing
+package pro.stuermer.dailyexpenses.routing.expenses
 
 import guru.zoroark.tegral.openapi.ktor.describe
 import io.ktor.http.HttpStatusCode
@@ -9,7 +9,7 @@ import io.ktor.server.response.respond
 import io.ktor.server.routing.Route
 import io.ktor.server.routing.get
 import java.time.LocalDate
-import pro.stuermer.balloon.dailyexpenses.data.repository.DailyExpensesRepository
+import pro.stuermer.dailyexpenses.data.repository.DailyExpensesRepository
 
 fun Route.getIndexRouting(repository: DailyExpensesRepository) {
     // get expenses (ALL or filtered)
@@ -55,5 +55,6 @@ fun Route.getIndexRouting(repository: DailyExpensesRepository) {
         401 response {
             description = "Not authorized!"
         }
+        security("expenses-basic")
     }
 }

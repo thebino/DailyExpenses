@@ -1,4 +1,4 @@
-package pro.stuermer.balloon.dailyexpenses.data.persistence.model
+package pro.stuermer.dailyexpenses.data.persistence.model
 
 import org.jetbrains.exposed.sql.Table
 

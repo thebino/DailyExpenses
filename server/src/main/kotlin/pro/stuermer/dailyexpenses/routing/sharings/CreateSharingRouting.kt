@@ -1,4 +1,4 @@
-package pro.stuermer.balloon.dailyexpenses.routing
+package pro.stuermer.dailyexpenses.routing.sharings
 
 import guru.zoroark.tegral.openapi.ktor.describe
 import io.ktor.http.HttpHeaders
@@ -8,7 +8,7 @@ import io.ktor.server.response.respond
 import io.ktor.server.routing.Route
 import io.ktor.server.routing.post
 import kotlin.random.Random
-import pro.stuermer.balloon.dailyexpenses.data.repository.DailyExpensesRepository
+import pro.stuermer.dailyexpenses.data.repository.DailyExpensesRepository
 
 fun Route.postSharingRouting(repository: DailyExpensesRepository) {
     post("sharing") {
@@ -19,7 +19,7 @@ fun Route.postSharingRouting(repository: DailyExpensesRepository) {
 
         val instance = repository.addInstances(code)
         if (instance != null) {
-            call.response.headers.append(HttpHeaders.Location, "/api/expense/sharing?code=$code")
+            call.response.headers.append(HttpHeaders.Location, "/api/sharing?code=$code")
             call.respond(HttpStatusCode.Created)
         } else {
             call.respond(status = HttpStatusCode.InternalServerError, "Could not create new sharing group")

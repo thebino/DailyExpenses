@@ -35,6 +35,7 @@ proguard-project.txt
 *.iml
 .idea/*
 /captures
+.kotlin
 
 ## Do not ignore project code style settings
 !.idea/codeStyles/
