@@ -125,7 +125,7 @@ jobs:
       - name: Add coverage report to PR
         uses: mi-kas/kover-report@v1
         with:
-          path: composeApp/build/reports/kover/report.xml
+          path: composeApp/build/reports/kover/reportDebug.xml
           token: ${{ secrets.GITHUB_TOKEN }}
           title: App Coverage
           update-comment: true
