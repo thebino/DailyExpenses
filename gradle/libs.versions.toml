@@ -26,6 +26,9 @@ detekt = "1.23.6"
 # https://github.com/Kotlin/kotlinx-kover
 kover = "0.8.0"
 
+# https://github.com/cashapp/paparazzi/issues/1273
+paparazzi = "1.3.1"
+
 # https://developer.android.com/studio/preview/compose-screenshot-testing
 #screenshot = "0.0.1-alpha01"
 
@@ -59,8 +62,6 @@ serialization = "1.6.3"
 #grgit = "5.0.0"
 #tripletPlugin = "3.8.1"
 
-# https://github.com/cashapp/paparazzi/issues/1273
-#paparazzi = "1.3.1"
 
 androidxCore = "1.13.0"
 jetbrainsKotlinx = "1.8.0"
@@ -179,6 +180,5 @@ room = { id = "androidx.room", version.ref = "room-multiplatform" }
 detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
 
 kover = { id = "org.jetbrains.kotlinx.kover", version.ref = "kover" }
-#paparazzi = { id = "app.cash.paparazzi", version.ref = "paparazzi" }
+paparazzi = { id = "app.cash.paparazzi", version.ref = "paparazzi" }
 #screenshot = { id = "com.android.compose.screenshot", version.ref = "screenshot"}
-
