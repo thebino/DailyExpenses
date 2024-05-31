@@ -62,7 +62,7 @@ jobs:
           ./gradlew --console=plain detekt
 
       - name: Upload detekt reports
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: detekt
           path: build/reports/detekt/
@@ -87,7 +87,7 @@ jobs:
           ./gradlew --console=plain lint
 
       - name: Upload lint reports
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: lint
           path: |
@@ -117,15 +117,15 @@ jobs:
 
       - name: Upload test reports
         if: always()
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: tests
-          path: app/build/reports/tests
+          path: composeApp/build/reports/tests
 
       - name: Add coverage report to PR
         uses: mi-kas/kover-report@v1
         with:
-          path: ${{ github.workspace }}/app/build/reports/kover/xml/report.xml
+          path: ${{ github.workspace }}/composeApp/build/reports/kover/report.xml
           token: ${{ secrets.GITHUB_TOKEN }}
           title: App Coverage
           update-comment: true

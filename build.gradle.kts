@@ -11,6 +11,19 @@ plugins {
     alias(libs.plugins.jetbrains.kotlin.jvm) apply false
     alias(libs.plugins.kotlin.multiplatform) apply false
     alias(libs.plugins.detekt)
+    alias(libs.plugins.kover)
+}
+
+kover {
+    reports {
+        filters {
+            includes {
+                classes("pro.stuermer.dailyexpenses.*")
+            }
+        }
+        total {}
+        verify {}
+    }
 }
 
 dependencies {
@@ -20,8 +33,6 @@ dependencies {
 detekt {
     autoCorrect = true
     buildUponDefaultConfig = true
-//    @Suppress("DEPRECATION")
-//    config = files("${project.rootDir}/detekt.yml")
     config.setFrom("${project.rootDir}/detekt.yml")
 }
 

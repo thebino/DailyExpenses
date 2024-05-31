@@ -5,6 +5,7 @@ plugins {
     alias(libs.plugins.kotlin.multiplatform)
     alias(libs.plugins.android.library)
     alias(libs.plugins.serialization)
+    alias(libs.plugins.kover)
 }
 
 kotlin {
@@ -49,5 +50,11 @@ android {
     }
     defaultConfig {
         minSdk = libs.versions.android.minSdk.get().toInt()
+    }
+}
+
+kover {
+    currentProject {
+        createVariant("custom") { }
     }
 }

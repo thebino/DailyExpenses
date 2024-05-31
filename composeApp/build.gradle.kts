@@ -181,3 +181,37 @@ room {
     // composeApp/schemas
     schemaDirectory("$projectDir/schemas")
 }
+
+dependencies {
+    kover(project(":shared"))
+}
+
+kover {
+    currentProject {
+        createVariant("custom") {
+            add("jvm")
+            addWithDependencies("debug")
+        }
+    }
+    reports {
+        // filters for all report types of all build variants
+        filters {
+            excludes {
+                androidGeneratedClasses()
+            }
+        }
+
+        variant("release") {
+            // filters for all report types only of 'release' build type
+            filters {
+                excludes {
+                    androidGeneratedClasses()
+                    classes(
+                        // excludes debug classes
+                        "*.DebugUtil"
+                    )
+                }
+            }
+        }
+    }
+}
