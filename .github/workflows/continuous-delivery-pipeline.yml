@@ -35,9 +35,9 @@ jobs:
       - name: Make gradlew executable
         run: chmod +x ./gradlew
 
-      - name: Run spotless
+      - name: Run Check
         run: |
-          ./gradlew --console=plain check
+          ./gradlew --console=plain :composeApp:check
 
   detekt:
     runs-on: ubuntu-latest
@@ -181,4 +181,4 @@ jobs:
 
       - name: Publish release bundle
         run: |
-          ./gradlew --console=plain app:publishBundle --artifact-dir app/build/outputs/bundle/release/app-release.aab
+          ./gradlew --console=plain composeApp:publishBundle --artifact-dir composeApp/build/outputs/bundle/release/app-release.aab
