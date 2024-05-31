@@ -1,10 +1,97 @@
 # Find all defined configuration options in the default configuration
 # https://github.com/detekt/detekt/blob/main/detekt-core/src/main/resources/default-detekt-config.yml
 
+
+# build: https://detekt.dev/docs/introduction/configuration/
+build:
+  maxIssues: 0
+
+
+# comments: https://detekt.dev/docs/rules/comments/
+comments:
+  active: true
+  CommentOverPrivateFunction:
+    active: false
+  CommentOverPrivateProperty:
+    active: false
+  DeprecatedBlockTag:
+    active: true
+  EndOfSentenceFormat:
+    active: false
+  KDocReferencesNonPublicProperty:
+    active: true
+  OutdatedDocumentation:
+    active: true
+#  UndocumentedPublicClass:
+#    active: true
+#  UndocumentedPublicFunction:
+#    active: true
+
+
+# complexity: https://detekt.dev/docs/rules/complexity/
+complexity:
+  active: true
+  LongParameterList:
+    active: true
+    constructorThreshold: 10
+    functionThreshold: 8
+  LongMethod:
+    threshold: 120
+  NestedScopeFunctions:
+    active: true
+
+
+# exceptions: https://detekt.dev/docs/rules/exceptions/
+exceptions:
+  active: true
+
+
+# formatting: https://detekt.dev/docs/rules/formatting/
+formatting:
+  autoCorrect: true
+  ArgumentListWrapping:
+    active: false
+  ImportOrdering:
+    active: false
+  CommentSpacing:
+    active: false
+  AnnotationOnSeparateLine:
+    active: false
+  Indentation:
+    active: false
+  ParameterListWrapping:
+    active: false
+  Wrapping:
+    active: false
+
+
+# naming: https://detekt.dev/docs/rules/naming/
 naming:
+  BooleanPropertyNaming:
+    active: true
+
   FunctionNaming:
     # adjust pattern to support compose function naming
     functionPattern: '([A-Za-z][a-zA-Z0-9]*)|(`.*`)'
 
   TopLevelPropertyNaming:
     constantPattern: '[A-Z][_A-Z0-9]*'
+
+
+# style: https://detekt.dev/docs/rules/style/
+style:
+  active: true
+  MagicNumber:
+    active: false
+  WildcardImport:
+    active: true
+  ForbiddenComment:
+    allowedPatterns: "TODO|FIXME:\\s\\[[a-zA-Z]{2,}-?\\d{2,}\\]\\s"
+  ReturnCount:
+    active: false
+  UnusedParameter:
+    active: false
+  UnusedPrivateMember:
+    active: false
+  UnusedPrivateProperty:
+    active: false

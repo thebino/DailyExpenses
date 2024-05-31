@@ -3,7 +3,6 @@ package pro.stuermer.dailyexpenses.ui.settings
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.selection.toggleable
-import androidx.compose.foundation.text.selection.DisableSelection
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
@@ -34,28 +33,21 @@ fun MaterialYouSettingItem(
             stringResource(id = R.string.settings_material_disabled_accessibility)
         }
         SettingItem(modifier = modifier) {
-            Row(
-                modifier = Modifier
-//                    .toggleable(
-//                        value = checked,
-//                        onValueChange = onCheckedChanged,
-//                        role = Role.Switch
-//                    )
-                    .semantics {
-                        stateDescription = materialYouEnabledState
-                    }
-                    .padding(horizontal = 16.dp),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
+            Row(modifier = Modifier
+                .toggleable(
+                    value = checked, onValueChange = onCheckedChanged, role = Role.Switch
+                )
+                .semantics {
+                    stateDescription = materialYouEnabledState
+                }
+                .padding(horizontal = 16.dp), verticalAlignment = Alignment.CenterVertically) {
                 Text(
                     modifier = Modifier.weight(1f),
                     color = MaterialTheme.colorScheme.onSecondaryContainer.copy(alpha = 0.35f),
                     text = title
                 )
                 Switch(
-                    enabled = enabled,
-                    checked = checked,
-                    onCheckedChange = null
+                    enabled = enabled, checked = checked, onCheckedChange = null
                 )
             }
         }
@@ -69,7 +61,6 @@ private fun MaterialYouSettingItemPreview() {
         MaterialYouSettingItem(
             title = "Use wallpaper colors",
             checked = true,
-            onCheckedChanged = {}
-        )
+            onCheckedChanged = {})
     }
 }

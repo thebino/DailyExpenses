@@ -2,9 +2,6 @@ package pro.stuermer.dailyexpenses.ui.home
 
 import io.mockk.coEvery
 import io.mockk.mockk
-import java.time.LocalDate
-import java.time.Month
-import kotlin.test.assertEquals
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
@@ -16,6 +13,8 @@ import pro.stuermer.dailyexpenses.domain.usecase.DeleteExpenseUseCase
 import pro.stuermer.dailyexpenses.domain.usecase.GetExpensesForDateUseCase
 import pro.stuermer.dailyexpenses.domain.usecase.StartSyncUseCase
 import pro.stuermer.dailyexpenses.domain.usecase.UpdateExpenseUseCase
+import java.time.LocalDate
+import java.time.Month
 
 class HomeViewModelTests {
     private val getExpensesForDateUseCase = mockk<GetExpensesForDateUseCase>()

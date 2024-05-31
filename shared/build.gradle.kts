@@ -15,22 +15,21 @@ kotlin {
         }
     }
 
-    listOf(
-        iosX64(),
-        iosArm64(),
-        iosSimulatorArm64()
-    ).forEach { iosTarget ->
-        iosTarget.binaries.framework {
-            baseName = "DailyExpenses"
-            isStatic = true
-            // Required when using NativeSQLiteDriver
-            linkerOpts.add("-lsqlite3")
-        }
-    }
-
+//    listOf(
+//        iosX64(),
+//        iosArm64(),
+//        iosSimulatorArm64()
+//    ).forEach { iosTarget ->
+//        iosTarget.binaries.framework {
+//            baseName = "DailyExpenses"
+//            isStatic = true
+//            // Required when using NativeSQLiteDriver
+//            linkerOpts.add("-lsqlite3")
+//        }
+//    }
 
     jvm()
-    
+
     sourceSets {
         commonMain.dependencies {
             implementation(libs.kotlinx.serialization)

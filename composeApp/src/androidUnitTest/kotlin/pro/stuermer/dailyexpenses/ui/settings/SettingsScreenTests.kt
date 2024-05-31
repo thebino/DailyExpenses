@@ -2,9 +2,6 @@ package pro.stuermer.dailyexpenses.ui.settings
 
 //import app.cash.paparazzi.DeviceConfig
 //import app.cash.paparazzi.Paparazzi
-import org.junit.Rule
-import org.junit.Test
-import pro.stuermer.dailyexpenses.ui.theme.DailyExpensesTheme
 
 class SettingsScreenTests {
 //    @get:Rule

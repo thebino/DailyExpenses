@@ -14,10 +14,11 @@ import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransacti
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.jetbrains.exposed.sql.update
 import pro.stuermer.dailyexpenses.data.persistence.model.ExpensesTable
-import pro.stuermer.balloon.dailyexpenses.data.persistence.model.Instance
-import pro.stuermer.balloon.dailyexpenses.data.persistence.model.Instances
+import pro.stuermer.dailyexpenses.data.persistence.model.Instance
+import pro.stuermer.dailyexpenses.data.persistence.model.Instances
 import pro.stuermer.dailyexpenses.Expense as NetworkExpense
 
+@Suppress("TooManyFunctions")
 class DailyExpensesRepositoryImpl(
     testing: Boolean = false,
     host: String = "database",
@@ -44,7 +45,6 @@ class DailyExpensesRepositoryImpl(
                 "jdbc:mysql://$host:$port/$table"
             } else {
                 "jdbc:sqlite:./database.db"
-
             }
         }
         val database = Database.connect(
@@ -106,6 +106,7 @@ class DailyExpensesRepositoryImpl(
         }
     }
 
+    @Suppress("MaximumLineLength", "MaxLineLength")
     override suspend fun addExpenses(instance: String, expenses: List<NetworkExpense>) {
         // iterate through expenses
         expenses.forEach { remoteExpense: NetworkExpense ->
@@ -197,7 +198,8 @@ class DailyExpensesRepositoryImpl(
     override suspend fun deleteExpenseWithID(expenseID: String) {
         newSuspendedTransaction(Dispatchers.IO) {
             ExpensesTable.update({ ExpensesTable.id eq expenseID }) {
-                it[ExpensesTable.deletedDate] = LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)
+                it[ExpensesTable.deletedDate] =
+                    LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)
             }
         }
     }
@@ -213,12 +215,18 @@ class DailyExpensesRepositoryImpl(
         id: String
     ): NetworkExpense? {
         return newSuspendedTransaction(Dispatchers.IO) {
-            ExpensesTable.select { ExpensesTable.instance eq instance and (ExpensesTable.id eq id) }.limit(1)
+            ExpensesTable.select { ExpensesTable.instance eq instance and (ExpensesTable.id eq id) }
+                .limit(1)
                 .map(::resultRowToExpense).firstOrNull()
         }
     }
 
-    override suspend fun getExpenseForDate(instance: String, year: Int, month: Int): List<NetworkExpense> {
+    @Suppress("MaximumLineLength", "MaxLineLength")
+    override suspend fun getExpenseForDate(
+        instance: String,
+        year: Int,
+        month: Int
+    ): List<NetworkExpense> {
         return newSuspendedTransaction(Dispatchers.IO) {
             ExpensesTable.select { ExpensesTable.instance eq instance and (ExpensesTable.year eq year) and (ExpensesTable.month eq month) }
                 .map(::resultRowToExpense)
@@ -249,4 +257,3 @@ class DailyExpensesRepositoryImpl(
 }
 
 private fun String.toDateTime() = LocalDateTime.parse(this)
-

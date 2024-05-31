@@ -40,7 +40,8 @@ class MainActivity : AppCompatActivity() {
                             }
                         )
                     }
-                    composable("${AppRouting.EXPENSES}?description={description}&amount={amount}",
+                    composable(
+                        route = "${AppRouting.EXPENSES}?description={description}&amount={amount}",
                         arguments = listOf(
                             navArgument("description") {
                                 type = NavType.StringType

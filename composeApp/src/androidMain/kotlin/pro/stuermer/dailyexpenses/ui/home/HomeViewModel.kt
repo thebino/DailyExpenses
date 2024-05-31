@@ -8,7 +8,6 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import pro.stuermer.dailyexpenses.data.network.Resource
 import pro.stuermer.dailyexpenses.domain.model.Expense
 import pro.stuermer.dailyexpenses.domain.usecase.AddExpenseUseCase
@@ -42,6 +41,7 @@ class HomeViewModel(
                     uiState.update { it.copy(isLoading = false) }
                 }
             }
+
             HomeScreenEvent.SelectPreviousMonth -> {
                 uiState.update { it.copy(selectedDate = it.selectedDate.minusMonths(1)) }
                 viewModelScope.launch(Dispatchers.IO) {
@@ -62,6 +62,7 @@ class HomeViewModel(
                     uiState.update { it.copy(showInputDialog = false, selectedExpense = null) }
                 }
             }
+
             is HomeScreenEvent.UpdateEvent -> {
                 viewModelScope.launch(Dispatchers.IO) {
                     updateExpense(homeScreenEvent.expense)
@@ -80,8 +81,7 @@ class HomeViewModel(
             is HomeScreenEvent.EditExpenseEvent -> {
                 uiState.update {
                     it.copy(
-                        showInputDialog = true,
-                        selectedExpense = homeScreenEvent.expense
+                        showInputDialog = true, selectedExpense = homeScreenEvent.expense
                     )
                 }
             }
@@ -112,8 +112,7 @@ class HomeViewModel(
                 is Resource.Error -> {
                     uiState.update {
                         it.copy(
-                            error = result.message?.message,
-                            isLoading = false
+                            error = result.message?.message, isLoading = false
                         )
                     }
                 }
@@ -121,8 +120,7 @@ class HomeViewModel(
                 is Resource.Loading -> {
                     uiState.update {
                         it.copy(
-                            isLoading = true,
-                            error = null
+                            isLoading = true, error = null
                         )
                     }
                 }
@@ -130,9 +128,7 @@ class HomeViewModel(
                 is Resource.Success -> {
                     uiState.update {
                         it.copy(
-                            isLoading = false,
-                            error = null,
-                            items = result.data
+                            isLoading = false, error = null, items = result.data
                         )
                     }
                 }

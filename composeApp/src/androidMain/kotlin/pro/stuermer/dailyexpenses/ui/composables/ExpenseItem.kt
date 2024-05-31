@@ -2,7 +2,6 @@ package pro.stuermer.dailyexpenses.ui.composables
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -64,7 +63,8 @@ fun ExpenseItem(
             enabled = false,
             onClick = {
                 // ignore
-            }) {
+            }
+        ) {
             Icon(
                 imageVector = expense.category.icon,
                 tint = expense.category.color,

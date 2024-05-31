@@ -1,10 +1,8 @@
 package pro.stuermer.dailyexpenses.ui.settings
 
-import pro.stuermer.dailyexpenses.ui.home.HomeScreenEvent
-
 sealed interface SettingsEvent {
-    object EnableMaterialYou: SettingsEvent
-    object DisableMaterialYou: SettingsEvent
+    object EnableMaterialYou : SettingsEvent
+    object DisableMaterialYou : SettingsEvent
 
     object ShowShareDialog : SettingsEvent
     object HideShareDialog : SettingsEvent

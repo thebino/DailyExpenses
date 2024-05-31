@@ -70,7 +70,8 @@ fun Content(
                                 onDeleteClicked(it)
                             }
                             expenseToDelete.value = null
-                        }) {
+                        }
+                    ) {
                         Text(text = stringResource(id = android.R.string.ok))
                     }
                 },
@@ -78,7 +79,8 @@ fun Content(
                     Button(
                         onClick = {
                             expenseToDelete.value = null
-                        }) {
+                        }
+                    ) {
                         Text(text = stringResource(id = android.R.string.cancel))
                     }
                 }

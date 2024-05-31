@@ -58,6 +58,7 @@ fun SettingsScreen(
  * stateless
  */
 @OptIn(ExperimentalMaterial3Api::class)
+@Suppress("MaximumLineLength", "MaxLineLength")
 @Composable
 fun SettingsScreen(
     modifier: Modifier = Modifier,
@@ -149,7 +150,8 @@ fun SettingsScreen(
                     onDismissDialog = {
                         handleEvent(SettingsEvent.HideShareDialog)
                     }) {
-                    ShareContent(isLoading = uiState.isSharingLoading,
+                    ShareContent(
+                        isLoading = uiState.isSharingLoading,
                         isEnrolled = uiState.isShareingEnrolled,
                         shareCode = uiState.sharingCode,
                         error = uiState.sharingError,
@@ -164,7 +166,8 @@ fun SettingsScreen(
                         },
                         onShareLeaveClicked = {
                             handleEvent(SettingsEvent.LeaveSharing)
-                        })
+                        }
+                    )
                 }
             }
         }

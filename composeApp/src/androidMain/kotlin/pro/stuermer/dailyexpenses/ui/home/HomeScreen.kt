@@ -88,6 +88,7 @@ fun HomeScreen(
  * stateless
  */
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterialApi::class)
+@Suppress("LongMethod")
 @Composable
 fun HomeScreen(
     state: HomeScreenState,
@@ -162,7 +163,8 @@ fun HomeScreen(
                 verticalArrangement = Arrangement.Top,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                MonthPicker(startDate = LocalDate.now().minusYears(1),
+                MonthPicker(
+                    startDate = LocalDate.now().minusYears(1),
                     endDate = LocalDate.now(),
                     selectedDate = state.selectedDate,
                     onPrevious = { handleEvent(HomeScreenEvent.SelectPreviousMonth) },
@@ -170,7 +172,8 @@ fun HomeScreen(
 
                 val groups = state.items.groupBy { it.category }
 
-                Graph(modifier = Modifier.padding(horizontal = 16.dp),
+                Graph(
+                    modifier = Modifier.padding(horizontal = 16.dp),
                     width = 380.dp,
                     halfcircle = true,
                     chartData = groups.map { map ->
@@ -182,7 +185,8 @@ fun HomeScreen(
                             color = map.key.color,
                             label = categorySum.roundToInt().toString()
                         )
-                    })
+                    }
+                )
 
                 if (state.isLoading) {
                     Loading()
@@ -204,14 +208,15 @@ fun HomeScreen(
                 }
             }
 
-            BottomSheetDialog(modifier = Modifier.padding(top = 48.dp),
+            BottomSheetDialog(
+                modifier = Modifier.padding(top = 48.dp),
                 visible = state.showInputDialog,
                 contentPadding = contentPadding,
                 verticalArrangement = Arrangement.Bottom,
                 onDismissDialog = {
                     handleEvent(HomeScreenEvent.HideInput)
-                }) {
-
+                }
+            ) {
                 if (state.selectedExpense != null) {
                     activeExpense.value = state.selectedExpense
                 }

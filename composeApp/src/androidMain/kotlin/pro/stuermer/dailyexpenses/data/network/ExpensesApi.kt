@@ -23,6 +23,7 @@ interface ExpensesApi {
     suspend fun addExpenses(code: String, expenses: List<Expense>): Result<Boolean>
     suspend fun deleteIds(code: String, localDeletedIds: List<String>): Result<String>
 
+    @Suppress("TooGenericExceptionCaught")
     class Default(private val httpClient: HttpClient) : ExpensesApi {
         override suspend fun createSharing(): Result<String> {
             return try {

@@ -2,12 +2,6 @@ package pro.stuermer.dailyexpenses.ui.home
 
 //import app.cash.paparazzi.DeviceConfig
 //import app.cash.paparazzi.Paparazzi
-import org.junit.Rule
-import org.junit.Test
-import pro.stuermer.dailyexpenses.domain.model.Category
-import pro.stuermer.dailyexpenses.domain.model.Expense
-import pro.stuermer.dailyexpenses.ui.theme.DailyExpensesTheme
-import java.time.LocalDate
 
 class HomeScreenTests {
 //    @get:Rule

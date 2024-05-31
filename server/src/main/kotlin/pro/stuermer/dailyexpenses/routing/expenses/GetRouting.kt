@@ -11,6 +11,7 @@ import io.ktor.server.routing.get
 import java.time.LocalDate
 import pro.stuermer.dailyexpenses.data.repository.DailyExpensesRepository
 
+@Suppress("MaximumLineLength", "MaxLineLength")
 fun Route.getIndexRouting(repository: DailyExpensesRepository) {
     // get expenses (ALL or filtered)
     get {

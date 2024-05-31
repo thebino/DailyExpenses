@@ -32,7 +32,7 @@ class SettingsViewModel(
     fun handleEvent(event: SettingsEvent) {
         when (event) {
             SettingsEvent.EnableMaterialYou -> {
-                 uiState.update { it.copy(isMaterialYouEnabled = true) }
+                uiState.update { it.copy(isMaterialYouEnabled = true) }
             }
 
             SettingsEvent.DisableMaterialYou -> {
@@ -53,18 +53,22 @@ class SettingsViewModel(
                     val result = createSharingUseCase()
                     result.onSuccess { sharingCode: String ->
                         startSyncUseCase()
-                        uiState.update { it.copy(
-                            isSharingLoading = false,
-                            sharingCode = sharingCode,
-                            sharingError = null
-                        ) }
+                        uiState.update {
+                            it.copy(
+                                isSharingLoading = false,
+                                sharingCode = sharingCode,
+                                sharingError = null
+                            )
+                        }
                     }
 
                     result.onFailure {
-                        uiState.update { it.copy(
-                            isSharingLoading = false,
-                            sharingError = "Could not create sharing group!"
-                        ) }
+                        uiState.update {
+                            it.copy(
+                                isSharingLoading = false,
+                                sharingError = "Could not create sharing group!"
+                            )
+                        }
                     }
                 }
             }
@@ -90,23 +94,26 @@ class SettingsViewModel(
                             startSyncUseCase()
                             uiState.update {
                                 it.copy(
-                                    isSharingLoading = false,
-                                    sharingError = null
+                                    isSharingLoading = false, sharingError = null
                                 )
                             }
                         } else {
-                            uiState.update { it.copy(
-                                isSharingLoading = false,
-                                sharingError = "Could not join sharing group!"
-                            ) }
+                            uiState.update {
+                                it.copy(
+                                    isSharingLoading = false,
+                                    sharingError = "Could not join sharing group!"
+                                )
+                            }
                         }
                     }
 
                     result.onFailure {
-                        uiState.update { it.copy(
-                            isSharingLoading = false,
-                            sharingError = "Could not join sharing group!"
-                        ) }
+                        uiState.update {
+                            it.copy(
+                                isSharingLoading = false,
+                                sharingError = "Could not join sharing group!"
+                            )
+                        }
                     }
                 }
             }

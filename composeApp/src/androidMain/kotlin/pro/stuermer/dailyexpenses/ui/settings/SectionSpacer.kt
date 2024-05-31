@@ -25,7 +25,7 @@ fun SectionSpacer(modifier: Modifier = Modifier) {
 
 @Preview
 @Composable
-fun Preview_SectionSpacer() {
+fun SectionSpacerPreview() {
     MaterialTheme {
         SectionSpacer(modifier = Modifier.fillMaxWidth())
     }

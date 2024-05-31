@@ -64,6 +64,7 @@ fun LicenseSettingItem(
     }
 }
 
+@Suppress("MaximumLineLength", "MaxLineLength")
 @Preview
 @Composable
 fun LicenseSettingItemPreview() {

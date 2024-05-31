@@ -65,7 +65,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: detekt
-          path: app/build/reports/detekt/
+          path: build/reports/detekt/
 
   lint:
     runs-on: ubuntu-latest
@@ -113,7 +113,7 @@ jobs:
 
       - name: Run debug unit tests
         run: |
-          ./gradlew --console=plain koverXmlReport --stacktrace
+          ./gradlew --console=plain koverXmlReportDebug --stacktrace
 
       - name: Upload test reports
         if: always()

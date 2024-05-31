@@ -1,3 +1,6 @@
+import io.gitlab.arturbosch.detekt.Detekt
+import io.gitlab.arturbosch.detekt.DetektCreateBaselineTask
+
 plugins {
     // this is necessary to avoid the plugins to be loaded multiple times
     // in each subproject's classloader
@@ -7,4 +10,42 @@ plugins {
     alias(libs.plugins.compose.compiler) apply false
     alias(libs.plugins.jetbrains.kotlin.jvm) apply false
     alias(libs.plugins.kotlin.multiplatform) apply false
+    alias(libs.plugins.detekt)
+}
+
+dependencies {
+    detektPlugins(libs.detekt.formatting)
+}
+
+detekt {
+    autoCorrect = true
+    buildUponDefaultConfig = true
+//    @Suppress("DEPRECATION")
+//    config = files("${project.rootDir}/detekt.yml")
+    config.setFrom("${project.rootDir}/detekt.yml")
+}
+
+tasks.withType<DetektCreateBaselineTask>().configureEach {
+    jvmTarget = JavaVersion.VERSION_1_8.toString()
+}
+
+tasks.withType<Detekt>().configureEach {
+    jvmTarget = JavaVersion.VERSION_1_8.toString()
+    reports {
+        html.required.set(true)
+        md.required.set(true)
+        sarif.required.set(false)
+        txt.required.set(false)
+        xml.required.set(false)
+    }
+}
+
+val detektAll by tasks.registering(Detekt::class) {
+    description = "Run detekt analysis on entire project"
+    parallel = true
+    buildUponDefaultConfig = true
+    config.setFrom("${project.rootDir}/detekt.yml")
+    setSource(files(projectDir))
+    include("**/*.kt", "**/*.kts")
+    exclude("resources/", "*/build/*")
 }

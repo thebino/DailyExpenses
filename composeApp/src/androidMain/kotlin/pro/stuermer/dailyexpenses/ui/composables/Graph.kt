@@ -5,7 +5,6 @@ import android.graphics.Typeface
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.TweenSpec
 import androidx.compose.foundation.Canvas
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -21,7 +20,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
@@ -50,8 +48,7 @@ fun Graph(
     }
     LaunchedEffect(chartData) {
         transitionAnimation.animateTo(
-            1f,
-            animationSpec = TweenSpec(durationMillis = 750)
+            1f, animationSpec = TweenSpec(durationMillis = 750)
         )
     }
 
@@ -98,7 +95,11 @@ fun Graph(
                         totalAngle * (chartData.value * transitionAnimation.value) / sumOfDataSet
 
                     val strokeWidth = (width.value / 4 * 2) //160f
-                    val verticalOffset = if (halfcircle) { radius } else { 0f }
+                    val verticalOffset = if (halfcircle) {
+                        radius
+                    } else {
+                        0f
+                    }
 
                     drawArc(
                         color = chartData.color,
@@ -107,8 +108,7 @@ fun Graph(
                         useCenter = false,
                         topLeft = Offset(strokeWidth / 2, strokeWidth / 2 - verticalOffset),
                         size = Size(
-                            width = radius * 2f - strokeWidth,
-                            height = radius * 2f - strokeWidth
+                            width = radius * 2f - strokeWidth, height = radius * 2f - strokeWidth
                         ),
                         alpha = 0.7f,
                         style = Stroke(strokeWidth, cap = StrokeCap.Butt),
@@ -126,10 +126,7 @@ fun Graph(
                                 ((radiusWithBorder + outerMargin) * sin(medianAngle)).toFloat() + radius
 
                             it.nativeCanvas.drawText(
-                                chartData.value.toString(),
-                                drawAtX,
-                                drawAtY,
-                                labelTextPaint
+                                chartData.value.toString(), drawAtX, drawAtY, labelTextPaint
                             )
                         }
                     }

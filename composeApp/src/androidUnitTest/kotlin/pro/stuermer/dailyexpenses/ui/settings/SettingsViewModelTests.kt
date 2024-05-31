@@ -22,6 +22,7 @@ class SettingsViewModelTests {
     private val leaveSharingUseCase = mockk<LeaveSharingUseCase>()
     private val startSyncUseCase = mockk<StartSyncUseCase>()
 
+    @Suppress("TooGenericExceptionThrown")
     @Test
     fun `successfully load sharing should be reflected in the uistate`() = runTest {
         // given
@@ -173,7 +174,6 @@ class SettingsViewModelTests {
         // assertEquals(expected = "Could not join sharing group!", actual = settingsUiState.sharingError)
 //        assertEquals(expected = false, actual = settingsUiState.isSharingLoading)
     }
-
 
     @Test
     fun `entering a sharing code should update the uistate`() = runTest {

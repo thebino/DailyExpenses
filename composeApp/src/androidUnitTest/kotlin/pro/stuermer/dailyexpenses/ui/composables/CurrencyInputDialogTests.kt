@@ -2,12 +2,8 @@ package pro.stuermer.dailyexpenses.ui.composables
 
 //import app.cash.paparazzi.DeviceConfig.Companion.PIXEL_3
 //import app.cash.paparazzi.Paparazzi
-import org.junit.Rule
-import org.junit.Test
-import pro.stuermer.dailyexpenses.domain.model.Category
-import pro.stuermer.dailyexpenses.ui.theme.DailyExpensesTheme
-import java.time.LocalDate
 
+@Suppress("NoUnusedImports")
 class CurrencyInputDialogTests {
 //    @get:Rule
 //    val paparazzi = Paparazzi()

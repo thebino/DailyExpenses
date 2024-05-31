@@ -1,8 +1,5 @@
 package pro.stuermer.dailyexpenses.data.repository
 
-import java.time.LocalDate
-import java.time.LocalDateTime
-import java.util.UUID
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.first
@@ -16,14 +13,15 @@ import pro.stuermer.dailyexpenses.data.persistence.ExpensesDao
 import pro.stuermer.dailyexpenses.data.persistence.SharingDao
 import pro.stuermer.dailyexpenses.domain.model.Expense
 import timber.log.Timber
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.util.UUID
 import pro.stuermer.dailyexpenses.data.model.Expense as NetworkExpense
 import pro.stuermer.dailyexpenses.data.persistence.model.Expense as PersistedExpense
 import pro.stuermer.dailyexpenses.domain.model.Expense as DomainExpense
 
 class ExpensesRepositoryImpl(
-    private val api: ExpensesApi,
-    private val dao: ExpensesDao,
-    private val sharingDao: SharingDao
+    private val api: ExpensesApi, private val dao: ExpensesDao, private val sharingDao: SharingDao
 ) : ExpensesRepository {
     override suspend fun addExpense(expense: DomainExpense) {
         dao.insert(expense.toPersistenceModel().copy(identifier = UUID.randomUUID().toString()))
@@ -42,16 +40,13 @@ class ExpensesRepositoryImpl(
     /**
      * Returns all expenses even deleted ones.
      */
-    override suspend fun getExpenses(): Flow<List<DomainExpense>> = dao.getAllExpenses()
-        .map { expenses: List<PersistedExpense> ->
-            expenses
-                .filter { expense ->
-                    expense.deletedDate == null
-                }
-                .map { expense ->
-                    expense.toDomainModel()
-                }
-                .reversed()
+    override suspend fun getExpenses(): Flow<List<DomainExpense>> =
+        dao.getAllExpenses().map { expenses: List<PersistedExpense> ->
+            expenses.filter { expense ->
+                expense.deletedDate == null
+            }.map { expense ->
+                expense.toDomainModel()
+            }.reversed()
         }
 
     /**
@@ -63,11 +58,13 @@ class ExpensesRepositoryImpl(
             toDate = LocalDate.of(date.year, date.month, 1)
                 .plusDays(LocalDate.of(date.year, date.month, 1).lengthOfMonth() - 1L)
         ).map { expenses: List<PersistedExpense> ->
-            Resource.Success(expenses.filter { expense ->
+            Resource.Success(
+                data = expenses.filter { expense ->
                 expense.deletedDate == null
             }.map { expense ->
                 expense.toDomainModel()
-            }.reversed())
+            }.reversed()
+            )
         }.onStart {
             Resource.Loading
         }.catch {
@@ -105,8 +102,7 @@ class ExpensesRepositoryImpl(
         val persistedExpenses: List<PersistedExpense> = dao.getAllExpenses().first()
         val localExpenses: List<NetworkExpense> = persistedExpenses.map { it.toNetworkExpense() }
         val uploadResponse = api.addExpenses(
-            code = sharingGroup,
-            expenses = localExpenses
+            code = sharingGroup, expenses = localExpenses
         )
 
         uploadResponse.onSuccess {
@@ -120,6 +116,7 @@ class ExpensesRepositoryImpl(
         return true
     }
 
+    @Suppress("MaximumLineLength", "MaxLineLength", "MaxLineLength", "SpreadOperator")
     private suspend fun downloadRemoteExpenses(sharingGroup: String): Boolean {
         val persistedExpenses: List<PersistedExpense> = dao.getAllExpenses().first()
         val onlineExpenses = api.getExpenses(sharingGroup)
@@ -154,8 +151,7 @@ class ExpensesRepositoryImpl(
                     localExpense.updatedDate != null && remoteExpense.updatedDate != null && localExpense.updatedDate > remoteExpense.updatedDate -> {
                         // local update is newer, update remote
                         api.addExpenses(
-                            code = sharingGroup,
-                            expenses = listOf(localExpense.toNetworkExpense())
+                            code = sharingGroup, expenses = listOf(localExpense.toNetworkExpense())
                         )
                     }
 
@@ -166,9 +162,11 @@ class ExpensesRepositoryImpl(
             }
 
             // save network data in cache
-            dao.insert(*expenses.map { expense ->
+            dao.insert(
+                *expenses.map { expense ->
                 expense.toPersistenceExpense()
-            }.toTypedArray())
+            }.toTypedArray()
+            )
         }
 
         onlineExpenses.onFailure {

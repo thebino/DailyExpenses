@@ -1,9 +1,7 @@
 package pro.stuermer.dailyexpenses
 
 import guru.zoroark.tegral.openapi.dsl.apiKeyType
-import guru.zoroark.tegral.openapi.dsl.httpType
 import guru.zoroark.tegral.openapi.dsl.inHeader
-import io.ktor.server.routing.*
 import guru.zoroark.tegral.openapi.dsl.schema
 import guru.zoroark.tegral.openapi.ktor.TegralOpenApiKtor
 import guru.zoroark.tegral.openapi.ktor.describe
@@ -35,44 +33,40 @@ import io.ktor.server.plugins.ratelimit.RateLimit
 import io.ktor.server.plugins.ratelimit.RateLimitName
 import io.ktor.server.response.respond
 import io.ktor.server.routing.get
+import io.ktor.server.routing.route
 import io.ktor.server.routing.routing
-import io.swagger.v3.oas.models.security.SecurityScheme
 import java.io.File
 import kotlin.reflect.typeOf
 import kotlin.time.Duration.Companion.seconds
-import pro.stuermer.balloon.dailyexpenses.data.persistence.model.Instance
+import pro.stuermer.dailyexpenses.data.persistence.model.Instance
 import pro.stuermer.dailyexpenses.data.repository.DailyExpensesRepository
 import pro.stuermer.dailyexpenses.data.repository.DailyExpensesRepositoryImpl
-import pro.stuermer.dailyexpenses.routing.expenses.deleteIndexRouting
-import pro.stuermer.dailyexpenses.routing.frontend.getExpenses
-import pro.stuermer.dailyexpenses.routing.frontend.getInvite
 import pro.stuermer.dailyexpenses.routing.categories.getCategoriesRouting
+import pro.stuermer.dailyexpenses.routing.expenses.deleteIndexRouting
 import pro.stuermer.dailyexpenses.routing.expenses.getIndexRouting
-import pro.stuermer.dailyexpenses.routing.sharings.getSharingRouting
 import pro.stuermer.dailyexpenses.routing.expenses.postIndexRouting
-import pro.stuermer.dailyexpenses.routing.sharings.postSharingRouting
 import pro.stuermer.dailyexpenses.routing.expenses.putIndexRouting
+import pro.stuermer.dailyexpenses.routing.sharings.getSharingRouting
+import pro.stuermer.dailyexpenses.routing.sharings.postSharingRouting
 
 fun main(args: Array<String>): Unit = io.ktor.server.jetty.EngineMain.main(args)
 
-@Suppress("unused") // Referenced in application.conf
+@Suppress("unused", "MaximumLineLength", "MaxLineLength") // Referenced in application.conf
 fun Application.mainModule() {
-
-
     // automatic openapi and swagger documentation
     install(TegralOpenApiKtor) {
         title = "DailyExpenses"
         version = "1.4.0"
-        description = """
-                This server provides endpoints for sharing expenses with the [Daily Expenses](https://github.com/thebino/dailyexpenses) mobile application.
-            """.trimIndent()
+        description =
+            """This server provides endpoints for sharing expenses with the [Daily Expenses](https://github.com/thebino/dailyexpenses) mobile application.""".trimIndent()
         summary = "Summary"
         licenseName = "Apache 2.0"
         licenseUrl = "http://www.apache.org/licenses/LICENSE-2.0.html"
         licenseIdentifier = "Apache 2.0"
         "http://127.0.0.1:8080" server {}
         "dailyexpense" tag {
-            description = "Endpoints for sharing expenses with the Daily Expenses mobile application."
+            description =
+                "Endpoints for sharing expenses with the Daily Expenses mobile application."
             externalDocsDescription = "Daily expenses"
             externalDocsUrl = "https://github.com/thebino/dailyexpenses"
         }
@@ -82,7 +76,6 @@ fun Application.mainModule() {
             name = "Authorization"
             description = "This is the description of my security scheme"
         }
-
     }
     install(TegralSwaggerUiKtor)
 
@@ -120,7 +113,7 @@ fun Application.mainModule() {
 
     // add custom server heades
     install(DefaultHeaders) {
-        header(HttpHeaders.Server, "Balloon/1.4.0")
+        header(HttpHeaders.Server, "DailyExpenses/1.4.0")
     }
 
     install(Authentication) {
@@ -172,7 +165,8 @@ fun Application.expensesModule(
     installAuth: Boolean = true
 ) {
     val host = environment.config.propertyOrNull("ktor.application.database.host")?.getString()
-    val port = environment.config.propertyOrNull("ktor.application.database.port")?.getString()?.toInt()
+    val port =
+        environment.config.propertyOrNull("ktor.application.database.port")?.getString()?.toInt()
     val user = environment.config.propertyOrNull("ktor.application.database.user")?.getString()
     val pass = environment.config.propertyOrNull("ktor.application.database.pass")?.getString()
     val table = environment.config.propertyOrNull("ktor.application.database.table")?.getString()
@@ -180,9 +174,9 @@ fun Application.expensesModule(
         testing = testing,
         host = host ?: "localhost",
         port = port ?: 3006,
-        user = user ?: "balloon",
-        pass = pass ?: "balloon",
-        table = table ?: "balloon"
+        user = user ?: "expenses",
+        pass = pass ?: "expenses",
+        table = table ?: "expenses"
     )
 
     if (installAuth) {

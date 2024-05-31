@@ -41,8 +41,7 @@ fun SettingsIcon(
                 indication = rememberRipple(bounded = false),
             ) {
                 onClick()
-            },
-        contentAlignment = Alignment.Center
+            }, contentAlignment = Alignment.Center
     ) {
         Box(
             modifier = Modifier
@@ -67,5 +66,4 @@ fun SettingsIcon(
             }
         }
     }
-
 }

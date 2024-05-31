@@ -7,6 +7,7 @@ import io.ktor.client.request.get
 import io.ktor.client.request.post
 import io.ktor.client.request.put
 import io.ktor.client.request.setBody
+import io.ktor.client.statement.bodyAsText
 import io.ktor.http.ContentType
 import io.ktor.http.HttpHeaders
 import io.ktor.http.HttpStatusCode
@@ -18,8 +19,8 @@ import io.ktor.server.auth.UserIdPrincipal
 import io.ktor.server.auth.basic
 import io.ktor.server.config.ApplicationConfig
 import io.ktor.server.testing.testApplication
-import java.util.Base64
-import java.util.UUID
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 import org.jetbrains.exposed.sql.ResultRow
 import org.jetbrains.exposed.sql.and
 import org.jetbrains.exposed.sql.deleteAll
@@ -30,28 +31,37 @@ import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.junit.Assert
 import org.junit.Test
-import pro.stuermer.dailyexpenses.data.persistence.model.Expense as DatabaseExpense
-import pro.stuermer.dailyexpenses.Expense as NetworkExpense
+import pro.stuermer.dailyexpenses.data.persistence.model.Instances
 import pro.stuermer.dailyexpenses.data.persistence.model.ExpensesTable
-import pro.stuermer.balloon.dailyexpenses.data.persistence.model.Instances
+import java.util.Base64
+import java.util.UUID
+import pro.stuermer.dailyexpenses.Expense as NetworkExpense
+import pro.stuermer.dailyexpenses.data.persistence.model.Expense as DatabaseExpense
 
 class DailyExpensesTests {
     @Test
-    fun `post a new sharing group should respond with a valid code`() = testApplication {
+    fun `get root should succeed`() = testApplication {
         // given
-        val httpClient = createClient {
-            install(ContentNegotiation) {
-                json()
-            }
-        }
+        val versionInfo = VersionInfo(version = "1.4.0")
+        val expected = Json.encodeToString(versionInfo)
 
         // when
-        val response = httpClient.post("/api/expense/sharing")
+        val response = client.get("/")
+
+        // then
+        kotlin.test.assertEquals(HttpStatusCode.OK, response.status)
+        kotlin.test.assertEquals(expected, response.bodyAsText())
+    }
+
+    @Test
+    fun `post a new sharing group should respond with a valid code`() = testApplication {
+        // when
+        val response = client.post("/api/sharing")
 
         // then
         Assert.assertEquals(HttpStatusCode.Created, response.status)
         Assert.assertNotNull(response.headers[HttpHeaders.Location])
-        Assert.assertTrue(response.headers[HttpHeaders.Location]!!.contains("/api/expense/sharing"))
+        Assert.assertTrue(response.headers[HttpHeaders.Location]!!.contains("/api/sharing"))
     }
 
     @Test
@@ -78,7 +88,7 @@ class DailyExpensesTests {
         }
 
         // when
-        val response = httpClient.get("/api/expense/sharing?code=A1B2C3")
+        val response = httpClient.get("/api/sharing?code=A1B2C3")
 
         // then
         Assert.assertEquals(HttpStatusCode.OK, response.status)
@@ -94,7 +104,7 @@ class DailyExpensesTests {
         }
 
         // when
-        val response = httpClient.get("/api/expense/sharing?code=A1B2")
+        val response = httpClient.get("/api/sharing?code=A1B2")
 
         // then
         Assert.assertEquals(HttpStatusCode.BadRequest, response.status)
@@ -110,7 +120,7 @@ class DailyExpensesTests {
         }
 
         // when
-        val response = httpClient.get("/api/expense/sharing?code=A1B2?x")
+        val response = httpClient.get("/api/sharing?code=A1B2?x")
 
         // then
         Assert.assertEquals(HttpStatusCode.NotAcceptable, response.status)
@@ -126,7 +136,7 @@ class DailyExpensesTests {
         }
 
         // when
-        val response = httpClient.get("/api/expense")
+        val response = httpClient.get("/api")
 
         // then
         Assert.assertEquals(HttpStatusCode.Unauthorized, response.status)
@@ -155,7 +165,7 @@ class DailyExpensesTests {
         }
 
         // when
-        val response = httpClient.get("/api/expense") {
+        val response = httpClient.get("/api") {
             val credentials = Base64.getEncoder().encodeToString("A1B2C3:".toByteArray())
             headers.append(HttpHeaders.Authorization, "Basic $credentials")
         }
@@ -215,7 +225,7 @@ class DailyExpensesTests {
         }
 
         // when
-        val response = httpClient.get("/api/expense") {
+        val response = httpClient.get("/api") {
             val credentials = Base64.getEncoder().encodeToString("test:".toByteArray())
             headers.append(HttpHeaders.Authorization, "Basic $credentials")
         }
@@ -226,66 +236,67 @@ class DailyExpensesTests {
     }
 
     @Test
-    fun `get expenses with auth and date query should return only filtered expenses`() = testApplication {
-        // given
-        environment {
-            config = ApplicationConfig("application-test.conf")
-        }
-        application {
-            mainModule()
-            // install fake authentication for testing
-            plugin(Authentication).configure {
-                basic("expenses-basic") {
-                    validate {
-                        UserIdPrincipal("test")
+    fun `get expenses with auth and date query should return only filtered expenses`() =
+        testApplication {
+            // given
+            environment {
+                config = ApplicationConfig("application-test.conf")
+            }
+            application {
+                mainModule()
+                // install fake authentication for testing
+                plugin(Authentication).configure {
+                    basic("expenses-basic") {
+                        validate {
+                            UserIdPrincipal("test")
+                        }
+                    }
+                }
+                expensesModule(testing = true, installAuth = false)
+
+                transaction {
+                    ExpensesTable.deleteAll()
+                    ExpensesTable.insert {
+                        it[id] = "1"
+                        it[instance] = "test"
+                        it[category] = "1"
+                        it[year] = 2021
+                        it[month] = 1
+                        it[day] = 10
+                        it[creationDate] = "2021-01-10"
+                        it[description] = "description 1"
+                        it[amount] = 1.23f
+                    }
+                    ExpensesTable.insert {
+                        it[id] = "2"
+                        it[instance] = "test"
+                        it[category] = "2"
+                        it[year] = 2022
+                        it[month] = 2
+                        it[day] = 20
+                        it[creationDate] = "2022-02-20"
+                        it[description] = "description 2"
+                        it[amount] = 3.14f
                     }
                 }
             }
-            expensesModule(testing = true, installAuth = false)
-
-            transaction {
-                ExpensesTable.deleteAll()
-                ExpensesTable.insert {
-                    it[id] = "1"
-                    it[instance] = "test"
-                    it[category] = "1"
-                    it[year] = 2021
-                    it[month] = 1
-                    it[day] = 10
-                    it[creationDate] = "2021-01-10"
-                    it[description] = "description 1"
-                    it[amount] = 1.23f
-                }
-                ExpensesTable.insert {
-                    it[id] = "2"
-                    it[instance] = "test"
-                    it[category] = "2"
-                    it[year] = 2022
-                    it[month] = 2
-                    it[day] = 20
-                    it[creationDate] = "2022-02-20"
-                    it[description] = "description 2"
-                    it[amount] = 3.14f
+            val httpClient = createClient {
+                install(ContentNegotiation) {
+                    json()
                 }
             }
-        }
-        val httpClient = createClient {
-            install(ContentNegotiation) {
-                json()
+
+            // when
+            val response = httpClient.get("/api?year=2022&month=2") {
+                val credentials = Base64.getEncoder().encodeToString("test:".toByteArray())
+                headers.append(HttpHeaders.Authorization, "Basic $credentials")
             }
-        }
 
-        // when
-        val response = httpClient.get("/api/expense?year=2022&month=2") {
-            val credentials = Base64.getEncoder().encodeToString("test:".toByteArray())
-            headers.append(HttpHeaders.Authorization, "Basic $credentials")
+            // then
+            Assert.assertEquals(HttpStatusCode.OK, response.status)
+            Assert.assertEquals(1, response.body<List<NetworkExpense>>().size)
+            Assert.assertEquals("2022-02-20", response.body<List<NetworkExpense>>()[0].expenseDate)
         }
-
-        // then
-        Assert.assertEquals(HttpStatusCode.OK, response.status)
-        Assert.assertEquals(1, response.body<List<NetworkExpense>>().size)
-        Assert.assertEquals("2022-02-20", response.body<List<NetworkExpense>>()[0].expenseDate)
-    }
 
     @Test
     fun `post new expenses should succeed`() = testApplication {
@@ -337,7 +348,7 @@ class DailyExpensesTests {
             amount = 1.0f,
         )
         val body = listOf(expense1, expense2)
-        val response = httpClient.post("/api/expense") {
+        val response = httpClient.post("/api") {
             val credentials = Base64.getEncoder().encodeToString("125EFG:".toByteArray())
             headers.append(HttpHeaders.Authorization, "Basic $credentials")
             contentType(ContentType.Application.Json)
@@ -358,6 +369,7 @@ class DailyExpensesTests {
         Assert.assertEquals("2022-11-27T12:15:30", row[1].updatedDate)
     }
 
+    @Suppress("MaximumLineLength", "MaxLineLength")
     @Test
     fun `put changes into existing expense should succeed`() = testApplication {
         // given
@@ -398,7 +410,7 @@ class DailyExpensesTests {
         }
 
         // when
-        val response = httpClient.put("/api/expense") {
+        val response = httpClient.put("/api") {
             val credentials = Base64.getEncoder().encodeToString("test:".toByteArray())
             headers.append(HttpHeaders.Authorization, "Basic $credentials")
             headers.append(HttpHeaders.ContentType, "application/json")
@@ -419,7 +431,8 @@ class DailyExpensesTests {
         // then
         Assert.assertEquals(HttpStatusCode.OK, response.status)
         val row = transaction {
-            ExpensesTable.select { ExpensesTable.instance eq "test" and (ExpensesTable.id eq "ad95512e-1703-431b-9492-3339dc7a7f0f") }.limit(1).firstOrNull()
+            ExpensesTable.select { ExpensesTable.instance eq "test" and (ExpensesTable.id eq "ad95512e-1703-431b-9492-3339dc7a7f0f") }
+                .limit(1).firstOrNull()
         }
 
         Assert.assertNotNull(row)
@@ -435,6 +448,7 @@ class DailyExpensesTests {
         Assert.assertEquals(2.34f, row[ExpensesTable.amount])
     }
 
+    @Suppress("MaximumLineLength", "MaxLineLength")
     @Test
     fun `delete expense should succeed`() = testApplication {
         // given
@@ -486,7 +500,7 @@ class DailyExpensesTests {
         }
 
         // when
-        val response = httpClient.delete("/api/expense") {
+        val response = httpClient.delete("/api") {
             val credentials = Base64.getEncoder().encodeToString("test:".toByteArray())
             headers.append(HttpHeaders.Authorization, "Basic $credentials")
             headers.append(HttpHeaders.ContentType, "application/json")
@@ -501,7 +515,8 @@ class DailyExpensesTests {
         // then
         Assert.assertEquals(HttpStatusCode.OK, response.status)
         val expenses = transaction {
-            ExpensesTable.select { ExpensesTable.id eq "ad95512e-1703-431b-9492-3339dc7a7f0f" or (ExpensesTable.id eq "74ef4dfc-4932-4275-aa72-d3e453ad74d3") }.map(::resultRowToExpense)
+            ExpensesTable.select { ExpensesTable.id eq "ad95512e-1703-431b-9492-3339dc7a7f0f" or (ExpensesTable.id eq "74ef4dfc-4932-4275-aa72-d3e453ad74d3") }
+                .map(::resultRowToExpense)
         }
 
         Assert.assertNotNull(expenses)
@@ -511,11 +526,14 @@ class DailyExpensesTests {
         Assert.assertNotNull(expenses[1].deletedDate)
     }
 
+    @Suppress("MaximumLineLength", "MaxLineLength")
     private fun resultRowToExpense(row: ResultRow) = DatabaseExpense(
         id = row[ExpensesTable.id],
         instance = row[ExpensesTable.instance],
         category = row[ExpensesTable.category],
-        expenseDate = "${row[ExpensesTable.year]}-${row[ExpensesTable.month].toString().padStart(2, '0')}-${row[ExpensesTable.day].toString().padStart(2, '0')}",
+        expenseDate = "${row[ExpensesTable.year]}-${
+            row[ExpensesTable.month].toString().padStart(2, '0')
+        }-${row[ExpensesTable.day].toString().padStart(2, '0')}",
         creationDate = row[ExpensesTable.creationDate],
         updatedDate = row[ExpensesTable.updatedDate],
         deletedDate = row[ExpensesTable.deletedDate],

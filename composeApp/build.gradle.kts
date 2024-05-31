@@ -1,5 +1,5 @@
-import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
+import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
@@ -9,7 +9,6 @@ plugins {
     alias(libs.plugins.compose.compiler)
     alias(libs.plugins.ksp)
     alias(libs.plugins.room)
-    alias(libs.plugins.detekt)
     alias(libs.plugins.kover)
 //    alias(libs.plugins.screenshot)
 }
@@ -23,18 +22,19 @@ kotlin {
     }
 
     jvm("desktop")
-    
-    listOf(
-        iosX64(),
-        iosArm64(),
-        iosSimulatorArm64()
-    ).forEach { iosTarget ->
-        iosTarget.binaries.framework {
-            baseName = "ComposeApp"
-            isStatic = true
-        }
-    }
-    
+
+    // TODO: enable iOS
+//    listOf(
+//        iosX64(),
+//        iosArm64(),
+//        iosSimulatorArm64()
+//    ).forEach { iosTarget ->
+//        iosTarget.binaries.framework {
+//            baseName = "ComposeApp"
+//            isStatic = true
+//        }
+//    }
+
     sourceSets {
         commonMain.dependencies {
             implementation(compose.runtime)
@@ -47,9 +47,7 @@ kotlin {
 
             implementation(libs.androidx.room.runtime)
         }
-        commonTest.dependencies {
-
-        }
+        commonTest.dependencies {}
 
         val desktopMain by getting
         desktopMain.dependencies {
@@ -57,31 +55,26 @@ kotlin {
         }
 
         androidMain.dependencies {
+            // core
             implementation(compose.preview)
             implementation(libs.androidx.activity.compose)
-
             implementation(libs.androidx.core.ktx)
 
             // Coroutines
             implementation(libs.jetbrains.kotlinx.coroutines.core)
             implementation(libs.jetbrains.kotlinx.coroutines.android)
 
-
             // dependency injection
             implementation(libs.bundles.koin)
-
 
             // Work
             implementation(libs.androidx.work.runtime.ktx)
 
-
             // Serialization
             implementation(libs.jetbrains.kotlinx.serialization.json)
 
-
             // Logging
             implementation(libs.com.jakewharton.timber)
-
 
             // Compose
             implementation(libs.androidx.activity.compose)
@@ -92,48 +85,23 @@ kotlin {
 
             // Android Studio Preview support
             implementation(libs.compose.tooling.preview)
-//             debugImplementation(libs.compose.tooling)
-
-            // UI Tests
-//            androidTestImplementation(libs.compose.ui.test.junit4)
-//            debugImplementation(libs.compose.ui.test.manifest)
 
             implementation(libs.compose.material.icons.core)
             implementation(libs.compose.material.icons.extended)
 
-
             // Constraint Layout
-//            implementation(libs.androidx.constraintlayout)
             implementation(libs.androidx.constraintlayout.compose)
             implementation(libs.androidx.lifecycle.viewmodel.compose)
-
-
 
             // Persistence
             implementation(libs.androidx.datastore.preferences)
             implementation(libs.androidx.room.runtime)
             implementation(libs.androidx.room.ktx)
-//            kapt(libs.androidx.room.compiler)
-//            testImplementation(libs.androidx.room.testing)
-
 
             // ktor
             implementation(libs.bundles.ktor)
-
-
-
-            // Accompanist
-//            implementation(libs.bundles.accompanist)
-
-
-            // Testing
-
-
-            // Instrumented testing
-//            androidTestImplementation(libs.kotlin.test)
-//            androidTestImplementation(libs.androidx.test.ext.junit)
-//            androidTestImplementation(libs.androidx.test.espresso.core)
         }
+
         // androidUnitTest.dependencies doesn't exist
         val androidUnitTest by getting {
             dependencies {
@@ -152,8 +120,6 @@ kotlin {
             dependencies {
                 @OptIn(org.jetbrains.compose.ExperimentalComposeLibrary::class)
                 implementation(compose.uiTest)
-//                implementation(libs.compose.ui.test.junit4)
-//                implementation(libs.compose.ui.test.manifest)
             }
         }
     }
@@ -210,13 +176,6 @@ compose.desktop {
         }
     }
 }
-
-//dependencies {
-//    add("kspAndroid", libs.androidx.room.compiler)
-//    add("kspIosSimulatorArm64", libs.androidx.room.compiler)
-//    add("kspIosX64", libs.androidx.room.compiler)
-//    add("kspIosArm64", libs.androidx.room.compiler)
-//}
 
 room {
     // composeApp/schemas

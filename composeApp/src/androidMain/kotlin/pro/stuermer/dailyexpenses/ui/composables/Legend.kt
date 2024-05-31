@@ -1,4 +1,5 @@
 @file:Suppress("MagicNumber")
+
 package pro.stuermer.dailyexpenses.ui.composables
 
 import androidx.compose.foundation.background
@@ -23,11 +24,11 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import java.lang.Integer.min
 import pro.stuermer.dailyexpenses.domain.model.Category
 import pro.stuermer.dailyexpenses.domain.model.GraphData
 import pro.stuermer.dailyexpenses.domain.model.nameResource
 import pro.stuermer.dailyexpenses.ui.theme.neuropoliticalFamily
+import java.lang.Integer.min
 
 @Composable
 fun Legend(
@@ -84,7 +85,7 @@ fun LegendItem(
 
 @Preview
 @Composable
-fun Preview_Legend() {
+fun LegendPreview() {
     MaterialTheme {
         Legend(
             chartData = fakeChartData
@@ -94,11 +95,10 @@ fun Preview_Legend() {
 
 @Preview(showBackground = true)
 @Composable
-fun Preview_LegendItem() {
+fun LegendItemPreview() {
     MaterialTheme {
         LegendItem(
-            data = fakeChartData[0],
-            sum = fakeChartData[0].value
+            data = fakeChartData[0], sum = fakeChartData[0].value
         )
     }
 }

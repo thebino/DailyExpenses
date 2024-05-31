@@ -47,9 +47,9 @@ import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.Lifecycle
-import java.lang.IndexOutOfBoundsException
 import pro.stuermer.dailyexpenses.R
 
+@Suppress("LongParameterList")
 @Composable
 fun ShareContent(
     modifier: Modifier = Modifier,
@@ -129,8 +129,7 @@ fun ShareContent(
             }
         } else {
             Button(
-                modifier = Modifier,
-                onClick = onShareLeaveClicked
+                modifier = Modifier, onClick = onShareLeaveClicked
             ) {
                 Text(text = stringResource(R.string.share_dialog_button_stop))
             }
@@ -138,6 +137,7 @@ fun ShareContent(
     }
 }
 
+@Suppress("SwallowedException", "TooGenericExceptionCaught")
 @Composable
 fun PinInput(
     modifier: Modifier = Modifier,
@@ -201,7 +201,8 @@ fun PinInput(
                     }
                     focusRequester.requestFocus()
                     keyboard?.show()
-                }, value = value.getOrNull(index)?.toString()?.uppercase() ?: "",
+                },
+                value = value.getOrNull(index)?.toString()?.uppercase() ?: "",
                 isLoading = isLoading,
                 shadowElevation = shadowElevation
             )
@@ -285,7 +286,8 @@ private data class ShareContentPreviewData(
     val code: String
 )
 
-private class ShareContentPreviewParameterProvider: PreviewParameterProvider<ShareContentPreviewData> {
+private class ShareContentPreviewParameterProvider :
+    PreviewParameterProvider<ShareContentPreviewData> {
     override val values: Sequence<ShareContentPreviewData>
         get() = listOf(
             ShareContentPreviewData(isLoading = true, isEnrolled = false, code = ""),

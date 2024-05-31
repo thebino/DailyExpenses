@@ -67,7 +67,6 @@ val appModule = module {
         )
     }
 
-
     // domain
     factory {
         StartSyncUseCase(
@@ -120,12 +119,11 @@ val appModule = module {
         )
     }
 
-
     // data
     worker {
         SyncWorker(
-            get(),
-            get(),
+            appContext = get(),
+            params = get(),
         )
     }
 
@@ -169,14 +167,17 @@ val appModule = module {
     }
     single<SharingsRepository> {
         SharingsRepositoryImpl(
-            api = get(), dao = get()
+            api = get(),
+            dao = get()
         )
     }
 }
 
 private fun provideSharingsDatabase(context: Context): SharingDatabase {
     return Room.databaseBuilder(
-        context, SharingDatabase::class.java, "sharings.db"
+        context = context,
+        SharingDatabase::class.java,
+        "sharings.db"
     ).build()
 }
 
@@ -186,15 +187,15 @@ private fun provideSharingDao(database: SharingDatabase): SharingDao {
 
 private fun provideExpensesDatabase(context: Context): ExpensesDatabase {
     return Room.databaseBuilder(
-        context, ExpensesDatabase::class.java, "expenses.db"
-    )
-        .build()
+        context,
+        ExpensesDatabase::class.java,
+        "expenses.db"
+    ).build()
 }
 
 private fun provideExpensesDao(database: ExpensesDatabase): ExpensesDao {
     return database.expensesDao()
 }
-
 
 private fun provideHttpClient(application: Application): HttpClient {
     return HttpClient(Android) {
@@ -202,22 +203,23 @@ private fun provideHttpClient(application: Application): HttpClient {
         followRedirects = true
 
         defaultRequest {
-//            url(BuildConfig.API_URL)
             contentType(ContentType.Application.Json)
             accept(ContentType.Application.Json)
             headers {
                 val context = application.applicationContext
 
                 @Suppress("DEPRECATION")
-                val packageInfo: PackageInfo = context.packageManager.getPackageInfo(context.packageName, 0)
+                val packageInfo: PackageInfo =
+                    context.packageManager.getPackageInfo(context.packageName, 0)
                 val version: String = packageInfo.versionName
 
                 @Suppress("DEPRECATION")
-                val versionCode = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-                    packageInfo.longVersionCode
-                } else {
-                    packageInfo.versionCode
-                }
+                val versionCode =
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                        packageInfo.longVersionCode
+                    } else {
+                        packageInfo.versionCode
+                    }
 
                 append(
                     "User-Agent",
@@ -232,7 +234,8 @@ private fun provideHttpClient(application: Application): HttpClient {
                     prettyPrint = true
                     isLenient = true
                     ignoreUnknownKeys = true
-                }, contentType = ContentType.Application.Json
+                },
+                contentType = ContentType.Application.Json
             )
         }
 

@@ -1,4 +1,4 @@
-package pro.stuermer.balloon.dailyexpenses.data.persistence.model
+package pro.stuermer.dailyexpenses.data.persistence.model
 
 import kotlinx.serialization.Serializable
 import org.jetbrains.exposed.sql.Table
@@ -13,5 +13,5 @@ object Instances : Table() {
     val id = integer("id").autoIncrement()
     val code = varchar("code", 255)
 
-    override val primaryKey = PrimaryKey(Instances.id)
+    override val primaryKey = PrimaryKey(id)
 }

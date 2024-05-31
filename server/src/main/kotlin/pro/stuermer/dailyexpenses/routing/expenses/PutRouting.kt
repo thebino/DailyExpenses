@@ -14,7 +14,6 @@ import kotlin.reflect.typeOf
 import pro.stuermer.dailyexpenses.data.repository.DailyExpensesRepository
 import pro.stuermer.dailyexpenses.Expense
 
-
 fun Route.putIndexRouting(repository: DailyExpensesRepository) {
     // update expenses
     put {
@@ -39,7 +38,6 @@ fun Route.putIndexRouting(repository: DailyExpensesRepository) {
             return@put
         }
         call.respond(HttpStatusCode.InternalServerError)
-
     } describe {
         tags += "dailyexpense"
         summary = "Update the expense with the given ID."

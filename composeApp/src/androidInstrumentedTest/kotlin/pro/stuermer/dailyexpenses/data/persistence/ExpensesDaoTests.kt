@@ -1,26 +1,10 @@
 package pro.stuermer.dailyexpenses.data.persistence
 
-import android.content.Context
-import androidx.room.Room
-//import androidx.test.core.app.ApplicationProvider
-//import androidx.test.ext.junit.runners.AndroidJUnit4
-//import androidx.test.filters.SmallTest
 import java.io.IOException
-import java.time.LocalDate
-import kotlin.test.assertEquals
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 import org.junit.After
 import org.junit.Before
-import org.junit.Rule
 import org.junit.Test
-import org.junit.runner.RunWith
-import pro.stuermer.dailyexpenses.data.persistence.model.Expense
-import pro.stuermer.dailyexpenses.data.persistence.model.fakeDataExpense1
-import pro.stuermer.dailyexpenses.data.persistence.model.fakeDataExpense2
-import pro.stuermer.dailyexpenses.data.persistence.model.fakeDataExpense3
-import pro.stuermer.dailyexpenses.domain.model.Category
 
 //@ExperimentalCoroutinesApi
 //@RunWith(AndroidJUnit4::class)

@@ -1,4 +1,9 @@
-@file:UseSerializers(LocalDateSerializer::class, LocalDateTimeSerializer::class, CategorySerializer::class)
+@file:UseSerializers(
+    LocalDateSerializer::class,
+    LocalDateTimeSerializer::class,
+    CategorySerializer::class
+)
+
 package pro.stuermer.dailyexpenses.data.model
 
 import java.time.LocalDate
@@ -44,9 +49,11 @@ object LocalDateSerializer : KSerializer<LocalDate> {
     private val formatter: DateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
     override val descriptor: SerialDescriptor
         get() = buildClassSerialDescriptor("LocalDate")
+
     override fun serialize(encoder: Encoder, value: LocalDate) {
         encoder.encodeString(value.format(formatter))
     }
+
     override fun deserialize(decoder: Decoder): LocalDate {
         return LocalDate.parse(decoder.decodeString(), formatter)
     }
@@ -57,9 +64,11 @@ object LocalDateTimeSerializer : KSerializer<LocalDateTime> {
     private val formatter: DateTimeFormatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME
     override val descriptor: SerialDescriptor
         get() = buildClassSerialDescriptor("LocalDateTime")
+
     override fun serialize(encoder: Encoder, value: LocalDateTime) {
         encoder.encodeString(value.format(formatter))
     }
+
     override fun deserialize(decoder: Decoder): LocalDateTime {
         return LocalDateTime.parse(decoder.decodeString(), formatter)
     }

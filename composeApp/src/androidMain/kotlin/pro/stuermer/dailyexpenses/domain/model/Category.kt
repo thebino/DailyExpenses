@@ -1,6 +1,5 @@
 package pro.stuermer.dailyexpenses.domain.model
 
-import androidx.annotation.StringRes
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Category
 import androidx.compose.material.icons.filled.Checkroom
@@ -9,11 +8,8 @@ import androidx.compose.material.icons.filled.FoodBank
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Nightlife
 import androidx.compose.material.icons.filled.Restaurant
-import androidx.compose.material.icons.outlined.Shop
-import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.res.stringResource
 import kotlinx.serialization.Polymorphic
 import kotlinx.serialization.Serializable
 import pro.stuermer.dailyexpenses.R
@@ -21,13 +17,7 @@ import pro.stuermer.dailyexpenses.R
 @Polymorphic
 @Serializable
 enum class Category {
-    Grocery,
-    Clothing,
-    Restaurant,
-    Hobby,
-    Living,
-    Commute,
-    Other,
+    Grocery, Clothing, Restaurant, Hobby, Living, Commute, Other,
 }
 
 @Suppress("MagicNumber")

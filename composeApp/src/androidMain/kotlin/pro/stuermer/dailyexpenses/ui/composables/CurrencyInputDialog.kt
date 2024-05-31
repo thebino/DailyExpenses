@@ -18,7 +18,6 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
@@ -48,6 +47,7 @@ import pro.stuermer.dailyexpenses.domain.model.Category
 import pro.stuermer.dailyexpenses.domain.model.icon
 import pro.stuermer.dailyexpenses.ui.theme.DailyExpensesTheme
 
+@Suppress("LongParameterList")
 @Composable
 fun CurrencyInputDialog(
     modifier: Modifier = Modifier,
@@ -80,13 +80,16 @@ fun CurrencyInputDialog(
             .clickable { }
             .padding(8.dp),
     ) {
-
         val context = LocalContext.current
         val now = LocalDate.now()
         val datePickerDialog = DatePickerDialog(
-            context, { _: DatePicker, year: Int, month: Int, dayOfMonth: Int ->
+            context,
+            { _: DatePicker, year: Int, month: Int, dayOfMonth: Int ->
                 onDateChanged(LocalDate.of(year, month + 1, dayOfMonth))
-            }, now.year, now.monthValue - 1, now.dayOfMonth
+            },
+            now.year,
+            now.monthValue - 1,
+            now.dayOfMonth
         )
 
         var expanded by remember { mutableStateOf(false) }
@@ -180,7 +183,6 @@ fun CurrencyInputDialog(
     }
 }
 
-
 @Composable
 private fun CategorySelection(
     modifier: Modifier = Modifier,
@@ -203,21 +205,23 @@ private fun CategoryItem(
     category: Category,
     onItemClicked: () -> Unit = {}
 ) {
-    Card(modifier = modifier
-        .clickable {
-            onItemClicked()
-        }
-        .padding(4.dp)
-        .size(size)) {
+    Card(
+        modifier = modifier
+            .clickable {
+                onItemClicked()
+            }
+            .padding(4.dp)
+            .size(size)
+    ) {
         Column(
             modifier = Modifier.fillMaxSize(),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Icon(
+                modifier = Modifier.size(iconSize),
                 imageVector = category.icon,
                 contentDescription = category.name,
-                Modifier.size(iconSize)
             )
         }
     }
@@ -232,12 +236,17 @@ private fun ActionButtons(
     onSaveClicked: () -> Unit = {},
 ) {
     Row(modifier = modifier) {
-        OutlinedButton(modifier = Modifier.weight(1f), onClick = onCancelClicked) {
+        OutlinedButton(
+            modifier = Modifier.weight(1f),
+            onClick = onCancelClicked
+        ) {
             Text(text = "Cancel")
         }
         Spacer(modifier = Modifier.width(4.dp))
         Button(
-            modifier = Modifier.weight(1f), enabled = isSaveEnabled, onClick = onSaveClicked
+            modifier = Modifier.weight(1f),
+            enabled = isSaveEnabled,
+            onClick = onSaveClicked
         ) {
             if (isUpdate) {
                 Text(text = "Update expense")
@@ -253,9 +262,7 @@ private fun ActionButtons(
 private fun InputDialogPreview() {
     DailyExpensesTheme {
         CurrencyInputDialog(
-            amount = 13.27f,
-            description = "",
-            category = Category.Hobby
+            amount = 13.27f, description = "", category = Category.Hobby
         )
     }
 }
