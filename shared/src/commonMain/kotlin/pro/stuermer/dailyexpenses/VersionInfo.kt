@@ -6,3 +6,4 @@ import kotlinx.serialization.Serializable
 data class VersionInfo(
     val version: String
 )
+// comment
