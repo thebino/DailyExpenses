@@ -40,6 +40,7 @@ jobs:
           ./gradlew --console=plain check
 
       - name: Upload check reports
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: lint
@@ -69,6 +70,7 @@ jobs:
           ./gradlew --console=plain detektAll
 
       - name: Upload detekt reports
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: detekt
@@ -93,6 +95,7 @@ jobs:
           ./gradlew --console=plain lint
 
       - name: Upload lint reports
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: lint
