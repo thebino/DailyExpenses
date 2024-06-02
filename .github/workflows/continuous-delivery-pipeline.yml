@@ -43,7 +43,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: lint
+          name: check
           path: |
             backend/build/reports/tests
 
