@@ -222,7 +222,7 @@ class ExpensesRequestTests {
             plugin(Authentication).configure {
                 basic("expenses-basic") {
                     validate {
-                        UserIdPrincipal("125EFG")
+                        UserIdPrincipal("126EFG")
                     }
                 }
             }
@@ -261,7 +261,7 @@ class ExpensesRequestTests {
         )
         val body = listOf(expense1, expense2)
         val response = httpClient.post("/api") {
-            val credentials = Base64.getEncoder().encodeToString("125EFG:".toByteArray())
+            val credentials = Base64.getEncoder().encodeToString("126EFG:".toByteArray())
             headers.append(HttpHeaders.Authorization, "Basic $credentials")
             contentType(ContentType.Application.Json)
             setBody(body)
