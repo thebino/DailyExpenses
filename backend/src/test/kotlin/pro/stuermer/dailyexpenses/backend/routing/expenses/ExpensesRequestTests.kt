@@ -303,7 +303,7 @@ class ExpensesRequestTests {
             transaction {
                 ExpensesTable.deleteAll()
                 ExpensesTable.insert {
-                    it[id] = "ad95512e-1703-431b-9492-3339dc7a7f0f"
+                    it[id] = "ad95512e-1703-431b-9492-3339dc7a7f01"
                     it[instance] = "test"
                     it[category] = "1"
                     it[year] = 2021
@@ -328,7 +328,7 @@ class ExpensesRequestTests {
             headers.append(HttpHeaders.ContentType, "application/json")
             setBody(
                 Expense(
-                    id = "ad95512e-1703-431b-9492-3339dc7a7f0f",
+                    id = "ad95512e-1703-431b-9492-3339dc7a7f01",
                     category = "category",
                     expenseDate = "2021-01-11",
                     creationDate = "2011-12-03T10:15:30",
@@ -343,12 +343,12 @@ class ExpensesRequestTests {
         // then
         Assert.assertEquals(HttpStatusCode.OK, response.status)
         val row = transaction {
-            ExpensesTable.select { ExpensesTable.instance eq "test" and (ExpensesTable.id eq "ad95512e-1703-431b-9492-3339dc7a7f0f") }
+            ExpensesTable.select { ExpensesTable.instance eq "test" and (ExpensesTable.id eq "ad95512e-1703-431b-9492-3339dc7a7f01") }
                 .limit(1).firstOrNull()
         }
 
         Assert.assertNotNull(row)
-        Assert.assertEquals("ad95512e-1703-431b-9492-3339dc7a7f0f", row!![ExpensesTable.id])
+        Assert.assertEquals("ad95512e-1703-431b-9492-3339dc7a7f01", row!![ExpensesTable.id])
         Assert.assertEquals("test", row[ExpensesTable.instance])
         Assert.assertEquals("category", row[ExpensesTable.category])
         Assert.assertEquals(2021, row[ExpensesTable.year])
