@@ -18,6 +18,7 @@ fun Route.postIndexRouting(repository: DailyExpensesRepository) {
     // post expenses
     post {
         val instance = call.principal<UserIdPrincipal>()
+        call.application.environment.log.info("instance=$instance")
         println("instance=$instance")
         if (instance == null) {
             call.respond(HttpStatusCode.Unauthorized)
