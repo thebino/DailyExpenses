@@ -1,1 +1,1 @@
-./gradlew --console=plain check detekt lint koverXmlReportDebug koverHtmlReportDebug
+./gradlew check detektAll lint koverXmlReportDebug koverHtmlReportDebug

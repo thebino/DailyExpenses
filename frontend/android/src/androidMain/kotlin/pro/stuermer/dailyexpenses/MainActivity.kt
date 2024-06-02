@@ -37,8 +37,6 @@ class MainActivity : AppCompatActivity() {
             AppUi()
         }
 
-
-
 //        setContent {
 //            val navController = rememberNavController()
 //

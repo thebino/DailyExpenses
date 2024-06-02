@@ -1,3 +1,5 @@
+@file:Suppress("MatchingDeclarationName")
+
 package pro.stuermer.dailyexpenses.ui.theme
 
 import androidx.compose.material3.ColorScheme
@@ -24,8 +26,6 @@ object DailyExpensesTheme {
 
     val dimensions: ExpensesDimensions
         @Composable @ReadOnlyComposable get() = LocalDimensions.current
-
-
 }
 
 @Composable
@@ -39,8 +39,7 @@ fun DailyExpensesTheme(
             resource = Res.font.neuropolitical,
             weight = FontWeight.Normal,
             style = FontStyle.Normal,
-        ),
-        Font(
+        ), Font(
             resource = Res.font.neuropolitical,
             weight = FontWeight.Light,
             style = FontStyle.Normal,
@@ -49,9 +48,7 @@ fun DailyExpensesTheme(
     val typography = ExpensesTypography(
         titleBold = TextStyle(
 //            fontFamily = neuropoliticalFamily,
-            fontWeight = FontWeight.Bold,
-            fontSize = 64.sp,
-            lineHeight = 72.sp
+            fontWeight = FontWeight.Bold, fontSize = 64.sp, lineHeight = 72.sp
         ),
         labelSmall = TextStyle(
 //            fontFamily = neuropoliticalFamily,
@@ -64,7 +61,6 @@ fun DailyExpensesTheme(
         LocalTypography provides typography,
         LocalDimensions provides dimensions,
     ) {
-
         MaterialTheme(
             colorScheme = placeholderColorScheme,
         ) {

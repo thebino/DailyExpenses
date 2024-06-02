@@ -1,7 +1,6 @@
 package pro.stuermer.dailyexpenses.ui.model
 
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
 import kotlinx.serialization.Polymorphic
 import kotlinx.serialization.Serializable
 import org.jetbrains.compose.resources.StringResource

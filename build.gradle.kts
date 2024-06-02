@@ -47,7 +47,7 @@ tasks.withType<Detekt>().configureEach {
         md.required.set(true)
         sarif.required.set(false)
         txt.required.set(false)
-        xml.required.set(false)
+        xml.required.set(true)
     }
 }
 
@@ -58,5 +58,5 @@ val detektAll by tasks.registering(Detekt::class) {
     config.setFrom("${project.rootDir}/detekt.yml")
     setSource(files(projectDir))
     include("**/*.kt", "**/*.kts")
-    exclude("resources/", "*/build/*")
+    exclude("**/generated/", "**/test/", "**/jvmTest", "**/commonTest", "resources/", "*/build/*")
 }

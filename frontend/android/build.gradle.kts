@@ -13,8 +13,7 @@ plugins {
 
 kotlin {
     androidTarget {
-        @OptIn(ExperimentalKotlinGradlePluginApi::class)
-        compilerOptions {
+        @OptIn(ExperimentalKotlinGradlePluginApi::class) compilerOptions {
             jvmTarget.set(JvmTarget.JVM_11)
         }
     }
@@ -45,7 +44,6 @@ kotlin {
         androidMain.dependencies {
             implementation(projects.frontend.shared)
 
-            
             // core
             implementation(compose.preview)
             implementation(libs.androidx.activity.compose)
@@ -91,7 +89,7 @@ kotlin {
             // ktor
             implementation(libs.bundles.ktor)
 
-            implementation ("com.google.accompanist:accompanist-systemuicontroller:0.31.3-beta")
+            implementation("com.google.accompanist:accompanist-systemuicontroller:0.31.3-beta")
         }
 
         // androidUnitTest.dependencies doesn't exist
@@ -110,8 +108,9 @@ kotlin {
 
         val androidInstrumentedTest by getting {
             dependencies {
-                @OptIn(org.jetbrains.compose.ExperimentalComposeLibrary::class)
-                implementation(compose.uiTest)
+                @OptIn(org.jetbrains.compose.ExperimentalComposeLibrary::class) implementation(
+                    compose.uiTest
+                )
             }
         }
     }
@@ -150,8 +149,8 @@ android {
         compose = true
         buildConfig = true
     }
-    @Suppress("UnstableApiUsage")
-    experimentalProperties["android.experimental.enableScreenshotTest"] = true
+    @Suppress("UnstableApiUsage") experimentalProperties["android.experimental.enableScreenshotTest"] =
+        true
     dependencies {
         debugImplementation(compose.uiTooling)
     }
