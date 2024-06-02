@@ -114,7 +114,7 @@ androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref =
 androidx-room-testing = { module = "androidx.room:room-testing", version.ref = "room-multiplatform" }
 
 compose-bom = { module = "androidx.compose:compose-bom", version.ref = "composeBom" }
-compose-material = { module = "androidx.compose.material:material" }
+#compose-material = { module = "androidx.compose.material:material" }
 compose-material-icons-core = { module = "androidx.compose.material:material-icons-core" }
 compose-material-icons-extended = { module = "androidx.compose.material:material-icons-extended" }
 compose-material3 = { module = "androidx.compose.material3:material3", version.ref = "material3" }
