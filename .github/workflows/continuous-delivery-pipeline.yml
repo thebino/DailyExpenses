@@ -39,6 +39,13 @@ jobs:
         run: |
           ./gradlew --console=plain check
 
+      - name: Upload check reports
+        uses: actions/upload-artifact@v4
+        with:
+          name: lint
+          path: |
+            backend/build/reports/tests
+
   detekt:
     runs-on: ubuntu-latest
     timeout-minutes: 30
