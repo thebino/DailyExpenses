@@ -21,7 +21,7 @@ jobs:
         uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
-          java-version: 17
+          java-version: 17.0.1
           cache: 'gradle'
 
       - name: Decode Gradle Play Publisher Credentials
@@ -59,7 +59,7 @@ jobs:
         uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
-          java-version: 17
+          java-version: 17.0.1
           cache: 'gradle'
 
       - name: Make gradlew executable
@@ -87,7 +87,7 @@ jobs:
         uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
-          java-version: 17
+          java-version: 17.0.1
           cache: 'gradle'
 
       - name: Run lint
@@ -116,7 +116,7 @@ jobs:
         uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
-          java-version: 17
+          java-version: 17.0.1
           cache: 'gradle'
 
       - name: Run debug unit tests
@@ -155,7 +155,7 @@ jobs:
         uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
-          java-version: 17
+          java-version: 17.0.1
           cache: 'gradle'
 
       - name: Cache between builds
