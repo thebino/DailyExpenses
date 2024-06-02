@@ -59,14 +59,13 @@ jobs:
 
       - name: Run detekt
         run: |
-          ./gradlew --console=plain detekt
+          ./gradlew --console=plain detektAll
 
       - name: Upload detekt reports
         uses: actions/upload-artifact@v4
         with:
           name: detekt
           path: build/reports/detekt/
-
   lint:
     runs-on: ubuntu-latest
     timeout-minutes: 30
@@ -91,12 +90,11 @@ jobs:
         with:
           name: lint
           path: |
-            app/build/reports/lint*
-            domain/build/reports/lint*
-            data/build/reports/lint*
-
+            frontend/android/build/reports/lint*
+            frontend/shared/build/reports/lint*
+            shared/build/reports/lint*
   unit_tests:
-#    needs: [ check ]
+    needs: [ check ]
     runs-on: ubuntu-latest
     timeout-minutes: 30
 
@@ -113,7 +111,7 @@ jobs:
 
       - name: Run debug unit tests
         run: |
-          ./gradlew --console=plain koverXmlReport --stacktrace
+          ./gradlew --console=plain koverXmlReport koverHtmlReport --stacktrace
 
       - name: Upload test reports
         if: always()
