@@ -47,7 +47,7 @@ dependencies {
     implementation("guru.zoroark.tegral:tegral-openapi-ktorui:0.0.4")
 
     // database
-    implementation("org.jetbrains.exposed:exposed-core:0.40.1")
+    implementation("org.jetbrains.exposed:exposed-core:0.51.0")
     implementation("org.jetbrains.exposed:exposed-dao:0.40.1")
     implementation("org.jetbrains.exposed:exposed-jdbc:0.40.1")
     // for production
