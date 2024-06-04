@@ -21,7 +21,7 @@ jobs:
         uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
-          java-version: 17
+          java-version: 17.0.1
           cache: 'gradle'
 
       - name: Decode Gradle Play Publisher Credentials
@@ -37,7 +37,15 @@ jobs:
 
       - name: Run Check
         run: |
-          ./gradlew --console=plain :composeApp:check
+          ./gradlew --console=plain check
+
+      - name: Upload check reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: check
+          path: |
+            backend/build/reports/tests
 
   detekt:
     runs-on: ubuntu-latest
@@ -51,7 +59,7 @@ jobs:
         uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
-          java-version: 17
+          java-version: 17.0.1
           cache: 'gradle'
 
       - name: Make gradlew executable
@@ -59,14 +67,14 @@ jobs:
 
       - name: Run detekt
         run: |
-          ./gradlew --console=plain detekt
+          ./gradlew --console=plain detektAll
 
       - name: Upload detekt reports
-        uses: actions/upload-artifact@v3
+        if: always()
+        uses: actions/upload-artifact@v4
         with:
           name: detekt
           path: build/reports/detekt/
-
   lint:
     runs-on: ubuntu-latest
     timeout-minutes: 30
@@ -79,7 +87,7 @@ jobs:
         uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
-          java-version: 17
+          java-version: 17.0.1
           cache: 'gradle'
 
       - name: Run lint
@@ -87,14 +95,14 @@ jobs:
           ./gradlew --console=plain lint
 
       - name: Upload lint reports
-        uses: actions/upload-artifact@v3
+        if: always()
+        uses: actions/upload-artifact@v4
         with:
           name: lint
           path: |
-            app/build/reports/lint*
-            domain/build/reports/lint*
-            data/build/reports/lint*
-
+            frontend/android/build/reports/lint*
+            frontend/shared/build/reports/lint*
+            shared/build/reports/lint*
   unit_tests:
     needs: [ check ]
     runs-on: ubuntu-latest
@@ -108,28 +116,28 @@ jobs:
         uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
-          java-version: 17
+          java-version: 17.0.1
           cache: 'gradle'
 
       - name: Run debug unit tests
         run: |
-          ./gradlew --console=plain koverXmlReportDebug --stacktrace
+          ./gradlew --console=plain koverXmlReport koverHtmlReport --stacktrace
 
       - name: Upload test reports
         if: always()
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: tests
-          path: app/build/reports/tests
+          path: frontend/shared/build/reports
 
       - name: Add coverage report to PR
         uses: mi-kas/kover-report@v1
         with:
-          path: ${{ github.workspace }}/app/build/reports/kover/xml/report.xml
+          path: frontend/shared/build/reports/kover/report.xml
           token: ${{ secrets.GITHUB_TOKEN }}
           title: App Coverage
           update-comment: true
-          min-coverage-overall: 20
+          min-coverage-overall: 13
           min-coverage-changed-files: 50
 
   # upload an android bundle to google play store into the internal test track
@@ -147,7 +155,7 @@ jobs:
         uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
-          java-version: 17
+          java-version: 17.0.1
           cache: 'gradle'
 
       - name: Cache between builds

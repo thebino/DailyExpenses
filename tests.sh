@@ -1,1 +1,1 @@
-./gradlew --console=plain :composeApp:check detekt lint koverXmlReport koverHtmlReport
+./gradlew check detektAll lint koverXmlReport koverHtmlReport :frontend:android:bundle

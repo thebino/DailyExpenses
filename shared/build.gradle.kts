@@ -5,6 +5,7 @@ plugins {
     alias(libs.plugins.kotlin.multiplatform)
     alias(libs.plugins.android.library)
     alias(libs.plugins.serialization)
+    alias(libs.plugins.kover)
 }
 
 kotlin {
@@ -15,24 +16,12 @@ kotlin {
         }
     }
 
-//    listOf(
-//        iosX64(),
-//        iosArm64(),
-//        iosSimulatorArm64()
-//    ).forEach { iosTarget ->
-//        iosTarget.binaries.framework {
-//            baseName = "DailyExpenses"
-//            isStatic = true
-//            // Required when using NativeSQLiteDriver
-//            linkerOpts.add("-lsqlite3")
-//        }
-//    }
-
     jvm()
 
     sourceSets {
         commonMain.dependencies {
             implementation(libs.kotlinx.serialization)
+            implementation(libs.compose.material3)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
@@ -49,5 +38,11 @@ android {
     }
     defaultConfig {
         minSdk = libs.versions.android.minSdk.get().toInt()
+    }
+}
+
+kover {
+    currentProject {
+        createVariant("custom") { }
     }
 }

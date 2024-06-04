@@ -3,7 +3,6 @@ package pro.stuermer.dailyexpenses.data.persistence
 import androidx.room.TypeConverter
 import java.time.LocalDate
 import java.time.LocalDateTime
-import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import pro.stuermer.dailyexpenses.domain.model.Category

@@ -11,6 +11,19 @@ plugins {
     alias(libs.plugins.jetbrains.kotlin.jvm) apply false
     alias(libs.plugins.kotlin.multiplatform) apply false
     alias(libs.plugins.detekt)
+    alias(libs.plugins.kover)
+}
+
+kover {
+    reports {
+        filters {
+            includes {
+                classes("pro.stuermer.dailyexpenses.*")
+            }
+        }
+        total {}
+        verify {}
+    }
 }
 
 dependencies {
@@ -20,8 +33,6 @@ dependencies {
 detekt {
     autoCorrect = true
     buildUponDefaultConfig = true
-//    @Suppress("DEPRECATION")
-//    config = files("${project.rootDir}/detekt.yml")
     config.setFrom("${project.rootDir}/detekt.yml")
 }
 
@@ -36,7 +47,7 @@ tasks.withType<Detekt>().configureEach {
         md.required.set(true)
         sarif.required.set(false)
         txt.required.set(false)
-        xml.required.set(false)
+        xml.required.set(true)
     }
 }
 
@@ -47,5 +58,5 @@ val detektAll by tasks.registering(Detekt::class) {
     config.setFrom("${project.rootDir}/detekt.yml")
     setSource(files(projectDir))
     include("**/*.kt", "**/*.kts")
-    exclude("resources/", "*/build/*")
+    exclude("**/generated/", "**/test/", "**/jvmTest", "**/commonTest", "resources/", "*/build/*")
 }
