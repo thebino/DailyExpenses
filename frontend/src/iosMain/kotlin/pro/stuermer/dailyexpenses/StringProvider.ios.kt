@@ -1,4 +1,4 @@
-package pro.stuermer.dailyexpenses.ui
+package pro.stuermer.dailyexpenses
 
 actual fun string(id: String): String {
     return id

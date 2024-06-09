@@ -1,4 +1,4 @@
-package pro.stuermer.dailyexpenses.ui
+package pro.stuermer.dailyexpenses
 
 import app.cash.paparazzi.DeviceConfig
 import app.cash.paparazzi.Paparazzi

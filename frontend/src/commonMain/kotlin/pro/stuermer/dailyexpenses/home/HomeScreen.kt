@@ -12,7 +12,6 @@ fun HomeScreen(modifier: Modifier) {
             text = "This is the new material free Ui",
             color = Color(0xFF62C386)
         )
-        
         Text(
             modifier = modifier,
             text = "$1760,58",

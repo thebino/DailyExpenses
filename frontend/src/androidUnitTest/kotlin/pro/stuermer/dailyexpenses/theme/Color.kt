@@ -1,6 +1,6 @@
 @file:Suppress("MagicNumber")
 
-package pro.stuermer.dailyexpenses.ui.theme
+package pro.stuermer.dailyexpenses.theme
 
 import androidx.compose.ui.graphics.Color
 

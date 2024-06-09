@@ -1,10 +1,10 @@
-package pro.stuermer.dailyexpenses.ui
+package pro.stuermer.dailyexpenses
 
 import app.cash.paparazzi.DeviceConfig
 import app.cash.paparazzi.Paparazzi
 import org.junit.Rule
-import pro.stuermer.dailyexpenses.ui.theme.DailyExpensesTheme
 import kotlin.test.Test
+import pro.stuermer.dailyexpenses.theme.DailyExpensesTheme
 
 class AppUiTests {
     @get:Rule

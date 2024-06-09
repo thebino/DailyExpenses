@@ -43,3 +43,6 @@ proguard-project.txt
 ## skip release credentials
 android_release.keystore
 gradle_playstore_publisher_credentials.json
+
+# debug database
+backend/database.db

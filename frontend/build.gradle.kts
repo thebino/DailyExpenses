@@ -9,6 +9,7 @@ plugins {
     alias(libs.plugins.compose.compiler)
     alias(libs.plugins.serialization)
     alias(libs.plugins.room)
+    alias(libs.plugins.paparazzi)
 //    alias(libs.plugins.screenshot)
 }
 
@@ -21,23 +22,23 @@ kotlin {
 
     jvm("desktop")
 
-    listOf(
-        iosX64(),
-        iosArm64(),
-        iosSimulatorArm64()
-    ).forEach { iosTarget ->
-        iosTarget.binaries.framework {
-            baseName = "ComposeApp"
-            isStatic = true
-        }
-    }
+//    listOf(
+//        iosX64(),
+//        iosArm64(),
+//        iosSimulatorArm64()
+//    ).forEach { iosTarget ->
+//        iosTarget.binaries.framework {
+//            baseName = "ComposeApp"
+//            isStatic = true
+//        }
+//    }
 
     sourceSets {
         commonMain.dependencies {
             implementation(projects.shared)
 
             implementation(libs.kotlinx.serialization)
-            
+
             implementation(compose.runtime)
             implementation(compose.foundation)
             implementation(compose.material3)

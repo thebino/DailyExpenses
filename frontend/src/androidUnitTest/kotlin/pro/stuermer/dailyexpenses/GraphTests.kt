@@ -1,4 +1,4 @@
-package pro.stuermer.dailyexpenses.ui
+package pro.stuermer.dailyexpenses
 
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.platform.ComposeView
@@ -8,10 +8,10 @@ import com.android.ide.common.rendering.api.SessionParams
 import kotlinx.coroutines.delay
 import org.junit.Rule
 import pro.stuermer.dailyexpenses.model.Category
-import pro.stuermer.dailyexpenses.ui.model.GraphData
+import pro.stuermer.dailyexpenses.model.GraphData
 import pro.stuermer.dailyexpenses.model.color
-import pro.stuermer.dailyexpenses.ui.theme.DailyExpensesTheme
 import kotlin.test.Test
+import pro.stuermer.dailyexpenses.theme.DailyExpensesTheme
 
 class GraphTests {
     @get:Rule
