@@ -10,6 +10,7 @@ plugins {
     alias(libs.plugins.serialization)
     alias(libs.plugins.room)
     alias(libs.plugins.paparazzi)
+    alias(libs.plugins.kover)
 //    alias(libs.plugins.screenshot)
 }
 
@@ -172,6 +173,12 @@ compose.desktop {
             packageName = "pro.stuermer.dailyexpenses"
             packageVersion = "1.0.0"
         }
+    }
+}
+
+kover {
+    currentProject {
+        createVariant("custom") { }
     }
 }
 

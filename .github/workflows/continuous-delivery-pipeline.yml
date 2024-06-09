@@ -90,12 +90,12 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: tests
-          path: frontend/shared/build/reports
+          path: frontend/build/reports
 
       - name: Add coverage report to PR
         uses: mi-kas/kover-report@v1
         with:
-          path: frontend/shared/build/reports/kover/report.xml
+          path: frontend/build/reports/kover/report.xml
           token: ${{ secrets.GITHUB_TOKEN }}
           title: App Coverage
           update-comment: true
