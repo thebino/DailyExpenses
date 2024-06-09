@@ -52,6 +52,7 @@ import pro.stuermer.dailyexpenses.backend.routing.expenses.putIndexRouting
 import pro.stuermer.dailyexpenses.backend.routing.sharings.getSharingRouting
 import pro.stuermer.dailyexpenses.backend.routing.sharings.postSharingRouting
 
+const val AUTH_NAME_EXPENSES = "expenses-basic"
 fun main(args: Array<String>): Unit = io.ktor.server.jetty.EngineMain.main(args)
 
 @Suppress("unused", "MaximumLineLength", "MaxLineLength") // Referenced in application.conf
@@ -192,7 +193,7 @@ fun Application.expensesModule(
 
     if (installAuth) {
         plugin(Authentication).configure {
-            basic("expenses-basic") {
+            basic(AUTH_NAME_EXPENSES) {
                 realm = "Access to daily expenses"
                 validate { credentials ->
                     println("credentials: ${credentials.name}")

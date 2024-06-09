@@ -1,1 +1,0 @@
- - invites via link will be inserted directly into the share dialog

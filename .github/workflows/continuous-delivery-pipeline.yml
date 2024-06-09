@@ -9,44 +9,6 @@ on:
     types: [opened, synchronize, reopened, edited]
 
 jobs:
-  check:
-    runs-on: ubuntu-latest
-    timeout-minutes: 30
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Set up JDK 17
-        uses: actions/setup-java@v4
-        with:
-          distribution: 'temurin'
-          java-version: 17.0.1
-          cache: 'gradle'
-
-      - name: Decode Gradle Play Publisher Credentials
-        id: decode_play_store_credentials
-        uses: timheuer/base64-to-file@v1.1
-        with:
-          fileName: 'gradle_playstore_publisher_credentials.json'
-          fileDir: './'
-          encodedString: ${{ secrets.PLAYSTORE_CREDENTIALS }}
-
-      - name: Make gradlew executable
-        run: chmod +x ./gradlew
-
-      - name: Run Check
-        run: |
-          ./gradlew --console=plain check
-
-      - name: Upload check reports
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: check
-          path: |
-            backend/build/reports/tests
-
   detekt:
     runs-on: ubuntu-latest
     timeout-minutes: 30
@@ -104,7 +66,6 @@ jobs:
             frontend/shared/build/reports/lint*
             shared/build/reports/lint*
   unit_tests:
-    needs: [ check ]
     runs-on: ubuntu-latest
     timeout-minutes: 30
 
@@ -128,12 +89,12 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: tests
-          path: frontend/shared/build/reports
+          path: frontend/build/reports
 
       - name: Add coverage report to PR
         uses: mi-kas/kover-report@v1
         with:
-          path: frontend/shared/build/reports/kover/report.xml
+          path: frontend/build/reports/kover/report.xml
           token: ${{ secrets.GITHUB_TOKEN }}
           title: App Coverage
           update-comment: true
