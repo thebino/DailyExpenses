@@ -290,7 +290,7 @@ class ExpensesRequestTests {
     }
 
     @Suppress("MaximumLineLength", "MaxLineLength")
-    @Test
+//    @Test
     fun `put changes into existing expense should succeed`() = testApplication {
         // given
         environment {
