@@ -38,14 +38,35 @@ kotlin {
         commonMain.dependencies {
             implementation(projects.shared)
 
+            // de-/serialization
             implementation(libs.kotlinx.serialization)
 
+            // compose
             implementation(compose.runtime)
             implementation(compose.foundation)
             implementation(compose.material3)
             implementation(compose.ui)
             implementation(compose.components.resources)
             implementation(compose.components.uiToolingPreview)
+
+            // dependency injection
+            implementation(libs.koin.core)
+            implementation(libs.koin.test)
+
+            // viewmodel
+            implementation("org.jetbrains.androidx.lifecycle:lifecycle-viewmodel-compose:2.8.0")
+
+            // navigation
+            implementation(libs.jetbrains.androidx.navigation.compose)
+
+            // ktor
+            implementation(libs.bundles.ktor)
+
+            // Persistence
+//            implementation(libs.androidx.datastore.preferences)
+            implementation(libs.androidx.room.runtime)
+//            implementation(libs.androidx.room.ktx)
+
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
@@ -67,37 +88,33 @@ kotlin {
             implementation(libs.jetbrains.kotlinx.coroutines.android)
 
             // dependency injection
-            implementation(libs.bundles.koin)
+            implementation(libs.koin.core)
+            implementation(libs.koin.android)
 
             // Work
-            implementation(libs.androidx.work.runtime.ktx)
+//            implementation(libs.androidx.work.runtime.ktx)
 
             // Serialization
-            implementation(libs.jetbrains.kotlinx.serialization.json)
+//            implementation(libs.jetbrains.kotlinx.serialization.json)
 
             // Logging
-            implementation(libs.com.jakewharton.timber)
+//            implementation(libs.com.jakewharton.timber)
 
             // Compose
-            implementation(libs.androidx.activity.compose)
+//            implementation(libs.androidx.activity.compose)
 
             // Material icons
-            implementation(libs.compose.material.icons.core)
-            implementation(libs.compose.material.icons.extended)
+//            implementation(libs.compose.material.icons.core)
+//            implementation(libs.compose.material.icons.extended)
 
             // Constraint Layout
-            implementation(libs.androidx.constraintlayout.compose)
-            implementation(libs.androidx.lifecycle.viewmodel.compose)
+//            implementation(libs.androidx.constraintlayout.compose)
+//            implementation(libs.androidx.lifecycle.viewmodel.compose)
 
-            // Persistence
-            implementation(libs.androidx.datastore.preferences)
-            implementation(libs.androidx.room.runtime)
-            implementation(libs.androidx.room.ktx)
 
-            // ktor
-            implementation(libs.bundles.ktor)
 
-            implementation(libs.bundles.accompanist)
+
+//            implementation(libs.bundles.accompanist)
         }
 
         // androidUnitTest.dependencies doesn't exist
@@ -166,7 +183,7 @@ android {
 
 compose.desktop {
     application {
-        mainClass = "MainKt"
+        mainClass = "pro.stuermer.dailyexpenses.MainKt"
 
         nativeDistributions {
             targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)

@@ -1,5 +1,6 @@
 package pro.stuermer.dailyexpenses
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.Row
@@ -21,10 +22,14 @@ import org.jetbrains.compose.resources.vectorResource
 
 @Composable
 fun BottomNavigation(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    currentScreen: Destinations,
+    onNavigateToHome: () -> Unit = {},
+    onNavigateToStatistics: () -> Unit = {},
+    onNavigateToHistory: () -> Unit = {},
 ) {
     Icon(
-        modifier = Modifier.padding(bottom = 10.dp).padding(start = 250.dp).size(50.dp),
+        modifier = Modifier.clickable(onClick = onNavigateToHome).padding(bottom = 10.dp).padding(start = 250.dp).size(50.dp),
         imageVector = Icons.Outlined.AddCircle,
         tint = Color(0xFFE0ED67),
         contentDescription = null
@@ -34,22 +39,33 @@ fun BottomNavigation(
         horizontalArrangement = Arrangement.SpaceEvenly
     ) {
         Icon(
-            modifier = Modifier.padding(8.dp),
+            modifier = Modifier.clickable(onClick = onNavigateToHome).padding(8.dp),
             imageVector = Icons.Filled.Home,
-            tint = Color(0xFF62C386),
+            tint = isScreenActiveColor(currentScreen, Destinations.Home.name),
             contentDescription = null
         )
         Icon(
-            modifier = Modifier.padding(8.dp),
+            modifier = Modifier.clickable(onClick = onNavigateToStatistics).padding(8.dp),
             imageVector = vectorResource(Res.drawable.query_stats_24px),
-            tint = Color(0xFF4C514E),
+            tint = isScreenActiveColor(currentScreen, Destinations.Statistics.name),
             contentDescription = null
         )
         Icon(
-            modifier = Modifier.padding(8.dp),
+            modifier = Modifier.clickable(onClick = onNavigateToHistory).padding(8.dp),
             imageVector = Icons.AutoMirrored.Filled.List,
-            tint = Color(0xFF4C514E),
+            tint = isScreenActiveColor(currentScreen, Destinations.History.name),
             contentDescription = null
         )
+    }
+}
+
+/**
+ * Return the color to tint the icon and label based on the current active screen
+ */
+private fun isScreenActiveColor(currentScreen: Destinations, name: String): Color {
+    return if (currentScreen.name == name) {
+        Color(0xFF62C386)
+    } else {
+        Color(0xFF4C514E)
     }
 }

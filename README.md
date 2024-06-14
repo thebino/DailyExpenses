@@ -49,13 +49,11 @@ Build and deploy an debug version of the application to a connected device or em
 
 ## TODO:
 
- * [ ] Test coverage
- * [ ] Paparazzi
+ * [ ] Make the app resizable
+   * [ ] https://developer.android.com/jetpack/compose/layouts/adaptive
  * [ ] Fastlane setup
    * [ ] Google Play
    * [ ] F-Droid
- * [ ] Make the app resizable
-   * [ ] https://developer.android.com/jetpack/compose/layouts/adaptive
 
 ## Notes
  * Design idea
