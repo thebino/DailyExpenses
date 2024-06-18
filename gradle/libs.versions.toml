@@ -54,7 +54,7 @@ androidx-navigation = "2.7.0-alpha06"
 androidx-viewmodel = "2.8.0"
 jetbrainsKotlinx = "1.8.0"
 koin = "3.6.0-Beta4"
-accompanist = "0.31.3-beta"
+accompanist = "0.35.1-alpha"
 androidxTestExt = "1.1.5"
 mockk = "1.13.10"
 
