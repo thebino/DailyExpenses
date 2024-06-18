@@ -29,7 +29,10 @@ fun BottomNavigation(
     onNavigateToHistory: () -> Unit = {},
 ) {
     Icon(
-        modifier = Modifier.clickable(onClick = onNavigateToHome).padding(bottom = 10.dp).padding(start = 250.dp).size(50.dp),
+        modifier = Modifier.clickable(onClick = onNavigateToHome)
+            .padding(bottom = 10.dp)
+            .padding(start = 250.dp)
+            .size(50.dp),
         imageVector = Icons.Outlined.AddCircle,
         tint = Color(0xFFE0ED67),
         contentDescription = null

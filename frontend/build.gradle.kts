@@ -9,6 +9,7 @@ plugins {
     alias(libs.plugins.compose.compiler)
     alias(libs.plugins.serialization)
     alias(libs.plugins.room)
+    alias(libs.plugins.ksp)
     alias(libs.plugins.paparazzi)
     alias(libs.plugins.kover)
 //    alias(libs.plugins.screenshot)
@@ -16,12 +17,11 @@ plugins {
 
 kotlin {
     androidTarget {
-        @OptIn(ExperimentalKotlinGradlePluginApi::class) compilerOptions {
+        @OptIn(ExperimentalKotlinGradlePluginApi::class)
+        compilerOptions {
             jvmTarget.set(JvmTarget.JVM_11)
         }
     }
-
-    jvm("desktop")
 
 //    listOf(
 //        iosX64(),
@@ -29,17 +29,20 @@ kotlin {
 //        iosSimulatorArm64()
 //    ).forEach { iosTarget ->
 //        iosTarget.binaries.framework {
-//            baseName = "ComposeApp"
+//            baseName = "DailyExpenses"
 //            isStatic = true
+//            linkerOpts.add("-lsqlite3")
 //        }
 //    }
+
+    jvm("desktop")
 
     sourceSets {
         commonMain.dependencies {
             implementation(projects.shared)
 
             // de-/serialization
-            implementation(libs.kotlinx.serialization)
+            implementation(libs.jetbrains.kotlinx.serialization.json)
 
             // compose
             implementation(compose.runtime)
@@ -54,19 +57,17 @@ kotlin {
             implementation(libs.koin.test)
 
             // viewmodel
-            implementation("org.jetbrains.androidx.lifecycle:lifecycle-viewmodel-compose:2.8.0")
+            implementation(libs.jetbrains.androidx.lifecycle.viewmodel.compose)
 
             // navigation
             implementation(libs.jetbrains.androidx.navigation.compose)
 
-            // ktor
+            // http
             implementation(libs.bundles.ktor)
 
-            // Persistence
-//            implementation(libs.androidx.datastore.preferences)
+            // persistence
             implementation(libs.androidx.room.runtime)
-//            implementation(libs.androidx.room.ktx)
-
+            implementation(libs.sqlite.bundled)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
@@ -91,30 +92,13 @@ kotlin {
             implementation(libs.koin.core)
             implementation(libs.koin.android)
 
+            // http
+            implementation(libs.ktor.android)
+
             // Work
 //            implementation(libs.androidx.work.runtime.ktx)
 
-            // Serialization
-//            implementation(libs.jetbrains.kotlinx.serialization.json)
-
-            // Logging
-//            implementation(libs.com.jakewharton.timber)
-
-            // Compose
-//            implementation(libs.androidx.activity.compose)
-
-            // Material icons
-//            implementation(libs.compose.material.icons.core)
-//            implementation(libs.compose.material.icons.extended)
-
-            // Constraint Layout
-//            implementation(libs.androidx.constraintlayout.compose)
-//            implementation(libs.androidx.lifecycle.viewmodel.compose)
-
-
-
-
-//            implementation(libs.bundles.accompanist)
+            implementation(libs.bundles.accompanist)
         }
 
         // androidUnitTest.dependencies doesn't exist
@@ -126,7 +110,7 @@ kotlin {
                 implementation(libs.mockk)
                 implementation(libs.jetbrains.kotlinx.coroutines.test)
 
-                // ktor
+                // http
                 implementation(libs.ktor.mock.jvm)
             }
         }
@@ -174,11 +158,18 @@ android {
         compose = true
         buildConfig = true
     }
-    @Suppress("UnstableApiUsage") experimentalProperties["android.experimental.enableScreenshotTest"] =
-        true
+    @Suppress("UnstableApiUsage")
+    experimentalProperties["android.experimental.enableScreenshotTest"] = true
     dependencies {
         debugImplementation(compose.uiTooling)
     }
+}
+
+dependencies {
+    add("kspAndroid", libs.androidx.room.compiler)
+//    add("kspIosSimulatorArm64", libs.androidx.room.compiler)
+//    add("kspIosX64", libs.androidx.room.compiler)
+//    add("kspIosArm64", libs.androidx.room.compiler)
 }
 
 compose.desktop {

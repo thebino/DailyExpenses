@@ -24,8 +24,10 @@ interface ExpensesApi : KoinComponent {
     suspend fun deleteIds(code: String, localDeletedIds: List<String>): Result<String>
 }
 
-class ExpensesApiImpl: ExpensesApi {
+class ExpensesApiImpl : ExpensesApi {
     private val httpClient: HttpClient by inject()
+
+    @Suppress("TooGenericExceptionCaught")
     override suspend fun createSharing(): Result<String> {
         return try {
             val result = httpClient.post("/api/expense/sharing")
@@ -46,6 +48,7 @@ class ExpensesApiImpl: ExpensesApi {
         }
     }
 
+    @Suppress("TooGenericExceptionCaught")
     override suspend fun joinSharing(code: String): Result<Boolean> {
         return try {
             val result = httpClient.get("/api/expense/sharing?code=$code")
@@ -55,6 +58,7 @@ class ExpensesApiImpl: ExpensesApi {
         }
     }
 
+    @Suppress("TooGenericExceptionCaught")
     override suspend fun getExpenses(code: String): Result<List<NetworkExpense>> {
         return try {
             val result = httpClient.get("/api/expense") {
@@ -67,6 +71,7 @@ class ExpensesApiImpl: ExpensesApi {
         }
     }
 
+    @Suppress("TooGenericExceptionCaught")
     override suspend fun getExpensesForDate(code: String, year: Int, month: Int): Result<List<NetworkExpense>> {
         return try {
             httpClient.get("/api/expense?year=$year&month=$month") {
@@ -78,6 +83,7 @@ class ExpensesApiImpl: ExpensesApi {
         }
     }
 
+    @Suppress("TooGenericExceptionCaught")
     override suspend fun addExpenses(code: String, expenses: List<NetworkExpense>): Result<Boolean> {
         return try {
             val response = httpClient.post("/api/expense") {
@@ -96,6 +102,7 @@ class ExpensesApiImpl: ExpensesApi {
         }
     }
 
+    @Suppress("TooGenericExceptionCaught")
     override suspend fun deleteIds(code: String, localDeletedIds: List<String>): Result<String> {
         return try {
             val response = httpClient.delete("/api/expense") {

@@ -1,1 +1,1 @@
-./gradlew detektAll lint koverXmlReport koverHtmlReport :frontend:android:bundle
+./gradlew detektAll lint koverXmlReport koverHtmlReport :frontend:bundle

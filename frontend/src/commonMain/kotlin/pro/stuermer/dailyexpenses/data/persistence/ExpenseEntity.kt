@@ -3,80 +3,27 @@ package pro.stuermer.dailyexpenses.data.persistence
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import androidx.room.TypeConverters
-import java.time.LocalDate
-import java.time.LocalDateTime
-import java.util.UUID
-import pro.stuermer.dailyexpenses.shared.Expense as NetworkExpense
-import pro.stuermer.dailyexpenses.model.Category as NetworkCategory
 
 @Entity(tableName = "expenses")
-data class Expense(
-    @PrimaryKey val identifier: String = UUID.randomUUID().toString(),
+data class ExpenseEntity(
+    @PrimaryKey val identifier: String,
 
     @TypeConverters(CategoryConverter::class)
-    val category: NetworkCategory,
+    val category: String,
 
     @TypeConverters(DateConverter::class)
-    val expenseDate: LocalDate,
+    val expenseDate: String,
 
     @TypeConverters(DateTimeConverter::class)
-    val creationDate: LocalDateTime,
+    val creationDate: String,
 
     @TypeConverters(DateTimeConverter::class)
-    val updatedDate: LocalDateTime?,
+    val updatedDate: String?,
 
     @TypeConverters(DateTimeConverter::class)
-    val deletedDate: LocalDateTime?,
+    val deletedDate: String?,
 
     val description: String,
 
     val amount: Float,
-) {
-    fun toDomainModel(): DomainExpense {
-        return DomainExpense(
-            identifier = identifier,
-            category = category,
-            expenseDate = expenseDate,
-            creationDate = creationDate,
-            updatedDate = updatedDate,
-            deletedDate = deletedDate,
-            description = description,
-            amount = amount,
-        )
-    }
-
-    fun toNetworkExpense(): NetworkExpense = NetworkExpense(
-        id = identifier,
-        category = category,
-        expenseDate = expenseDate,
-        creationDate = creationDate,
-        updatedDate = updatedDate,
-        deletedDate = deletedDate,
-        description = description,
-        amount = amount
-    )
-}
-
-val fakeDataExpense1 = Expense(
-    category = NetworkCategory.Grocery,
-    amount = 12f,
-    description = "01/01",
-    creationDate = LocalDateTime.parse("2022-01-01T01:02:03.456+01:00"),
-    expenseDate = LocalDate.parse("2022-01-01"),
-    updatedDate = LocalDateTime.parse("2022-01-01T01:02:03.456+01:00"),
-    deletedDate = null
-)
-
-val fakeDataExpense2 = fakeDataExpense1.copy(
-    description = "02/02",
-    creationDate = LocalDateTime.parse("2022-02-02T01:02:03.456+01:00"),
-    expenseDate = LocalDate.parse("2022-02-02"),
-    updatedDate = LocalDateTime.parse("2022-02-02T01:02:03.456+01:00")
-)
-
-val fakeDataExpense3 = fakeDataExpense1.copy(
-    description = "03/03",
-    creationDate = LocalDateTime.parse("2022-03-03T01:02:03.456+01:00"),
-    expenseDate = LocalDate.parse("2022-03-03"),
-    updatedDate = LocalDateTime.parse("2022-03-03T01:02:03.456+01:00")
 )

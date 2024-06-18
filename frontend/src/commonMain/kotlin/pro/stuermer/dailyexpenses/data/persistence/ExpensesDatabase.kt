@@ -6,7 +6,7 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 
 @Database(
-    entities = [Expense::class],
+    entities = [ExpenseEntity::class, SharingEntity::class],
     version = 2,
     exportSchema = true,
     autoMigrations = [

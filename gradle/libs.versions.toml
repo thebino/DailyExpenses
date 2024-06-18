@@ -8,6 +8,9 @@ agp = "8.2.0"         # ✅
 #agp = "8.5.0-beta02"  # 💥 java.lang.NullPointerException (no error message)
 #agp = "8.6.0-alpha03" # 💥 java.lang.NullPointerException (no error message)
 
+# https://skie.touchlab.co/
+skie = "0.8.2"
+
 # https://github.com/JetBrains/compose-multiplatform
 compose-plugin = "1.6.10"
 
@@ -15,10 +18,11 @@ compose-plugin = "1.6.10"
 ktor = "2.3.11"
 
 # https://github.com/google/ksp
-ksp = "2.0.0-1.0.21"
+ksp = "2.0.0-1.0.22"
 
 # https://developer.android.com/kotlin/multiplatform/room
-room-multiplatform = "2.7.0-alpha03"
+room-multiplatform = "2.7.0-alpha04"
+sqlite-bundled = "2.5.0-SNAPSHOT"
 
 # https://detekt.dev/
 detekt = "1.23.6"
@@ -38,44 +42,21 @@ android-compileSdk = "34"
 android-minSdk = "26"
 android-targetSdk = "34"
 
-# https://developer.android.com/develop/ui/compose/bom
-composeBom = "2024.05.00"
-
-
-
 androidx-activityCompose = "1.9.0"
-androidx-appcompat = "1.7.0"
-androidx-constraintlayout = "1.0.1"
 androidx-core-ktx = "1.13.1"
-androidx-espresso-core = "3.5.1"
-androidx-material = "1.12.0"
-androidx-test-junit = "1.1.5"
 junit = "4.13.2"
 
 logback = "1.5.6"
 serialization = "1.6.3"
 
 
-
-
-#androidxCore = "1.13.0"
 androidx-navigation = "2.7.0-alpha06"
+androidx-viewmodel = "2.8.0"
 jetbrainsKotlinx = "1.8.0"
-jetbrainsKotlinxSerialization = "1.6.3"
 koin = "3.6.0-Beta4"
-koinCompose = "3.4.2"
-androidxWork = "2.9.0"
-comJakewhartonTimber = "5.0.1"
-#androidxActivity = "1.9.0"
-#androidxComposeMaterial = "1.3.1"
-#androidxConstraintlayout = "1.0.1"
-androidxLifecycle = "2.8.1"
-androidxDatastore = "1.1.1"
 accompanist = "0.31.3-beta"
 androidxTestExt = "1.1.5"
 mockk = "1.13.10"
-androidxTestEspresso = "3.5.1"
-#androidxComposeUi = "1.3.2"
 
 material3 = "1.2.1"
 
@@ -88,49 +69,28 @@ kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotl
 kotlin-test-junit = { module = "org.jetbrains.kotlin:kotlin-test-junit", version.ref = "kotlin" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "androidx-core-ktx" }
-#androidx-test-junit = { group = "androidx.test.ext", name = "junit", version.ref = "androidx-test-junit" }
-#androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "androidx-espresso-core" }
-#androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "androidx-appcompat" }
-#androidx-material = { group = "com.google.android.material", name = "material", version.ref = "androidx-material" }
-#androidx-constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "androidx-constraintlayout" }
 androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "androidx-activityCompose" }
 logback = { module = "ch.qos.logback:logback-classic", version.ref = "logback" }
 ktor-server-core = { module = "io.ktor:ktor-server-core-jvm", version.ref = "ktor" }
 ktor-server-netty = { module = "io.ktor:ktor-server-netty-jvm", version.ref = "ktor" }
 ktor-server-tests = { module = "io.ktor:ktor-server-tests-jvm", version.ref = "ktor" }
-kotlinx-serialization = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "serialization" }
-
-androidx-work-runtime-ktx = { module = "androidx.work:work-runtime-ktx", version.ref = "androidxWork" }
-androidx-constraintlayout-compose = { module = "androidx.constraintlayout:constraintlayout-compose", version.ref = "androidx-constraintlayout" }
-androidx-lifecycle-viewmodel-compose = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "androidxLifecycle" }
-androidx-datastore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "androidxDatastore" }
 
 # Room Kotlin Multiplatform (https://developer.android.com/kotlin/multiplatform/room)
 androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "room-multiplatform" }
-androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "room-multiplatform" }
-#androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "room-multiplatform" }
-#androidx-room-testing = { module = "androidx.room:room-testing", version.ref = "room-multiplatform" }
+androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "room-multiplatform" }
+sqlite-bundled = { module = "androidx.sqlite:sqlite-bundled", version.ref = "sqlite-bundled" }
 
-#compose-bom = { module = "androidx.compose:compose-bom", version.ref = "composeBom" }
-#compose-material = { module = "androidx.compose.material:material" }
-compose-material-icons-core = { module = "androidx.compose.material:material-icons-core" }
-compose-material-icons-extended = { module = "androidx.compose.material:material-icons-extended" }
 compose-material3 = { module = "androidx.compose.material3:material3", version.ref = "material3" }
-compose-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview" }
-#compose-tooling = { module = "androidx.compose.ui:ui-tooling" }
-#compose-ui-test-junit4 = { module = "androidx.compose.ui:ui-test-junit4" }
-#compose-ui-test-manifest = { module = "androidx.compose.ui:ui-test-manifest" }
 
 detekt-formatting = { module = "io.gitlab.arturbosch.detekt:detekt-formatting", version.ref = "detekt" }
 
 androidx-test-ext-junit-ktx = { module = "androidx.test.ext:junit-ktx", version.ref = "androidxTestExt" }
-#androidx-test-ext-junit = { module = "androidx.test.ext:junit", version.ref = "androidxTestExt" }
-#androidx-test-espresso-core = { module = "androidx.test.espresso:espresso-core", version.ref = "androidxTestEspresso" }
 
 jetbrains-androidx-navigation-compose = { module = "org.jetbrains.androidx.navigation:navigation-compose", version.ref = "androidx-navigation" }
+jetbrains-androidx-lifecycle-viewmodel-compose = { module = "org.jetbrains.androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "androidx-viewmodel" }
 jetbrains-kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "jetbrainsKotlinx" }
 jetbrains-kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "jetbrainsKotlinx" }
-jetbrains-kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "jetbrainsKotlinxSerialization" }
+jetbrains-kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "serialization" }
 jetbrains-kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "jetbrainsKotlinx" }
 
 # koin KMP
@@ -138,15 +98,7 @@ koin-core = { module = "io.insert-koin:koin-core", version.ref = "koin" }
 koin-test = { module = "io.insert-koin:koin-test", version.ref = "koin" }
 koin-android = { module = "io.insert-koin:koin-android", version.ref = "koin" }
 
-#koin-android = { module = "io.insert-koin:koin-android", version.ref = "koin" }
-#koin-androidx-workmanager = { module = "io.insert-koin:koin-androidx-workmanager", version.ref = "koin" }
-#koin-test = { module = "io.insert-koin:koin-test", version.ref = "koin" }
-#koin-test-junit4 = { module = "io.insert-koin:koin-test-junit4", version.ref = "koin" }
-#koin-androidx-compose = { module = "io.insert-koin:koin-androidx-compose", version.ref = "koinCompose" }
-
 mockk = { module = "io.mockk:mockk-android", version.ref = "mockk" }
-
-com-jakewharton-timber = { module = "com.jakewharton.timber:timber", version.ref = "comJakewhartonTimber" }
 
 ktor-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor" }
 ktor-android = { module = "io.ktor:ktor-client-android", version.ref = "ktor" }
@@ -164,8 +116,7 @@ accompanist-systemuicontroller = { module = "com.google.accompanist:accompanist-
 
 [bundles]
 accompanist = ["accompanist-flowlayout", "accompanist-systemuicontroller"]
-#koin = ["koin-android", "koin-androidx-workmanager", "koin-test", "koin-test-junit4", "koin-androidx-compose"]
-ktor = ["ktor-core", "ktor-android", "ktor-auth", "ktor-logging", "ktor-serialization", "ktor-serialization-json", "ktor-content-negotiation"]
+ktor = ["ktor-core", "ktor-auth", "ktor-logging", "ktor-serialization", "ktor-serialization-json", "ktor-content-negotiation"]
 
 
 
@@ -173,14 +124,16 @@ ktor = ["ktor-core", "ktor-android", "ktor-auth", "ktor-logging", "ktor-serializ
 kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
 android-application = { id = "com.android.application", version.ref = "agp" }
 android-library = { id = "com.android.library", version.ref = "agp" }
+skie = { id = "co.touchlab.skie", version.ref = "skie" }
 
 jetbrains-compose = { id = "org.jetbrains.compose", version.ref = "compose-plugin" }
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 ktor = { id = "io.ktor.plugin", version.ref = "ktor" }
-#ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
+ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 room = { id = "androidx.room", version.ref = "room-multiplatform" }
+
 
 detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
 

@@ -20,7 +20,7 @@ kotlin {
 
     sourceSets {
         commonMain.dependencies {
-            implementation(libs.kotlinx.serialization)
+            implementation(libs.jetbrains.kotlinx.serialization.json)
             implementation(libs.compose.material3)
         }
         commonTest.dependencies {
