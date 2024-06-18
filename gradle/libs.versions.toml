@@ -56,7 +56,7 @@ jetbrainsKotlinx = "1.8.0"
 koin = "3.6.0-Beta4"
 accompanist = "0.31.3-beta"
 androidxTestExt = "1.1.5"
-mockk = "1.13.10"
+mockk = "1.13.11"
 
 material3 = "1.2.1"
 
