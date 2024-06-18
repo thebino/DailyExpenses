@@ -55,7 +55,7 @@ dependencies {
     // for production
     implementation("mysql:mysql-connector-java:8.0.30")
     // for local builds
-    implementation("org.xerial:sqlite-jdbc:3.36.0")
+    implementation("org.xerial:sqlite-jdbc:3.46.0.0")
     // for in-memory testing
     implementation("com.h2database:h2:2.1.214")
 }
