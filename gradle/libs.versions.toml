@@ -52,7 +52,7 @@ serialization = "1.6.3"
 
 androidx-navigation = "2.7.0-alpha06"
 androidx-viewmodel = "2.8.0"
-jetbrainsKotlinx = "1.8.0"
+jetbrainsKotlinx = "1.8.1"
 koin = "3.6.0-Beta4"
 accompanist = "0.31.3-beta"
 androidxTestExt = "1.1.5"
