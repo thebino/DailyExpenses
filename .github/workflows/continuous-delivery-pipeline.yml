@@ -150,4 +150,4 @@ jobs:
 
       - name: Publish release bundle
         run: |
-          ./gradlew --console=plain composeApp:publishBundle --artifact-dir composeApp/build/outputs/bundle/release/app-release.aab
+          ./gradlew --console=plain frontend:publishBundle --artifact-dir frontend/build/outputs/bundle/release/app-release.aab

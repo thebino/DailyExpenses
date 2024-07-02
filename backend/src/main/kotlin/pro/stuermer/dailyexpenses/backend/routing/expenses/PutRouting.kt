@@ -55,7 +55,7 @@ fun Route.putIndexRouting(repository: DailyExpensesRepository) {
                             updatedDate = null,
                             deletedDate = null,
                             description = "Groceries",
-                            amount = 1.23f,
+                            amount = 1.23,
                         )
                     )
                 )

@@ -7,6 +7,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.ReadOnlyComposable
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Color.Companion.Magenta
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
@@ -45,17 +46,47 @@ fun DailyExpensesTheme(
             style = FontStyle.Normal,
         )
     )
+
+    // overwrite staticComposition with a font familiy included implementation
     val typography = ExpensesTypography(
-        titleBold = TextStyle(
-//            fontFamily = neuropoliticalFamily,
-            fontWeight = FontWeight.Bold, fontSize = 64.sp, lineHeight = 72.sp
-        ),
-        labelSmall = TextStyle(
-//            fontFamily = neuropoliticalFamily,
+        title = TextStyle(
+            color = Color(0xFFFFFFFF),
+            fontSize = 16.sp,
             fontWeight = FontWeight.Light,
-            fontSize = 10.sp,
+            fontFamily = neuropoliticalFamily,
+            lineHeight = 80.sp,
+        ),
+        totalAmountIntegerPart = TextStyle(
+            color = Color(0xFFE0ED67),
+            fontSize = 40.sp,
+            fontWeight = FontWeight.ExtraLight,
+            fontFamily = neuropoliticalFamily,
+        ),
+        totalAmountFractionalPart = TextStyle(
+            color = Color(0xFFE0ED67),
+            fontSize = 25.sp,
+            fontWeight = FontWeight.Light,
+            fontFamily = neuropoliticalFamily,
+        ),
+
+        legendLabel = TextStyle(
+            color = Color(0xFF6F7272)
+        ),
+        legendValue = TextStyle(
+            color = Color.Magenta
+        ),
+
+        historyCategory = TextStyle(
+            color = Color.Magenta
+        ),
+        historyDescription = TextStyle(
+            color = Color.Magenta
+        ),
+        historyValue = TextStyle(
+            color = Color.Magenta
         ),
     )
+
     CompositionLocalProvider(
         LocalSemanticColors provides colors,
         LocalTypography provides typography,

@@ -20,10 +20,11 @@ Track your daily expenses and share it with your self-hosted backend.
 
 
 ## App Actions
+💥 currently broken
 > Hey Google, add Groceries to DailyExpenses.
 
 ## Sharing
-
+💥 currently broken
 Share expenses with friends and family via a self-hosted [backend](./server)
 
 1. Setup you server address
@@ -43,15 +44,15 @@ it will spin up the server on http://127.0.0.1:8080
 ## Android
 Build and deploy an debug version of the application to a connected device or emulator by running:
 ```shell
-./gradlew :composeApp:installDebug
+./gradlew :frontend:installDebug
 ```
 
 
 ## TODO:
-
- * [ ] Make the app resizable
-   * [ ] https://developer.android.com/jetpack/compose/layouts/adaptive
- * [ ] Fastlane setup
+ * [ ] iOS Setup
+ * [ ] remove all Material or Material3 dependencies
+ * [ ] rewrite the screens based on this [dribbble design](https://dribbble.com/shots/17198286-My-finances-Mobile-App)
+ * [ ] Fastlane setup for deployment
    * [ ] Google Play
    * [ ] F-Droid
 

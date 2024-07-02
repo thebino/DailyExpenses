@@ -23,17 +23,17 @@ kotlin {
         }
     }
 
-//    listOf(
-//        iosX64(),
-//        iosArm64(),
-//        iosSimulatorArm64()
-//    ).forEach { iosTarget ->
-//        iosTarget.binaries.framework {
-//            baseName = "DailyExpenses"
-//            isStatic = true
-//            linkerOpts.add("-lsqlite3")
-//        }
-//    }
+    listOf(
+        iosX64(),
+        iosArm64(),
+        iosSimulatorArm64()
+    ).forEach { iosTarget ->
+        iosTarget.binaries.framework {
+            baseName = "DailyExpenses"
+            isStatic = true
+            linkerOpts.add("-lsqlite3")
+        }
+    }
 
     jvm("desktop")
 
@@ -71,6 +71,7 @@ kotlin {
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
+            implementation(libs.junit)
         }
 
         val desktopMain by getting

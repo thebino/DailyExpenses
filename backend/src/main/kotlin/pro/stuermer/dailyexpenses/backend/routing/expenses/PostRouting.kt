@@ -49,7 +49,7 @@ fun Route.postIndexRouting(repository: DailyExpensesRepository) {
                             updatedDate = "2021-01-10T01:02:03.456+01:00",
                             deletedDate = "2021-01-10T01:02:03.456+01:00",
                             description = "Groceries",
-                            amount = 1.23f,
+                            amount = 1.23,
                         )
                     )
                 )

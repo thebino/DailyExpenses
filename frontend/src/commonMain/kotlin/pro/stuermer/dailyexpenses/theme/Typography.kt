@@ -4,6 +4,7 @@ import androidx.compose.material3.Typography
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.staticCompositionLocalOf
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontStyle
@@ -13,72 +14,36 @@ import dailyexpenses.frontend.generated.resources.Res
 import dailyexpenses.frontend.generated.resources.neuropolitical
 import org.jetbrains.compose.resources.Font
 
+/**
+ * staticComposition implementation without a font family or other implementations
+ */
 val LocalTypography = staticCompositionLocalOf {
     ExpensesTypography(
-        titleBold = TextStyle(
-//            fontFamily = neuropoliticalFamily,
-            fontWeight = FontWeight.Bold,
-            fontSize = 64.sp,
-            lineHeight = 72.sp
-        ),
-        labelSmall = TextStyle(
-//            fontFamily = neuropoliticalFamily,
-            fontWeight = FontWeight.Light,
-            fontSize = 10.sp,
-//            lineHeight = 72.sp
-        ),
+        title = TextStyle(),
+        totalAmountIntegerPart = TextStyle(),
+        totalAmountFractionalPart = TextStyle(),
+        legendLabel = TextStyle(),
+        legendValue = TextStyle(),
+        historyCategory = TextStyle(),
+        historyDescription = TextStyle(),
+        historyValue = TextStyle(),
     )
 }
 
 @Immutable
 data class ExpensesTypography(
-    val titleBold: TextStyle,
-    val labelSmall: TextStyle,
+    val title: TextStyle,
+
+    // home
+    val totalAmountIntegerPart: TextStyle,
+    val totalAmountFractionalPart: TextStyle,
+
+    // graph
+    val legendLabel: TextStyle,
+    val legendValue: TextStyle,
+
+    // history
+    val historyCategory: TextStyle,
+    val historyDescription: TextStyle,
+    val historyValue: TextStyle,
 )
-
-@Composable
-fun Typography(): Typography {
-    val neuropoliticalFamily = FontFamily(
-        Font(
-            resource = Res.font.neuropolitical,
-            weight = FontWeight.Normal,
-            style = FontStyle.Normal,
-        ),
-        Font(
-            resource = Res.font.neuropolitical,
-            weight = FontWeight.Light,
-            style = FontStyle.Normal,
-        )
-    )
-
-    return Typography(
-//        bodyLarge = TextStyle(
-//            fontFamily = FontFamily.Default,
-//            fontWeight = FontWeight.Normal,
-//            fontSize = 16.sp,
-//            lineHeight = 24.sp,
-//            letterSpacing = 0.5.sp
-//        ),
-//        titleLarge = TextStyle(
-//            fontFamily = neuropoliticalFamily,
-//            fontWeight = FontWeight.Light,
-//            fontSize = 22.sp,
-//            lineHeight = 28.sp,
-//            letterSpacing = 0.sp
-//        ),
-//        titleMedium = TextStyle(
-//            fontFamily = neuropoliticalFamily,
-//            fontWeight = FontWeight.Medium,
-//            fontSize = 14.sp,
-//            lineHeight = 16.sp,
-//            letterSpacing = 0.7.sp
-//        ),
-//        titleSmall = TextStyle(
-//            fontFamily = neuropoliticalFamily,
-//            fontWeight = FontWeight.Medium,
-//            fontSize = 12.sp,
-//            lineHeight = 14.sp,
-//            letterSpacing = 0.5.sp
-//        ),
-    )
-}

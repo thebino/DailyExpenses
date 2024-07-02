@@ -11,5 +11,5 @@ data class Expense(
     val updatedDate: LocalDateTime? = null,
     val deletedDate: LocalDateTime? = null,
     val description: String,
-    val amount: Float,
+    val amount: Double,
 )

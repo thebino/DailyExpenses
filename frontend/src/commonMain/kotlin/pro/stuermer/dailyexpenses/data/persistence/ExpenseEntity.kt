@@ -25,5 +25,5 @@ data class ExpenseEntity(
 
     val description: String,
 
-    val amount: Float,
+    val amount: Double,
 )

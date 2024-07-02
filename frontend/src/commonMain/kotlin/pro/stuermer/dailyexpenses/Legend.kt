@@ -57,7 +57,7 @@ fun LegendItem(
         data.label?.let {
             Text(
                 text = stringResource(resource = data.category.nameResource),
-                style = DailyExpensesTheme.typography.labelSmall,
+                style = DailyExpensesTheme.typography.legendLabel,
             )
         }
         Row(
@@ -73,7 +73,7 @@ fun LegendItem(
             Spacer(modifier = Modifier.width(8.dp))
             Text(
                 text = "${data.value * 100 / sum} %",
-                style = DailyExpensesTheme.typography.labelSmall,
+                style = DailyExpensesTheme.typography.legendLabel,
                 fontSize = 10.sp,
 //                color = DailyExpensesTheme.colors.accentPrimary
             )

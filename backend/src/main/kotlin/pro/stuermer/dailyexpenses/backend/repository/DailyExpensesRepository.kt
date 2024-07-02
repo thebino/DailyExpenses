@@ -20,7 +20,7 @@ interface DailyExpensesRepository {
         creationDate: String,
         updatedDate: String?,
         description: String,
-        amount: Float
+        amount: Double
     ): Expense?
 
     suspend fun updateExpenseWithId(instance: String, expense: Expense): Int

@@ -11,7 +11,7 @@ data class Expense(
     val updatedDate: String? = null,
     val deletedDate: String? = null,
     val description: String,
-    val amount: Float
+    val amount: Double
 )
 
 object ExpensesTable : Table() {
@@ -25,7 +25,7 @@ object ExpensesTable : Table() {
     val updatedDate = varchar("updatedDate", 255).nullable()
     val deletedDate = varchar("deletedDate", 255).nullable()
     val description = varchar("description", 255)
-    val amount = float("amount")
+    val amount = double("amount")
 
     override val primaryKey = PrimaryKey(id)
 }

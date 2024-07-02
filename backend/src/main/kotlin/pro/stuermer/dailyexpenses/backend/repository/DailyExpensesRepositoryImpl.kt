@@ -91,7 +91,7 @@ class DailyExpensesRepositoryImpl(
         creationDate: String,
         updatedDate: String?,
         description: String,
-        amount: Float
+        amount: Double
     ): NetworkExpense? {
         return newSuspendedTransaction(Dispatchers.IO) {
             val localExpenseDate: LocalDate = LocalDate.parse(expenseDate)
