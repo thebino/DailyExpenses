@@ -21,7 +21,7 @@ dependencies {
     testImplementation(libs.kotlin.test.junit)
 
     // ktor
-    val ktorVersion = "2.2.1"
+    val ktorVersion = "2.3.11"
     implementation("io.ktor:ktor-server-core:$ktorVersion")
     implementation("io.ktor:ktor-server-jetty:$ktorVersion")
     implementation("io.ktor:ktor-server-call-logging:$ktorVersion")
