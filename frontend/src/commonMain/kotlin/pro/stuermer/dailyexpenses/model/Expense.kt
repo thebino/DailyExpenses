@@ -1,16 +1,15 @@
 package pro.stuermer.dailyexpenses.model
 
-import java.time.LocalDate
-import java.time.LocalDateTime
-import java.util.UUID
+import kotlinx.datetime.*
+import pro.stuermer.dailyexpenses.randomUUID
 
 data class Expense(
-    val identifier: String = UUID.randomUUID().toString(),
+    val identifier: String = randomUUID(),
     val amount: Float,
     val description: String,
     val category: Category = Category.Grocery,
-    val expenseDate: LocalDate = LocalDate.now(),
-    val creationDate: LocalDateTime = LocalDateTime.now(),
+    val expenseDate: LocalDate = Clock.System.now().toLocalDateTime(TimeZone.UTC).date,
+    val creationDate: LocalDateTime = Clock.System.now().toLocalDateTime(TimeZone.UTC),
     val updatedDate: LocalDateTime? = null,
     val deletedDate: LocalDateTime? = null,
 ) {
@@ -18,27 +17,3 @@ data class Expense(
         return "DomainExpense(expenseDate=$expenseDate, amount=$amount)"
     }
 }
-
-val fakeDomainExpenses = listOf<Expense>(
-    Expense(
-        identifier = "cec5f4e3-1251-4898-9376-8fddf324354f",
-        amount = 12f,
-        description = "Grocery",
-        category = Category.Grocery,
-        expenseDate = LocalDate.parse("2022-01-01")
-    ),
-    Expense(
-        identifier = "745dc283-2c58-4347-9ea0-35f2031daa9f",
-        amount = 4.12f,
-        description = "Grocery",
-        category = Category.Grocery,
-        expenseDate = LocalDate.parse("2022-02-02")
-    ),
-    Expense(
-        identifier = "1ea0537c-9f50-4f85-b3ca-4dd2513e3cd7",
-        amount = 56.50f,
-        description = "High Roller",
-        category = Category.Restaurant,
-        expenseDate = LocalDate.parse("2022-03-03")
-    ),
-)

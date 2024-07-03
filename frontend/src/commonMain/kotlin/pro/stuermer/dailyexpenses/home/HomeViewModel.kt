@@ -26,7 +26,7 @@ class HomeViewModel : ViewModel(), KoinComponent {
                         loadingAmount = true
                     )
                 }
-                viewModelScope.launch(Dispatchers.IO) {
+                viewModelScope.launch(Dispatchers.Default) {
                     loadLastTransactionsUseCase()
                 }
             }

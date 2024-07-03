@@ -44,6 +44,9 @@ kotlin {
             // de-/serialization
             implementation(libs.jetbrains.kotlinx.serialization.json)
 
+            // date format
+            implementation(libs.jetbrains.kotlinx.datetime)
+            
             // compose
             implementation(compose.runtime)
             implementation(compose.foundation)
@@ -122,6 +125,10 @@ kotlin {
                     compose.uiTest
                 )
             }
+        }
+
+        iosMain.dependencies {
+
         }
     }
 }

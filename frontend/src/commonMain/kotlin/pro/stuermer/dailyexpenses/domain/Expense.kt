@@ -1,7 +1,7 @@
 package pro.stuermer.dailyexpenses.domain
 
-import java.time.LocalDate
-import java.time.LocalDateTime
+import kotlinx.datetime.LocalDate
+import kotlinx.datetime.LocalDateTime
 
 data class Expense(
     val id: String,

@@ -2,6 +2,7 @@ package pro.stuermer.dailyexpenses.di
 
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import platform.Foundation.NSHomeDirectory
 import pro.stuermer.dailyexpenses.data.persistence.ExpensesDatabase
 import pro.stuermer.dailyexpenses.data.persistence.SharingDatabase
 

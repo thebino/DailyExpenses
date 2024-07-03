@@ -27,6 +27,7 @@ import androidx.compose.ui.unit.dp
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import pro.stuermer.dailyexpenses.model.GraphData
 import pro.stuermer.dailyexpenses.theme.DailyExpensesTheme
+import kotlin.math.PI
 import kotlin.math.cos
 import kotlin.math.sin
 
@@ -116,7 +117,7 @@ fun Graph(
 
                     if (drawLabels) {
                         drawIntoCanvas {
-                            val medianAngle = (currentSegment - (segmentAngle / 2)) * Math.PI / 180f
+                            val medianAngle = (currentSegment - (segmentAngle / 2)) * PI / 180f
                             val radiusWithBorder = radius + radiusBorder
                             val drawAtX =
                                 ((radiusWithBorder + outerMargin) * cos(medianAngle)).toFloat() + radius

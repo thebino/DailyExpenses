@@ -1,6 +1,6 @@
 package pro.stuermer.dailyexpenses.di
 
-import org.koin.core.context.GlobalContext.startKoin
+import org.koin.core.context.startKoin
 import org.koin.dsl.KoinAppDeclaration
 import org.koin.dsl.module
 import pro.stuermer.dailyexpenses.data.network.ExpensesApi

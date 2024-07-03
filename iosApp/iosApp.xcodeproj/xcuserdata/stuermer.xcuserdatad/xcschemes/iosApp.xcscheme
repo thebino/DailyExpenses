@@ -16,9 +16,10 @@
       </BuildActionEntries>
    </BuildAction>
    <LaunchAction
-      useCustomWorkingDirectory = "NO"
+      useCustomWorkingDirectory = "YES"
       buildConfiguration = "Debug"
-      allowLocationSimulation = "YES">
+      allowLocationSimulation = "YES"
+      customWorkingDirectory = "/Users/stuermer/workspace/thebino/DailyExpenses">
       <BuildableProductRunnable>
          <BuildableReference
             BuildableIdentifier = "primary"

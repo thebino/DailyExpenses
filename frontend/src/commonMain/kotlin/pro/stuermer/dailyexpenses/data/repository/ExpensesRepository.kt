@@ -1,14 +1,12 @@
 package pro.stuermer.dailyexpenses.data.repository
 
-import java.time.LocalDate
-import java.time.LocalDateTime
-import java.util.UUID
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onStart
+import kotlinx.datetime.*
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import pro.stuermer.dailyexpenses.data.ExpenseMapper
@@ -18,6 +16,7 @@ import pro.stuermer.dailyexpenses.data.network.NetworkResource
 import pro.stuermer.dailyexpenses.data.network.SyncStatus
 import pro.stuermer.dailyexpenses.data.persistence.ExpensesDao
 import pro.stuermer.dailyexpenses.data.persistence.SharingDao
+import pro.stuermer.dailyexpenses.randomUUID
 import pro.stuermer.dailyexpenses.shared.Expense
 import pro.stuermer.dailyexpenses.data.persistence.ExpenseEntity as PersistedExpense
 import pro.stuermer.dailyexpenses.domain.Expense as DomainExpense
@@ -39,20 +38,20 @@ interface ExpensesRepository : KoinComponent {
         override suspend fun addExpense(expense: DomainExpense) {
             dao.insert(
                 ExpenseMapper.toPersistenceModel(expense)
-                    .copy(identifier = UUID.randomUUID().toString())
+                    .copy(identifier = randomUUID())
             )
         }
 
         override suspend fun updateExpense(expense: DomainExpense) {
             dao.update(
                 ExpenseMapper.toPersistenceModel(expense).copy(
-                    updatedDate = LocalDateTime.now().format(formatter)
+                    updatedDate = Clock.System.now().toLocalDateTime(TimeZone.UTC)
                 )
             )
         }
 
         override suspend fun deleteExpense(expense: DomainExpense) {
-            val tmpExpense = expense.copy(deletedDate = LocalDateTime.now())
+            val tmpExpense = expense.copy(deletedDate = Clock.System.now().toLocalDateTime(TimeZone.UTC))
             val persistedExpense = ExpenseMapper.toPersistenceModel(tmpExpense)
             dao.update(persistedExpense)
         }
@@ -72,12 +71,13 @@ interface ExpensesRepository : KoinComponent {
         /**
          * Returns all available expenses for a given month, but deleted ones.
          */
-        override suspend fun getExpensesForDate(date: LocalDate): Flow<NetworkResource<List<DomainExpense>>> =
-            dao.getExpensesForDate(
-                fromDate = LocalDate.of(date.year, date.month, 1).format(formatter),
-                toDate = LocalDate.of(date.year, date.month, 1)
-                    .plusDays(LocalDate.of(date.year, date.month, 1).lengthOfMonth() - 1L)
-                    .format(formatter)
+        override suspend fun getExpensesForDate(date: LocalDate): Flow<NetworkResource<List<DomainExpense>>> {
+
+            val fromDate: String = LocalDate(date.year, date.month, 1).toString()
+            val toDate: String = LocalDate(date.year, date.month, 1).plus(1, DateTimeUnit.MONTH).toString()
+            return dao.getExpensesForDate(
+                fromDate = fromDate,
+                toDate = toDate
             ).map { expenses: List<PersistedExpense> ->
                 NetworkResource.Success(data = expenses.filter { expense ->
                     expense.deletedDate == null
@@ -90,6 +90,7 @@ interface ExpensesRepository : KoinComponent {
             }.catch {
                 NetworkResource.Error<NetworkResource<List<DomainExpense>>>(it)
             }
+        }
 
         /**
          * Synchronize with a remote source
@@ -169,7 +170,7 @@ interface ExpensesRepository : KoinComponent {
                                 it,
                                 formatter
                             )
-                        } -> {
+                        }!! -> {
                             // local has been updated before, but remote is newer
                             dao.insert(ExpenseMapper.toPersistenceModel(remoteExpense))
                         }
@@ -179,7 +180,7 @@ interface ExpensesRepository : KoinComponent {
                                 it,
                                 formatter
                             )
-                        } -> {
+                        }!! -> {
                             // local update is newer, update remote
                             api.addExpenses(
                                 code = sharingGroup,
@@ -195,7 +196,7 @@ interface ExpensesRepository : KoinComponent {
 
                 // save network data in cache
                 dao.insert(
-                    *expenses.map { expense: Expense ->
+                    *expenses!!.map { expense: Expense ->
                         ExpenseMapper.toPersistenceModel(expense)
                     }.toTypedArray()
                 )
